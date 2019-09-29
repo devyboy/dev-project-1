@@ -4,6 +4,7 @@ import '../App.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 
 
@@ -12,13 +13,13 @@ class HomePage extends Component {
     super(props);
     this.state = {
       questions: [],
-      choices: [],
+      choices: [null, null, null, null],
 
       question: "",
       unit: "",
       topic: "",
       answer: "",
-      isMult: true,
+      isMult: false,
       cog: "",
       diff: "",
       type: ""
@@ -31,7 +32,9 @@ class HomePage extends Component {
     this.handleTopicChange = this.handleTopicChange.bind(this);
     this.handleAnswerChange = this.handleAnswerChange.bind(this);
     this.handleCogChange = this.handleCogChange.bind(this);
-    this.handleDiffChange = this.handleDiffChange.bind(this)
+    this.handleDiffChange = this.handleDiffChange.bind(this);
+    this.handleTypeChange = this.handleTypeChange.bind(this);
+    this.handleChoicesChange = this.handleChoicesChange.bind(this);
   }
 
   fetchQuestions() {
@@ -41,7 +44,6 @@ class HomePage extends Component {
       snapshot.forEach(doc => {
         questionArray.push(doc.data().content);
         this.setState({ questions: questionArray });
-        console.log(doc.data());
       });
     }).catch(err => {
         console.log(err);
@@ -76,6 +78,30 @@ class HomePage extends Component {
     this.setState({ diff: event.target.value});
   }
 
+  handleTypeChange(event) {
+    this.setState({ isMult: event.target.value === "Multiple Choice" });
+    this.setState({ type: event.target.value });
+  }
+
+  handleChoicesChange(letter, event) {
+    let temp = this.state.choices;
+    switch (letter) {
+      case "A":
+        temp[0] = event.target.value;
+        break;
+      case "B":
+        temp[1] = event.target.value;
+        break;
+      case "C":
+        temp[2] = event.target.value;
+        break;
+      case "D":
+        temp[3] = event.target.value;
+        break;
+    }
+    this.setState({ choices: temp });
+  }
+
   submitQuestion() {
     console.log({
       question: this.state.question,
@@ -84,7 +110,8 @@ class HomePage extends Component {
       answer: this.state.answer,
       cog: this.state.cog,
       diff: this.state.diff,
-      type: this.state.type
+      type: this.state.type,
+      choices: this.state.choices,
     });
       // let questionsRef = firebase.firestore().collection('questions');
       // questionsRef.add({
@@ -128,7 +155,7 @@ class HomePage extends Component {
                 <Form.Row>
                   <Form.Group as={Col}>
                     <Form.Label>Question Type</Form.Label>
-                    <Form.Control as="select">
+                    <Form.Control onChange={this.handleTypeChange} as="select">
                         <option>Select a Question Type</option>
                         <option>Multiple Choice</option>
                         <option>Free Response</option>
@@ -157,16 +184,48 @@ class HomePage extends Component {
                         <option>Medium</option>
                         <option>Challenging</option>
                       </Form.Control>
-                  </Form.Group>
+                  </Form.Group>         
+                </Form.Row>
+                <Form.Row>
                   {this.state.isMult ? 
-                  <Form.Group>
-                    <Form.Control as="select">
-
-                    </Form.Control>
-                  </Form.Group>
+                    <Form.Group as={Col} md="5">
+                      <Form.Label>Answer Choices</Form.Label>
+                      <InputGroup>
+                        <InputGroup.Prepend>
+                          <InputGroup.Text id="inputGroupPrepend">A</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <Form.Control onChange={(e) => this.handleChoicesChange("A", e)}
+                          type="text"
+                        />
+                      </InputGroup>
+                      <InputGroup>
+                        <InputGroup.Prepend>
+                          <InputGroup.Text id="inputGroupPrepend">B</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <Form.Control onChange={(e) => this.handleChoicesChange("B", e)}
+                          type="text"
+                        />
+                      </InputGroup>
+                      <InputGroup>
+                        <InputGroup.Prepend>
+                          <InputGroup.Text id="inputGroupPrepend">C</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <Form.Control onChange={(e) => this.handleChoicesChange("C", e)}
+                          type="text"
+                        />
+                      </InputGroup>
+                      <InputGroup>
+                        <InputGroup.Prepend>
+                          <InputGroup.Text id="inputGroupPrepend">D</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <Form.Control onChange={(e) => this.handleChoicesChange("D", e)}
+                          type="text"
+                        />
+                      </InputGroup>
+                    </Form.Group>
                   :
-                  null
-                  }               
+                    null
+                  }      
                 </Form.Row>
 
                 <Button onClick={this.submitQuestion} variant="primary">
