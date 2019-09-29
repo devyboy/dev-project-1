@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import firebase from "firebase";
 import '../App.css';
-import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -13,11 +12,26 @@ class HomePage extends Component {
     super(props);
     this.state = {
       questions: [],
-      text: ""
+      choices: [],
+
+      question: "",
+      unit: "",
+      topic: "",
+      answer: "",
+      isMult: true,
+      cog: "",
+      diff: "",
+      type: ""
+
     };
 
     this.submitQuestion = this.submitQuestion.bind(this);
-    this.handleTextChange = this.handleTextChange.bind(this);
+    this.handleQuestionChange = this.handleQuestionChange.bind(this);
+    this.handleUnitChange = this.handleUnitChange.bind(this);
+    this.handleTopicChange = this.handleTopicChange.bind(this);
+    this.handleAnswerChange = this.handleAnswerChange.bind(this);
+    this.handleCogChange = this.handleCogChange.bind(this);
+    this.handleDiffChange = this.handleDiffChange.bind(this)
   }
 
   fetchQuestions() {
@@ -38,17 +52,46 @@ class HomePage extends Component {
     this.fetchQuestions();
   }
 
-  handleTextChange(event) {
-    this.setState({ text: event.target.value });
+  handleQuestionChange(event) {
+    this.setState({ question: event.target.value });
+  }
+
+  handleUnitChange(event) {
+    this.setState({ unit: event.target.value });
+  }
+
+  handleTopicChange(event) {
+    this.setState({ topic: event.target.value });
+  }
+
+  handleAnswerChange(event) {
+    this.setState({ answer: event.target.value });
+  }
+
+  handleCogChange(event) {
+    this.setState({ cog: event.target.value });
+  }
+
+  handleDiffChange(event) {
+    this.setState({ diff: event.target.value});
   }
 
   submitQuestion() {
-      let questionsRef = firebase.firestore().collection('questions');
-      questionsRef.add({
-          content: this.state.text
-      });
-      this.setState({ text: "" });
-      this.fetchQuestions();
+    console.log({
+      question: this.state.question,
+      unit: this.state.unit,
+      topic: this.state.topic,
+      answer: this.state.answer,
+      cog: this.state.cog,
+      diff: this.state.diff,
+      type: this.state.type
+    });
+      // let questionsRef = firebase.firestore().collection('questions');
+      // questionsRef.add({
+      //     content: this.state.text
+      // });
+      // this.setState({ text: "" });
+      // this.fetchQuestions();
   }
 
 
@@ -57,26 +100,26 @@ class HomePage extends Component {
         <div className="App">
             <h1>Welcome to dev project 1</h1>
             <div style={{width: "65%", margin: '0 auto', marginTop: "2.5em"}}>
-              <Form onSubmit={this.submitQuestion}>
+              <Form>
                 <Form.Row>
-                  <Form.Group as={Col}>
+                  <Form.Group onChange={this.handleQuestionChange} as={Col}>
                     <Form.Label>Question</Form.Label>
                     <Form.Control />
                   </Form.Group>
 
-                  <Form.Group as={Col}>
+                  <Form.Group onChange={this.handleUnitChange} as={Col}>
                     <Form.Label>Unit</Form.Label>
                     <Form.Control />
                   </Form.Group>
                 </Form.Row>
 
                 <Form.Row>
-                  <Form.Group as={Col}>
+                  <Form.Group onChange={this.handleTopicChange} as={Col}>
                     <Form.Label>Topic</Form.Label>
                     <Form.Control />
                   </Form.Group>
 
-                  <Form.Group as={Col}>
+                  <Form.Group onChange={this.handleAnswerChange} as={Col}>
                     <Form.Label>Answer</Form.Label>
                     <Form.Control />
                   </Form.Group>
@@ -94,8 +137,8 @@ class HomePage extends Component {
                   </Form.Group>
 
                   <Form.Group as={Col}>
-                    <Form.Label>State</Form.Label>
-                    <Form.Control as="select">
+                    <Form.Label>Cognitive Level</Form.Label>
+                    <Form.Control onChange={this.handleCogChange} as="select">
                       <option>Select a Cognitive Level</option>
                       <option>Remembering</option>
                       <option>Understanding</option>
@@ -108,16 +151,25 @@ class HomePage extends Component {
 
                   <Form.Group as={Col}>
                     <Form.Label>Difficulty</Form.Label>
-                    <Form.Control as="select">
+                    <Form.Control onChange={this.handleDiffChange} as="select">
                         <option>Select a Difficulty</option>
                         <option>Easy</option>
                         <option>Medium</option>
                         <option>Challenging</option>
                       </Form.Control>
                   </Form.Group>
+                  {this.state.isMult ? 
+                  <Form.Group>
+                    <Form.Control as="select">
+
+                    </Form.Control>
+                  </Form.Group>
+                  :
+                  null
+                  }               
                 </Form.Row>
 
-                <Button variant="primary" type="submit">
+                <Button onClick={this.submitQuestion} variant="primary">
                   Submit
                 </Button>
               </Form>       
