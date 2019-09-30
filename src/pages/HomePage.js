@@ -8,6 +8,18 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Snackbar from '@material-ui/core/Snackbar';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+
 
 
 
@@ -18,6 +30,7 @@ class HomePage extends Component {
     this.state = {
       open: false,
       success: true,
+      drawer: false,
 
       questions: [],
       choices: [],
@@ -167,7 +180,33 @@ class HomePage extends Component {
   render() {
     return(
         <div className="App">
-            <h1>Welcome to dev project 1</h1>
+          <Drawer anchor="left" open={this.state.drawer} onClose={() => this.setState({ drawer: false })}>
+          <div
+            role="presentation"
+            onClick={() => this.setState({ drawer: false })}
+            onKeyDown={() => this.setState({ drawer: false })}
+          >
+            <List>
+              {['Create Questions', 'View/Edit Questions', 'Generate Exam'].map((text, index) => (
+                <ListItem button key={text}>
+                  <ListItemIcon>{index % 2 === 0 ? <CloseIcon /> : <CheckIcon />}</ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItem>
+              ))}
+            </List>
+          </div>
+          </Drawer>
+          <AppBar position="static">
+            <Toolbar>
+              <IconButton onClick={() => this.setState({ drawer: true })} edge="start" color="inherit" aria-label="menu">
+                <MenuIcon />
+              </IconButton>
+              <Typography style={{paddingLeft: '.75em'}} variant="h6">
+                UDel PAPER
+              </Typography>
+            </Toolbar>
+          </AppBar>
+            <h2>Create A Question</h2>
             <div style={{width: "65%", margin: '0 auto', marginTop: "2.5em"}}>
               <Form>
                 <Form.Row>
