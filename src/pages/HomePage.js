@@ -5,6 +5,10 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Snackbar from '@material-ui/core/Snackbar';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
+
 
 
 
@@ -12,17 +16,22 @@ class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      open: false,
+      success: true,
+
       questions: [],
-      choices: [null, null, null, null],
+      choices: [],
+      isMult: false,
 
       question: "",
       unit: "",
       topic: "",
       answer: "",
-      isMult: false,
       cog: "",
       diff: "",
-      type: ""
+      SLO: "",
+      type: "",
+      course: "",
 
     };
 
@@ -35,6 +44,27 @@ class HomePage extends Component {
     this.handleDiffChange = this.handleDiffChange.bind(this);
     this.handleTypeChange = this.handleTypeChange.bind(this);
     this.handleChoicesChange = this.handleChoicesChange.bind(this);
+    this.handleSLOChange = this.handleSLOChange.bind(this);
+    this.handleCourseChange = this.handleCourseChange.bind(this);
+  }
+
+  resetState() {
+    this.setState({
+      questions: [],
+      choices: [],
+      isMult: false,
+
+      question: "",
+      unit: "",
+      topic: "",
+      answer: "",
+      cog: "",
+      diff: "",
+      SLO: "",
+      type: "",
+      course: "",
+    });
+    this.setState({ open: true,  message: "Question Saved", success: true});
   }
 
   fetchQuestions() {
@@ -75,12 +105,20 @@ class HomePage extends Component {
   }
 
   handleDiffChange(event) {
-    this.setState({ diff: event.target.value});
+    this.setState({ diff: event.target.value });
   }
 
   handleTypeChange(event) {
     this.setState({ isMult: event.target.value === "Multiple Choice" });
     this.setState({ type: event.target.value });
+  }
+
+  handleSLOChange(event) {
+    this.setState({ SLO: event.target.value });
+  }
+
+  handleCourseChange(event) {
+    this.setState({ course: event.target.value });
   }
 
   handleChoicesChange(letter, event) {
@@ -98,27 +136,31 @@ class HomePage extends Component {
       case "D":
         temp[3] = event.target.value;
         break;
+      default:
+        break;
     }
     this.setState({ choices: temp });
   }
 
   submitQuestion() {
-    console.log({
+    let questionsRef = firebase.firestore().collection('questions');
+    questionsRef.add({
       question: this.state.question,
-      unit: this.state.unit,
-      topic: this.state.topic,
+      unit: this.state.unit.toLowerCase(),
+      course: this.state.course,
+      topic: this.state.topic.toLowerCase(),
       answer: this.state.answer,
-      cog: this.state.cog,
-      diff: this.state.diff,
-      type: this.state.type,
+      cog: this.state.cog.toLowerCase(),
+      diff: this.state.diff.toLowerCase(),
+      type: this.state.type.toLowerCase(),
       choices: this.state.choices,
-    });
-      // let questionsRef = firebase.firestore().collection('questions');
-      // questionsRef.add({
-      //     content: this.state.text
-      // });
-      // this.setState({ text: "" });
-      // this.fetchQuestions();
+      SLO: this.state.SLO.toLowerCase(),
+    })
+    .then(this.resetState())
+    .catch(err => {
+      this.setState({ open: true, message: err, success: false });
+    })
+    
   }
 
 
@@ -131,24 +173,29 @@ class HomePage extends Component {
                 <Form.Row>
                   <Form.Group onChange={this.handleQuestionChange} as={Col}>
                     <Form.Label>Question</Form.Label>
-                    <Form.Control />
+                    <Form.Control value={this.state.question} placeholder="What's 2+2?"/>
                   </Form.Group>
 
-                  <Form.Group onChange={this.handleUnitChange} as={Col}>
-                    <Form.Label>Unit</Form.Label>
-                    <Form.Control />
+                  <Form.Group onChange={this.handleAnswerChange} as={Col}>
+                    <Form.Label>Answer</Form.Label>
+                    <Form.Control value={this.state.answer} placeholder="4"/>
                   </Form.Group>
                 </Form.Row>
 
                 <Form.Row>
                   <Form.Group onChange={this.handleTopicChange} as={Col}>
                     <Form.Label>Topic</Form.Label>
-                    <Form.Control />
+                    <Form.Control value={this.state.topic} placeholder="Addition"/>
                   </Form.Group>
 
-                  <Form.Group onChange={this.handleAnswerChange} as={Col}>
-                    <Form.Label>Answer</Form.Label>
-                    <Form.Control />
+                  <Form.Group onChange={this.handleUnitChange} as={Col}>
+                    <Form.Label>Unit</Form.Label>
+                    <Form.Control value={this.state.unit} placeholder="Chapter 2"/>
+                  </Form.Group>
+
+                  <Form.Group onChange={this.handleSLOChange} as={Col}>
+                    <Form.Label>SLO</Form.Label>
+                    <Form.Control value={this.state.SLO} placeholder="Something"/>
                   </Form.Group>
                 </Form.Row>
 
@@ -184,7 +231,18 @@ class HomePage extends Component {
                         <option>Medium</option>
                         <option>Challenging</option>
                       </Form.Control>
-                  </Form.Group>         
+                  </Form.Group>  
+                  <Form.Group>
+                    <Form.Label>Course</Form.Label>
+                    <InputGroup>
+                      <InputGroup.Prepend>
+                        <InputGroup.Text>CISC</InputGroup.Text>
+                      </InputGroup.Prepend>
+                      <Form.Control value={this.state.course} placeholder="108" onChange={this.handleCourseChange}
+                        type="text"
+                      />
+                    </InputGroup>  
+                  </Form.Group> 
                 </Form.Row>
                 <Form.Row>
                   {this.state.isMult ? 
@@ -192,7 +250,7 @@ class HomePage extends Component {
                       <Form.Label>Answer Choices</Form.Label>
                       <InputGroup>
                         <InputGroup.Prepend>
-                          <InputGroup.Text id="inputGroupPrepend">A</InputGroup.Text>
+                          <InputGroup.Text>A</InputGroup.Text>
                         </InputGroup.Prepend>
                         <Form.Control onChange={(e) => this.handleChoicesChange("A", e)}
                           type="text"
@@ -200,7 +258,7 @@ class HomePage extends Component {
                       </InputGroup>
                       <InputGroup>
                         <InputGroup.Prepend>
-                          <InputGroup.Text id="inputGroupPrepend">B</InputGroup.Text>
+                          <InputGroup.Text>B</InputGroup.Text>
                         </InputGroup.Prepend>
                         <Form.Control onChange={(e) => this.handleChoicesChange("B", e)}
                           type="text"
@@ -208,7 +266,7 @@ class HomePage extends Component {
                       </InputGroup>
                       <InputGroup>
                         <InputGroup.Prepend>
-                          <InputGroup.Text id="inputGroupPrepend">C</InputGroup.Text>
+                          <InputGroup.Text>C</InputGroup.Text>
                         </InputGroup.Prepend>
                         <Form.Control onChange={(e) => this.handleChoicesChange("C", e)}
                           type="text"
@@ -216,7 +274,7 @@ class HomePage extends Component {
                       </InputGroup>
                       <InputGroup>
                         <InputGroup.Prepend>
-                          <InputGroup.Text id="inputGroupPrepend">D</InputGroup.Text>
+                          <InputGroup.Text>D</InputGroup.Text>
                         </InputGroup.Prepend>
                         <Form.Control onChange={(e) => this.handleChoicesChange("D", e)}
                           type="text"
@@ -239,6 +297,19 @@ class HomePage extends Component {
                 <h3 key={key}>{question}</h3>
               );
           })}
+          <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            open={this.state.open}
+            autoHideDuration={6000}
+            onClose={() => this.setState({ open: false })}
+            message={<span id="message-id">{this.state.message}</span>}
+            action={[
+              this.state.success ? <CheckIcon /> : <CloseIcon />
+            ]}
+          />
         </div>
     );
   }
