@@ -1,7 +1,7 @@
 import React from 'react';
 import firebase from "firebase";
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import Button from '@material-ui/core/Button';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
 
@@ -131,7 +131,7 @@ class Forms extends React.Component {
     })
       .then(this.resetState(true, "Question saved"))
       .catch(err => {
-        this.resetState(false, "Something happened");
+        this.resetState(false, err);
       })
 
   }
@@ -255,8 +255,7 @@ class Forms extends React.Component {
               null
             }
           </Form.Row>
-
-          <Button onClick={this.submitQuestion} variant="primary">
+          <Button variant="contained" color="primary" onClick={this.submitQuestion} style={{ marginTop: '2em'}}>
             Submit
           </Button>
         </Form>

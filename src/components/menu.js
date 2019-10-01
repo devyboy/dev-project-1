@@ -1,21 +1,27 @@
 import React from 'react';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
+import { Link } from 'react-router-dom';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import PlusIcon from '@material-ui/icons/Add';
+import PencilIcon from '@material-ui/icons/Edit';
+import ExamIcon from '@material-ui/icons/Assignment';
 
 
 let styles = {
     menu: {
         marginBottom: "2em",
+    },
+    icon: {
+        marginRight: ".5em",
+    },
+    link: {
+        textDecoration: "none",
+        color: "black",
     }
 }
 
@@ -24,8 +30,14 @@ class drawer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            drawer: false
+            drawer: false,
+            anchorEl: null,
         };
+        this.handleOpen = this.handleOpen.bind(this);
+    }
+
+    handleOpen(event) {
+        this.setState({ drawer: true, anchorEl: event.currentTarget });
     }
 
 
@@ -34,7 +46,7 @@ class drawer extends React.Component {
             <div style={styles.menu}>
                 <AppBar position="static">
                     <Toolbar>
-                        <IconButton onClick={() => this.setState({ drawer: true })} edge="start" color="inherit" aria-label="menu">
+                        <IconButton onClick={this.handleOpen} edge="start" color="inherit" aria-label="menu">
                             <MenuIcon />
                         </IconButton>
                         <Typography style={{ paddingLeft: '.75em' }} variant="h6">
@@ -42,22 +54,31 @@ class drawer extends React.Component {
                         </Typography>
                     </Toolbar>
                 </AppBar>
-                <Drawer anchor="left" open={this.state.drawer} onClose={() => this.setState({ drawer: false })}>
-                    <div
-                        role="presentation"
-                        onClick={() => this.setState({ drawer: false })}
-                        onKeyDown={() => this.setState({ drawer: false })}
-                    >
-                        <List>
-                            {['Create Questions', 'View/Edit Questions', 'Generate Exam'].map((text, index) => (
-                                <ListItem button key={text}>
-                                    <ListItemIcon>{index % 2 === 0 ? <CloseIcon /> : <CheckIcon />}</ListItemIcon>
-                                    <ListItemText primary={text} />
-                                </ListItem>
-                            ))}
-                        </List>
-                    </div>
-                </Drawer>
+                <Menu
+                    anchorEl={this.state.anchorEl}
+                    keepMounted
+                    open={this.state.drawer}
+                    onClose={() => this.setState({ drawer: false })}
+                >   
+                    <Link to={"/create"} style={styles.link}>
+                        <MenuItem>
+                            <PlusIcon style={styles.icon} />
+                            Create Questions
+                        </MenuItem>
+                    </Link>
+                    <Link to={"/view-edit"} style={styles.link}>
+                        <MenuItem>
+                            <PencilIcon style={styles.icon} />
+                            View/Edit Questions
+                        </MenuItem>
+                    </Link>
+                    <Link to={"/generate"} style={styles.link}>
+                        <MenuItem>
+                            <ExamIcon style={styles.icon} />
+                            Generate Exam
+                        </MenuItem>
+                    </Link>
+                </Menu>
             </div>
         );
     }

@@ -2,6 +2,8 @@ import React from "react";
 import firebase from "firebase";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import HomePage from './pages/HomePage';
+import ViewEdit from './pages/ViewEditPage';
+import Generate from './pages/GeneratePage';
 import FourOhFour from "./pages/FourOhFour";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -19,11 +21,13 @@ var config = {
 
 firebase.initializeApp(config);
 
-function App(props) {
+function App() {
     return (
         <Router>
             <Switch>
-                <Route exact path="/" render={(props) => <HomePage {...props} />} />
+                <Route exact path="/create" render={(props) => <HomePage {...props} />} />
+                <Route exact path="/view-edit" render={(props => <ViewEdit {...props} />)} />
+                <Route exact path="/generate" render={(props => <Generate {...props} />)} />
                 <Route render={(props) => <FourOhFour {...props} />} />
             </Switch>
         </Router>
