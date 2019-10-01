@@ -28,23 +28,6 @@ class HomePage extends React.Component {
     this.setState({ currentPage: event });
   }
 
-  // fetchQuestions() {
-  //   let questionArray= [];
-  //   let questionsRef = firebase.firestore().collection('questions');
-  //   questionsRef.get().then(snapshot => {
-  //     snapshot.forEach(doc => {
-  //       questionArray.push(doc.data().content);
-  //       this.setState({ questions: questionArray });
-  //     });
-  //   }).catch(err => {
-  //       console.log(err);
-  //   })
-  // }
-
-  componentDidMount() {
-    //this.fetchQuestions();
-  }
-
   render() {
 
     return (
