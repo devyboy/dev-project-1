@@ -3,6 +3,7 @@ import firebase from 'firebase';
 import Menu from '../components/menu';
 import Typography from '@material-ui/core/Typography';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import Button from '@material-ui/core/Button';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -21,6 +22,7 @@ class ViewEdit extends React.Component {
     this.state = {
       questions: null,
     }
+    this.deleteAll = this.deleteAll.bind(this);
   }
 
   fetchQuestions() {
@@ -38,6 +40,14 @@ class ViewEdit extends React.Component {
 
   componentDidMount() {
     this.fetchQuestions();
+  }
+
+  deleteAll() {
+    firebase.firestore().collection('questions').get().then(snapshot => {
+      snapshot.forEach(doc => {
+        firebase.firestore().collection('questions').doc(doc.id).delete();
+      })
+    });
   }
 
   render() {
@@ -86,6 +96,9 @@ class ViewEdit extends React.Component {
           <CircularProgress />
           }
         </div>
+        {/* <Button onClick={this.deleteAll} color="primary" variant="contained" style={{ margin: "2em" }}>
+          Delete All
+        </Button> */}
       </div>
     );
   }
