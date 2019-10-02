@@ -1,0 +1,5 @@
+PAPER: Project for the Authentic Partition of Automated Exams and Responses
+CODE: Compilation Of Dedicated Exams
+QUEST: Question and Exam System for Testing
+BYTE: Basically You Tabulate Exams
+COMPILE: Collection of Operations to Manage, Produce and Implement Logical Exams
