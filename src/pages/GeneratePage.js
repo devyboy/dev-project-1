@@ -57,8 +57,8 @@ class Generate extends React.Component {
 
                   overflowX: 'hidden',
                   overflowY: 'hidden'}}>
-                      {this.state.questions ? this.state.questions.map((q) => (
-                        <div>
+                      {this.state.questions ? this.state.questions.map((q, key) => (
+                        <div key={key}>
                           Question: {q.question}
                           <br />
                           Unit: {q.unit}
