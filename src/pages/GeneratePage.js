@@ -58,26 +58,24 @@ class Generate extends React.Component {
                   overflowY: 'hidden'}}>
                       {this.state.questions ? this.state.questions.map((q, key) => (
                         <div key={key}>
-                          Question: {q.question}
+                          <strong>Unit: </strong>{q.unit},&nbsp;
+                          <strong>Topic: </strong>{q.topic},&nbsp;
+                          <strong>Course: </strong>CISC{q.course},&nbsp;
+                          <strong>Difficulty: </strong>{q.diff},&nbsp;
+                          <strong>Type: </strong>{q.type},&nbsp;
+                          <strong>Answer: </strong>{q.answer}&nbsp;
                           <br />
-                          Unit: {q.unit}
-                          <br />
-                          Topic: {q.topic}
-                          <br />
-                          Course: CISC{q.course}
-                          <br />
-                          Difficulty: {q.diff}
-                          <br />
-                          Type: {q.type}
-                          <br />
-                          Answer: {q.answer}
-                          <br />
-                          Choices: {q.choices.map((choice) => {
+                          {q.choices.length != 0 ? 
+                          <div>
+                            <strong>Choices: </strong>{q.choices.map((choice) => {
                             return(
-                                choice + "\n"
+                                choice + "; "
                               );
                           })}
-                          <hr />
+                          </div>
+                          :
+                          null
+                          }
                         </div>
                       ))
                       :
