@@ -10,6 +10,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import PlusIcon from '@material-ui/icons/Add';
 import PencilIcon from '@material-ui/icons/Edit';
 import ExamIcon from '@material-ui/icons/Assignment';
+import UploadIcon from '@material-ui/icons/Publish';
 
 
 let styles = {
@@ -60,19 +61,25 @@ class drawer extends React.Component {
                     open={this.state.drawer}
                     onClose={() => this.setState({ drawer: false })}
                 >   
-                    <Link to={"/create"} style={styles.link}>
+                    <Link to={"/create"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
                         <MenuItem>
                             <PlusIcon style={styles.icon} />
                             Create Questions
                         </MenuItem>
                     </Link>
-                    <Link to={"/view-edit"} style={styles.link}>
+                    <Link to={"/upload"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
+                        <MenuItem>
+                            <UploadIcon style={styles.icon} />
+                            Upload Questions
+                        </MenuItem>
+                    </Link>
+                    <Link to={"/view-edit"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
                         <MenuItem>
                             <PencilIcon style={styles.icon} />
                             View/Edit Questions
                         </MenuItem>
                     </Link>
-                    <Link to={"/generate"} style={styles.link}>
+                    <Link to={"/generate"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
                         <MenuItem>
                             <ExamIcon style={styles.icon} />
                             Generate Exam

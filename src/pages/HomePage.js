@@ -6,7 +6,6 @@ import Snackbar from '@material-ui/core/Snackbar';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 
-
 class HomePage extends React.Component {
   constructor(props) {
     super(props);
