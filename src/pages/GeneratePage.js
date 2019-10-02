@@ -4,12 +4,11 @@ import { PDFExport } from '@progress/kendo-react-pdf';
 import Menu from '../components/menu';
 import Button from '@material-ui/core/Button';
 
-
 class Generate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+    
     }
     this.downloadPDF = this.downloadPDF.bind(this);
   }

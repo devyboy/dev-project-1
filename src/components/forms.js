@@ -133,7 +133,6 @@ class Forms extends React.Component {
       .catch(err => {
         this.resetState(false, err);
       })
-
   }
 
   render() {
@@ -165,7 +164,7 @@ class Forms extends React.Component {
 
             <Form.Group as={Col}>
               <Form.Label>SLO</Form.Label>
-              <Form.Control onChange={this.handleSLOChange} value={this.state.SLO} placeholder="Something" />
+              <Form.Control onChange={this.handleSLOChange} value={this.state.SLO} placeholder="" />
             </Form.Group>
           </Form.Row>
 
