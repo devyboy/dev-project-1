@@ -50,7 +50,7 @@ class drawer extends React.Component {
                             <MenuIcon />
                         </IconButton>
                         <Typography style={{ paddingLeft: '.75em' }} variant="h6">
-                            UDel PAPER
+                            UDel Project for the Authenticated Partitioning of Automated Exams and Responses (PAPER)
                         </Typography>
                     </Toolbar>
                 </AppBar>

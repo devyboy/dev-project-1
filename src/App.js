@@ -26,6 +26,7 @@ function App() {
         <Router>
             <Switch>
                 <Route exact path="/create" render={(props) => <HomePage {...props} />} />
+                <Route exact path="/" render={(props) => <HomePage {...props} />} />
                 <Route exact path="/view-edit" render={(props => <ViewEdit {...props} />)} />
                 <Route exact path="/generate" render={(props => <Generate {...props} />)} />
                 <Route render={(props) => <FourOhFour {...props} />} />
