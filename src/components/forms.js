@@ -142,29 +142,44 @@ class Forms extends React.Component {
           <Form.Row>
             <Form.Group as={Col}>
               <Form.Label>Question</Form.Label>
-              <Form.Control onChange={this.handleQuestionChange} value={this.state.question} placeholder="What's 2+2?" />
+              <Form.Control 
+                onChange={this.handleQuestionChange} 
+                value={this.state.question} 
+                placeholder="What's 2+2?" />
             </Form.Group>
 
             <Form.Group as={Col}>
               <Form.Label>Answer</Form.Label>
-              <Form.Control onChange={this.handleAnswerChange} value={this.state.answer} placeholder="4" />
+              <Form.Control 
+                onChange={this.handleAnswerChange} 
+                value={this.state.answer} 
+                placeholder="4" />
             </Form.Group>
           </Form.Row>
 
           <Form.Row>
             <Form.Group as={Col}>
               <Form.Label>Topic</Form.Label>
-              <Form.Control onChange={this.handleTopicChange} value={this.state.topic} placeholder="Addition" />
+              <Form.Control 
+                onChange={this.handleTopicChange} 
+                value={this.state.topic} 
+                placeholder="Addition" />
             </Form.Group>
 
             <Form.Group as={Col}>
               <Form.Label>Unit</Form.Label>
-              <Form.Control onChange={this.handleUnitChange} value={this.state.unit} placeholder="Chapter 2" />
+              <Form.Control 
+                onChange={this.handleUnitChange} 
+                value={this.state.unit} 
+                placeholder="Chapter 2" />
             </Form.Group>
 
             <Form.Group as={Col}>
               <Form.Label>SLO</Form.Label>
-              <Form.Control onChange={this.handleSLOChange} value={this.state.SLO} placeholder="" />
+              <Form.Control 
+                onChange={this.handleSLOChange} 
+                value={this.state.SLO} 
+                placeholder="" />
             </Form.Group>
           </Form.Row>
 
@@ -201,16 +216,21 @@ class Forms extends React.Component {
                 <option>Challenging</option>
               </Form.Control>
             </Form.Group>
-            <Form.Group>
+            <Form.Group >
               <Form.Label>Course</Form.Label>
-              <InputGroup>
-                <InputGroup.Prepend>
-                  <InputGroup.Text>CISC</InputGroup.Text>
-                </InputGroup.Prepend>
-                <Form.Control value={this.state.course} placeholder="108" onChange={this.handleCourseChange}
-                  type="text"
-                />
-              </InputGroup>
+              <Form.Control onChange={this.handleCourseChange} as="select">
+                <option>CISC</option>
+                <option>CPEG</option>
+                <option>MISY</option>
+              </Form.Control>
+            </Form.Group>
+            <Form.Group >
+              <Form.Label>Course</Form.Label>
+              <Form.Control 
+                style={{width: '3.5em'}} 
+                onChange={this.handleCourseChange} 
+                value={this.state.courseNum} 
+                placeholder="106" />  
             </Form.Group>
           </Form.Row>
           <Form.Row>
@@ -254,7 +274,12 @@ class Forms extends React.Component {
               null
             }
           </Form.Row>
-          <Button variant="contained" color="primary" onClick={this.submitQuestion} style={{ marginTop: '2em'}}>
+          <Button 
+            variant="contained" 
+            color="primary" 
+            onClick={this.submitQuestion} 
+            style={{ marginTop: '2em'}}
+          >
             Submit
           </Button>
         </Form>

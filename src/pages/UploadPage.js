@@ -1,9 +1,13 @@
 import React from 'react';
 import firebase from 'firebase';
 import Menu from '../components/menu';
+import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
+import PublishIcon from '@material-ui/icons/Publish';
+import YAML from 'yaml';
+
 let reader;
 
 class UploadPage extends React.Component {
@@ -16,21 +20,54 @@ class UploadPage extends React.Component {
     };
 
     this.handleFileChosen = this.handleFileChosen.bind(this);
-    this.handleFileRead = this.handleFileRead.bind(this);
+    this.handleJSONRead = this.handleJSONRead.bind(this);
+    this.handleYAMLRead = this.handleYAMLRead.bind(this);
     this.showSnackbar = this.showSnackbar.bind(this);
   }
 
   handleFileChosen(file) {
+    let ext = file.name.split('.').pop();
     reader = new FileReader();
-    reader.onloadend = this.handleFileRead;
+
+    switch (ext) {
+      case "json":
+        reader.onloadend = this.handleJSONRead;
+        break;
+      case "yaml":
+        reader.onloadend = this.handleYAMLRead;
+        break;
+      default:
+        reader.onloadend = this.handleJSONRead;
+        break;
+    }
     reader.readAsText(file);
   }
 
-  handleFileRead(e) {
+  handleJSONRead() {
     const content = reader.result;
-    const jayson = JSON.parse(content);
+    let jayson;
+    try {
+      jayson = JSON.parse(content);
+    }
+    catch(e) {
+      this.showSnackbar(false, e.message);
+    }
     for (let i in jayson) {
       this.submitQuestion(jayson[i]);
+    }
+  }
+
+  handleYAMLRead() {
+    const content = reader.result;
+    let yaml;
+    try {
+      yaml = YAML.parse(content);
+    }
+    catch(e) {
+      this.showSnackbar(false, e.message);
+    }
+    for (let i in yaml) {
+      this.submitQuestion(yaml[i]);
     }
   }
 
@@ -61,7 +98,20 @@ class UploadPage extends React.Component {
     return(
       <div className="App">
         <Menu />
-        <input type="file" accept=".json" onChange={(e) => this.handleFileChosen(e.target.files[0])} />
+        <input
+          onChange={(e) => this.handleFileChosen(e.target.files[0])}
+          style={{display: "none"}}
+          accept=".json, .yaml"
+          id="outlined-button-file"
+          multiple
+          type="file"
+        />
+        <label htmlFor="outlined-button-file">
+          <Button variant="outlined" component="span">
+            Upload 
+            <PublishIcon />
+          </Button>
+        </label>
         <br />
         <Snackbar
           anchorOrigin={{

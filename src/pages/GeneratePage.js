@@ -65,7 +65,7 @@ class Generate extends React.Component {
                           <strong>Type: </strong>{q.type},&nbsp;
                           <strong>Answer: </strong>{q.answer}&nbsp;
                           <br />
-                          {q.choices.length != 0 ? 
+                          {q.choices.length !== 0 ? 
                           <div>
                             <strong>Choices: </strong>{q.choices.map((choice) => {
                             return(
