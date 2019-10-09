@@ -1,7 +1,6 @@
 import React from 'react';
 import firebase from 'firebase';
 import Menu from '../components/menu';
-import Typography from '@material-ui/core/Typography';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -21,7 +20,6 @@ class ViewEdit extends React.Component {
     this.state = {
       questions: null,
     }
-    this.deleteAll = this.deleteAll.bind(this);
   }
 
   fetchQuestions() {
@@ -39,14 +37,6 @@ class ViewEdit extends React.Component {
 
   componentDidMount() {
     this.fetchQuestions();
-  }
-
-  deleteAll() {
-    firebase.firestore().collection('questions').get().then(snapshot => {
-      snapshot.forEach(doc => {
-        firebase.firestore().collection('questions').doc(doc.id).delete();
-      })
-    });
   }
 
   render() {
@@ -67,26 +57,24 @@ class ViewEdit extends React.Component {
                 <h4>{q.question}</h4>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-                <Typography>
-                  <strong>Unit: </strong>{q.unit},&nbsp;
-                  <strong>Topic: </strong>{q.topic},&nbsp;
-                  <strong>Course: </strong>CISC{q.course},&nbsp;
-                  <strong>Difficulty: </strong>{q.diff},&nbsp;
-                  <strong>Type: </strong>{q.type},&nbsp;
-                  <strong>Answer: </strong>{q.answer}&nbsp;
-                  <br />
-                  {q.choices.length !== 0 ? 
-                  <div>
-                    <strong>Choices: </strong>{q.choices.map((choice) => {
-                    return(
-                        choice + "; "
-                      );
-                  })}
-                  </div>
-                  :
-                  null
-                  }
-                </Typography>
+                <strong>Unit: </strong>{q.unit},&nbsp;
+                <strong>Topic: </strong>{q.topic},&nbsp;
+                <strong>Course: </strong>CISC{q.course},&nbsp;
+                <strong>Difficulty: </strong>{q.diff},&nbsp;
+                <strong>Type: </strong>{q.type},&nbsp;
+                <strong>Answer: </strong>{q.answer}&nbsp;
+                <br />
+                {q.choices.length !== 0 ? 
+                <div>
+                  <strong>Choices: </strong>{q.choices.map((choice) => {
+                  return(
+                      choice + "; "
+                    );
+                })}
+                </div>
+                :
+                null
+                }
               </ExpansionPanelDetails>
             </ExpansionPanel>
             );
