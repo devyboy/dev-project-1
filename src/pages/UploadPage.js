@@ -17,6 +17,7 @@ class UploadPage extends React.Component {
       open: false,
       message: "",
       success: true,
+      fileName: "",
     };
 
     this.handleFileChosen = this.handleFileChosen.bind(this);
@@ -26,6 +27,7 @@ class UploadPage extends React.Component {
   }
 
   handleFileChosen(file) {
+    this.setState({ fileName: file.name })
     let ext = file.name.split('.').pop();
     reader = new FileReader();
 
@@ -113,6 +115,7 @@ class UploadPage extends React.Component {
           </Button>
         </label>
         <br />
+        {this.state.fileName}
         <Snackbar
           anchorOrigin={{
             vertical: 'bottom',
