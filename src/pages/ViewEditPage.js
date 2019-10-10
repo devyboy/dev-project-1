@@ -1,11 +1,8 @@
 import React from 'react';
 import firebase from 'firebase';
 import Menu from '../components/menu';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import CircularProgress from '@material-ui/core/CircularProgress'
+import CircularProgress from '@material-ui/core/CircularProgress';
+import EnhancedTable from '../components/table';
 
 let styles = {
   container: {
@@ -29,6 +26,7 @@ class ViewEdit extends React.Component {
       snapshot.forEach(doc => {
         questionArray.push(doc.data());
         this.setState({ questions: questionArray });
+        console.log(doc.data());
       });
     }).catch(err => {
         console.log(err);
@@ -43,42 +41,11 @@ class ViewEdit extends React.Component {
     return(
       <div className="App">
         <Menu />
-        <h2>View/Edit Questions</h2>
-        <br />
-        <div style={styles.container}>
-          {this.state.questions ? this.state.questions.map((q, key) => {
-            return(
-            <ExpansionPanel key={key}>
-              <ExpansionPanelSummary 
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <h4>{q.question}</h4>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <strong>Unit: </strong>{q.unit},&nbsp;
-                <strong>Topic: </strong>{q.topic},&nbsp;
-                <strong>Course: </strong>CISC{q.course},&nbsp;
-                <strong>Difficulty: </strong>{q.diff},&nbsp;
-                <strong>Type: </strong>{q.type},&nbsp;
-                <strong>Answer: </strong>{q.answer}&nbsp;
-                <br />
-                {q.choices.length !== 0 ? 
-                <div>
-                  <strong>Choices: </strong>{q.choices.map((choice) => {
-                  return(
-                      choice + "; "
-                    );
-                })}
-                </div>
-                :
-                null
-                }
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-            );
-          })
+        <div>
+          {this.state.questions ? 
+          <EnhancedTable
+            rows={this.state.questions}
+          />
           :
           <CircularProgress />
           }
