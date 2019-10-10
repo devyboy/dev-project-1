@@ -17,7 +17,6 @@ class ViewEdit extends React.Component {
     this.state = {
       questions: null,
     }
-    this.deleteAll = this.deleteAll.bind(this);
   }
 
   fetchQuestions() {
@@ -36,14 +35,6 @@ class ViewEdit extends React.Component {
 
   componentDidMount() {
     this.fetchQuestions();
-  }
-
-  deleteAll() {
-    firebase.firestore().collection('questions').get().then(snapshot => {
-      snapshot.forEach(doc => {
-        firebase.firestore().collection('questions').doc(doc.id).delete();
-      })
-    });
   }
 
   render() {
