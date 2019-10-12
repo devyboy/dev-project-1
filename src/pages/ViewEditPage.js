@@ -8,6 +8,8 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import Snackbar from '@material-ui/core/Snackbar';
+import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 
 let styles = {
@@ -21,11 +23,15 @@ class ViewEdit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      snackbarOpen: false,
+      snackbarSuccess: true,
+
       questions: null, // An array of 2-tuples containing Doc ID and Question Data
       isEditing: false,
       editingQuestion: null,
     };
     this.deleteAll = this.deleteAll.bind(this);
+    this.openSnackbar = this.openSnackbar.bind(this);
     this.openEditForm = this.openEditForm.bind(this);
     this.closeEditForm = this.closeEditForm.bind(this);
   }
@@ -54,6 +60,10 @@ class ViewEdit extends React.Component {
         firebase.firestore().collection('questions').doc(doc.id).delete();
       })
     });
+  }
+
+  openSnackbar(success, message) {
+    this.setState({ message: message, snackbarSuccess: success, snackbarOpen: true });
   }
 
   openEditForm(q) {
@@ -100,7 +110,8 @@ class ViewEdit extends React.Component {
               </Button>
             </DialogActions>
             <DialogContent>
-              <Forms 
+              <Forms
+                openSnackbar={this.openSnackbar}
                 isEditing={true}
                 editingQuestion={this.state.editingQuestion}
                 closeFn={() => this.closeEditForm(true)}
@@ -110,6 +121,19 @@ class ViewEdit extends React.Component {
             
           </Dialog>
         </div>
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          open={this.state.snackbarOpen}
+          autoHideDuration={6000}
+          onClose={() => this.setState({ snackbarOpen: false })}
+          message={<span id="message-id">{this.state.message}</span>}
+          action={
+            this.state.snackbarSuccess ? <CheckIcon /> : <CloseIcon />
+          }
+        />
         {/* <Button onClick={this.deleteAll} color="primary" variant="contained" style={{ margin: "2em" }}>
           Delete All
         </Button> */}

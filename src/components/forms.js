@@ -149,6 +149,10 @@ class Forms extends React.Component {
       type: state.type,
       choices: state.choices,
       SLO: state.SLO.toLowerCase(),
+    })
+    .then(this.resetState(true, "Question updated"))
+    .catch(err => {
+      this.resetState(false, err);
     });
   }
 
