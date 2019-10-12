@@ -11,18 +11,18 @@ class Forms extends React.Component {
     super(props);
     this.state = {
       questions: [],
-      choices: [],
-      isMult: false,
+      choices: props.editingQuestion ? props.editingQuestion[1].choices : [],
+      isMult: props.editingQuestion ? props.editingQuestion[1].type === "Multiple Choice" : false,
 
-      question: "",
-      unit: "",
-      topic: "",
-      answer: "",
-      cog: "",
-      diff: "",
-      SLO: "",
-      type: "",
-      course: "",
+      question: props.editingQuestion ? props.editingQuestion[1].question : "",
+      unit: props.editingQuestion ? props.editingQuestion[1].unit : "",
+      topic: props.editingQuestion ? props.editingQuestion[1].topic : "",
+      answer: props.editingQuestion ? props.editingQuestion[1].answer : "",
+      cog: props.editingQuestion ? props.editingQuestion[1].cog : "",
+      diff: props.editingQuestion ? props.editingQuestion[1].diff : "",
+      SLO: props.editingQuestion ? props.editingQuestion[1].SLO : "",
+      type: props.editingQuestion ? props.editingQuestion[1].type : "",
+      course: props.editingQuestion ? props.editingQuestion[1].course : "",
     }
 
     this.submitQuestion = this.submitQuestion.bind(this);
@@ -36,6 +36,7 @@ class Forms extends React.Component {
     this.handleChoicesChange = this.handleChoicesChange.bind(this);
     this.handleSLOChange = this.handleSLOChange.bind(this);
     this.handleCourseChange = this.handleCourseChange.bind(this);
+    this.updateQuestion = this.updateQuestion.bind(this);
   }
 
   handleQuestionChange(event) {
@@ -123,9 +124,9 @@ class Forms extends React.Component {
       course: this.state.course,
       topic: this.state.topic.toLowerCase(),
       answer: this.state.answer,
-      cog: this.state.cog.toLowerCase(),
-      diff: this.state.diff.toLowerCase(),
-      type: this.state.type.toLowerCase(),
+      cog: this.state.cog,
+      diff: this.state.diff,
+      type: this.state.type,
       choices: this.state.choices,
       SLO: this.state.SLO.toLowerCase(),
     })
@@ -135,9 +136,25 @@ class Forms extends React.Component {
       })
   }
 
+  updateQuestion(state) {
+    let questionsRef = firebase.firestore().collection('questions');
+    questionsRef.doc(this.props.editingQuestion[0]).update({
+      question: state.question,
+      unit: state.unit.toLowerCase(),
+      course: state.course,
+      topic: state.topic.toLowerCase(),
+      answer: state.answer,
+      cog: state.cog,
+      diff: state.diff,
+      type: state.type,
+      choices: state.choices,
+      SLO: state.SLO.toLowerCase(),
+    });
+  }
+
   render() {
     return (
-      <div style={{ width: "65%", margin: '0 auto', marginTop: "2.5em" }}>
+      <div style={{ width: "65%", margin: '0 auto', marginTop: this.props.isEditing ? "0em" : "2.5em" }}>
         <Form>
           <Form.Row>
             <Form.Group as={Col}>
@@ -186,7 +203,7 @@ class Forms extends React.Component {
           <Form.Row>
             <Form.Group as={Col}>
               <Form.Label>Question Type</Form.Label>
-              <Form.Control onChange={this.handleTypeChange} as="select">
+              <Form.Control onChange={this.handleTypeChange} as="select" value={this.state.type}>
                 <option>Select a Question Type</option>
                 <option>Multiple Choice</option>
                 <option>Free Response</option>
@@ -196,7 +213,7 @@ class Forms extends React.Component {
 
             <Form.Group as={Col}>
               <Form.Label>Cognitive Level</Form.Label>
-              <Form.Control onChange={this.handleCogChange} as="select">
+              <Form.Control onChange={this.handleCogChange} as="select" value={this.state.cog}>
                 <option>Select a Cognitive Level</option>
                 <option>Remembering</option>
                 <option>Understanding</option>
@@ -209,7 +226,7 @@ class Forms extends React.Component {
 
             <Form.Group as={Col}>
               <Form.Label>Difficulty</Form.Label>
-              <Form.Control onChange={this.handleDiffChange} as="select">
+              <Form.Control onChange={this.handleDiffChange} as="select" value={this.state.diff}>
                 <option>Select a Difficulty</option>
                 <option>Easy</option>
                 <option>Medium</option>
@@ -229,7 +246,7 @@ class Forms extends React.Component {
               <Form.Control 
                 style={{width: '3.5em'}} 
                 onChange={this.handleCourseChange} 
-                value={this.state.courseNum} 
+                value={this.state.course}
                 placeholder="106" />  
             </Form.Group>
           </Form.Row>
@@ -243,6 +260,7 @@ class Forms extends React.Component {
                   </InputGroup.Prepend>
                   <Form.Control onChange={(e) => this.handleChoicesChange("A", e)}
                     type="text"
+                    value={this.state.choices[0]}
                   />
                 </InputGroup>
                 <InputGroup>
@@ -251,6 +269,7 @@ class Forms extends React.Component {
                   </InputGroup.Prepend>
                   <Form.Control onChange={(e) => this.handleChoicesChange("B", e)}
                     type="text"
+                    value={this.state.choices[1]}
                   />
                 </InputGroup>
                 <InputGroup>
@@ -259,6 +278,7 @@ class Forms extends React.Component {
                   </InputGroup.Prepend>
                   <Form.Control onChange={(e) => this.handleChoicesChange("C", e)}
                     type="text"
+                    value={this.state.choices[2]}
                   />
                 </InputGroup>
                 <InputGroup>
@@ -267,6 +287,7 @@ class Forms extends React.Component {
                   </InputGroup.Prepend>
                   <Form.Control onChange={(e) => this.handleChoicesChange("D", e)}
                     type="text"
+                    value={this.state.choices[3]}
                   />
                 </InputGroup>
               </Form.Group>
@@ -277,10 +298,10 @@ class Forms extends React.Component {
           <Button 
             variant="contained" 
             color="primary" 
-            onClick={this.submitQuestion} 
+            onClick={this.props.isEditing ? () => {this.updateQuestion(this.state); this.props.closeFn();} : this.submitQuestion} 
             style={{ marginTop: '2em'}}
           >
-            Submit
+            {this.props.isEditing ? 'Update' : 'Submit'}
           </Button>
         </Form>
       </div>
