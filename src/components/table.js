@@ -17,12 +17,13 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import EditIcon from '@material-ui/icons/Edit';
 
 function desc(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
+  if (b[1][orderBy] < a[1][orderBy]) {
     return -1;
   }
-  if (b[orderBy] > a[orderBy]) {
+  if (b[1][orderBy] > a[1][orderBy]) {
     return 1;
   }
   return 0;
@@ -220,7 +221,7 @@ export default function EnhancedTable(props) {
 
   const handleSelectAllClick = event => {
     if (event.target.checked) {
-      const newSelecteds = props.rows.map(n => n.name);
+      const newSelecteds = props.rows.map(n => n.question);
       setSelected(newSelecteds);
       return;
     }
@@ -270,6 +271,16 @@ export default function EnhancedTable(props) {
             aria-labelledby="tableTitle"
             size='small'
           >
+            <colgroup>
+                <col width="10%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="40%" />
+                <col width="25%" />
+            </colgroup>
             <EnhancedTableHead
               classes={classes}
               numSelected={selected.length}
@@ -289,7 +300,6 @@ export default function EnhancedTable(props) {
                   return (
                     <TableRow
                       hover
-                      onClick={event => handleClick(event, row.question)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -299,24 +309,30 @@ export default function EnhancedTable(props) {
                       <TableCell padding="checkbox">
                         <Checkbox
                           checked={isItemSelected}
+                          onClick={event => handleClick(event, row.question)}
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
+                        <IconButton
+                            onClick={() => props.handleEditQuestions(row)}
+                        >
+                            <EditIcon />
+                        </IconButton>
                       </TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.course}
+                        {row[1].course}
                       </TableCell>
-                      <TableCell align="left">{row.unit}</TableCell>
-                      <TableCell align="left">{row.topic}</TableCell>
-                      <TableCell align="left">{row.diff}</TableCell>
-                      <TableCell align="left">{row.type}</TableCell>
-                      <TableCell align="left">{row.question}</TableCell>
-                      <TableCell align="left">{row.answer}</TableCell>
+                      <TableCell align="left">{row[1].unit}</TableCell>
+                      <TableCell align="left">{row[1].topic}</TableCell>
+                      <TableCell align="left">{row[1].diff}</TableCell>
+                      <TableCell align="left">{row[1].type}</TableCell>
+                      <TableCell align="left">{row[1].question}</TableCell>
+                      <TableCell align="left">{row[1].answer}</TableCell>
                     </TableRow>
                   );
                 })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 33 * emptyRows }}>
-                  <TableCell colSpan={6} />
+                  <TableCell colSpan={8} />
                 </TableRow>
               )}
             </TableBody>
