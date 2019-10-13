@@ -221,14 +221,14 @@ export default function EnhancedTable(props) {
 
   const handleSelectAllClick = event => {
     if (event.target.checked) {
-      const newSelecteds = props.rows.map(n => n.question);
+      const newSelecteds = props.rows.map(n => n[0]);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
+  const handleSelectClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
 
@@ -257,7 +257,7 @@ export default function EnhancedTable(props) {
     setPage(0);
   };
 
-  const isSelected = name => selected.indexOf(name) !== -1;
+  const isSelected = qid => selected.indexOf(qid) !== -1;
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, props.rows.length - page * rowsPerPage);
 
@@ -294,7 +294,7 @@ export default function EnhancedTable(props) {
               {stableSort(props.rows, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.question);
+                  const isItemSelected = isSelected(row[0]);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -303,13 +303,13 @@ export default function EnhancedTable(props) {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.question}
+                      key={row[0]}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
                           checked={isItemSelected}
-                          onClick={event => handleClick(event, row.question)}
+                          onClick={event => handleSelectClick(event, row[0])}
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
                         <IconButton
