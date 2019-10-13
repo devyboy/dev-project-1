@@ -269,7 +269,7 @@ export default function EnhancedTable(props) {
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
-            size='small'
+            size='medium'
           >
             <colgroup>
                 <col width="10%" />
