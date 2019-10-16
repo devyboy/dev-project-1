@@ -25,6 +25,7 @@ class Forms extends React.Component {
       course: "",
     }
 
+    this.reqFields = "Missing Information in these fields: "
     this.submitQuestion = this.submitQuestion.bind(this);
     this.handleQuestionChange = this.handleQuestionChange.bind(this);
     this.handleUnitChange = this.handleUnitChange.bind(this);
