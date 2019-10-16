@@ -12,13 +12,6 @@ import Snackbar from '@material-ui/core/Snackbar';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 
-let styles = {
-  container: {
-    width: '40%',
-    margin: '0 auto',
-  }
-}
-
 class ViewEdit extends React.Component {
   constructor(props) {
     super(props);
@@ -41,7 +34,6 @@ class ViewEdit extends React.Component {
     let questionsRef = firebase.firestore().collection('questions');
     questionsRef.get().then(snapshot => {
       snapshot.forEach(doc => {
-        //questionArray.push(doc.data());
         questionArray.push([doc.id, doc.data()]);
       });
       this.setState({ questions: questionArray });
@@ -134,9 +126,6 @@ class ViewEdit extends React.Component {
             this.state.snackbarSuccess ? <CheckIcon /> : <CloseIcon />
           }
         />
-        {/* <Button onClick={this.deleteAll} color="primary" variant="contained" style={{ margin: "2em" }}>
-          Delete All
-        </Button> */}
       </div>
     );
   }
