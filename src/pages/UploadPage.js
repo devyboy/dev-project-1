@@ -18,16 +18,18 @@ class UploadPage extends React.Component {
       message: "",
       success: true,
       fileName: "",
+      questions: [],
     };
 
     this.handleFileChosen = this.handleFileChosen.bind(this);
     this.handleJSONRead = this.handleJSONRead.bind(this);
     this.handleYAMLRead = this.handleYAMLRead.bind(this);
     this.showSnackbar = this.showSnackbar.bind(this);
+    this.approveQuestions = this.approveQuestions.bind(this);
   }
 
   handleFileChosen(file) {
-    this.setState({ fileName: file.name })
+    this.setState({ fileName: file.name, questions: [] });
     let ext = file.name.split('.').pop();
     reader = new FileReader();
 
@@ -55,7 +57,8 @@ class UploadPage extends React.Component {
       this.showSnackbar(false, e.message);
     }
     for (let i in jayson) {
-      this.submitQuestion(jayson[i]);
+      let yeet = this.state.questions;
+      this.setState({ questions: yeet.concat(jayson[i])});
     }
   }
 
@@ -69,8 +72,16 @@ class UploadPage extends React.Component {
       this.showSnackbar(false, e.message);
     }
     for (let i in yaml) {
-      this.submitQuestion(yaml[i]);
+      let yeet = this.state.questions;
+      this.setState({ questions: yeet.concat(yaml[i])});
     }
+  }
+
+  approveQuestions() {
+    this.state.questions.forEach((q) => {
+      this.submitQuestion(q);
+    });
+    this.setState({ questions: [] });
   }
 
   submitQuestion(q) {
@@ -99,7 +110,9 @@ class UploadPage extends React.Component {
   render() {
     return(
       <div className="App">
+
         <Menu />
+
         <input
           onChange={(e) => this.handleFileChosen(e.target.files[0])}
           style={{display: "none"}}
@@ -108,14 +121,34 @@ class UploadPage extends React.Component {
           multiple
           type="file"
         />
+
         <label htmlFor="outlined-button-file">
           <Button variant="outlined" component="span">
             Upload 
             <PublishIcon />
           </Button>
         </label>
+
         <br />
-        {this.state.fileName}
+
+        {this.state.questions.length !== 0 ? 
+          <div>
+            <h3>Approve questions to upload:</h3>
+            {this.state.questions.map((q, key) => 
+              <div key={key}>
+                {q.question}
+              </div>
+            )}
+            <br />
+            <Button onClick={this.approveQuestions} variant="outlined" component="span">
+              Approve
+              <CheckIcon />
+            </Button>
+          </div>
+        :
+          null
+        }
+
         <Snackbar
           anchorOrigin={{
             vertical: 'bottom',
@@ -129,6 +162,7 @@ class UploadPage extends React.Component {
             this.state.success ? <CheckIcon /> : <CloseIcon />
           }
         />
+
       </div>
     )
   }
