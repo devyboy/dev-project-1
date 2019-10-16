@@ -250,7 +250,6 @@ class Forms extends React.Component {
               <Form.Control 
                 style={{width: '3.5em'}} 
                 onChange={this.handleCourseChange} 
-                value={this.state.course}
                 placeholder="106" />  
             </Form.Group>
           </Form.Row>
