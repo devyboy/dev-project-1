@@ -1,27 +1,32 @@
 import React from 'react';
 import firebase from 'firebase';
 import Menu from '../components/menu';
-import Typography from '@material-ui/core/Typography';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import CircularProgress from '@material-ui/core/CircularProgress'
-
-let styles = {
-  container: {
-    width: '40%',
-    margin: '0 auto',
-  }
-}
+import Forms from '../components/forms';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import EnhancedTable from '../components/table';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import Snackbar from '@material-ui/core/Snackbar';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 
 class ViewEdit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      questions: null,
-    }
+      snackbarOpen: false,
+      snackbarSuccess: true,
+
+      questions: null, // An array of 2-tuples containing Doc ID and Question Data
+      isEditing: false,
+      editingQuestion: null,
+    };
     this.deleteAll = this.deleteAll.bind(this);
+    this.openSnackbar = this.openSnackbar.bind(this);
+    this.openEditForm = this.openEditForm.bind(this);
+    this.closeEditForm = this.closeEditForm.bind(this);
   }
 
   fetchQuestions() {
@@ -29,9 +34,9 @@ class ViewEdit extends React.Component {
     let questionsRef = firebase.firestore().collection('questions');
     questionsRef.get().then(snapshot => {
       snapshot.forEach(doc => {
-        questionArray.push(doc.data());
-        this.setState({ questions: questionArray });
+        questionArray.push([doc.id, doc.data()]);
       });
+      this.setState({ questions: questionArray });
     }).catch(err => {
         console.log(err);
     })
@@ -49,55 +54,78 @@ class ViewEdit extends React.Component {
     });
   }
 
+  openSnackbar(success, message) {
+    this.setState({ message: message, snackbarSuccess: success, snackbarOpen: true });
+  }
+
+  openEditForm(q) {
+    this.setState({isEditing: true});
+    this.setState({editingQuestion: q});
+    console.log(q);
+  }
+
+  closeEditForm(refresh) {
+    this.setState({isEditing: false});
+    this.setState({editingQuestion: null});
+
+    if(refresh){
+      this.setState({questions: null});
+      this.fetchQuestions();
+    }
+  }
+
   render() {
     return(
       <div className="App">
         <Menu />
-        <h2>View/Edit Questions</h2>
-        <br />
-        <div style={styles.container}>
-          {this.state.questions ? this.state.questions.map((q, key) => {
-            return(
-            <ExpansionPanel key={key}>
-              <ExpansionPanelSummary 
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <h4>{q.question}</h4>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <Typography>
-                  <strong>Unit: </strong>{q.unit},&nbsp;
-                  <strong>Topic: </strong>{q.topic},&nbsp;
-                  <strong>Course: </strong>CISC{q.course},&nbsp;
-                  <strong>Difficulty: </strong>{q.diff},&nbsp;
-                  <strong>Type: </strong>{q.type},&nbsp;
-                  <strong>Answer: </strong>{q.answer}&nbsp;
-                  <br />
-                  {q.choices.length !== 0 ? 
-                  <div>
-                    <strong>Choices: </strong>{q.choices.map((choice) => {
-                    return(
-                        choice + "; "
-                      );
-                  })}
-                  </div>
-                  :
-                  null
-                  }
-                </Typography>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-            );
-          })
+        <div>
+          {this.state.questions ?
+          <div>
+          <EnhancedTable
+            rows={this.state.questions}
+            handleEditQuestions={this.openEditForm}
+          />
+          </div>
           :
           <CircularProgress />
           }
+          <Dialog 
+            open={this.state.isEditing} 
+            onClose={() => this.closeEditForm(false)} 
+            aria-labelledby="form-dialog-title"
+            maxWidth="lg"
+            fullWidth
+          >
+            <DialogActions disableSpacing>
+              <Button onClick={() => this.closeEditForm(false)} color="primary">
+                <CloseIcon />
+              </Button>
+            </DialogActions>
+            <DialogContent>
+              <Forms
+                openSnackbar={this.openSnackbar}
+                isEditing={true}
+                editingQuestion={this.state.editingQuestion}
+                closeFn={() => this.closeEditForm(true)}
+              />
+              <br/><br/>
+            </DialogContent>
+            
+          </Dialog>
         </div>
-        {/* <Button onClick={this.deleteAll} color="primary" variant="contained" style={{ margin: "2em" }}>
-          Delete All
-        </Button> */}
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          open={this.state.snackbarOpen}
+          autoHideDuration={6000}
+          onClose={() => this.setState({ snackbarOpen: false })}
+          message={<span id="message-id">{this.state.message}</span>}
+          action={
+            this.state.snackbarSuccess ? <CheckIcon /> : <CloseIcon />
+          }
+        />
       </div>
     );
   }
