@@ -112,41 +112,48 @@ class UploadPage extends React.Component {
       <div className="App">
 
         <Menu />
-
-        <input
-          onChange={(e) => this.handleFileChosen(e.target.files[0])}
-          style={{display: "none"}}
-          accept=".json, .yaml"
-          id="outlined-button-file"
-          multiple
-          type="file"
-        />
-
-        <label htmlFor="outlined-button-file">
-          <Button variant="outlined" component="span">
-            Upload 
-            <PublishIcon />
-          </Button>
-        </label>
-
-        <br />
+        <h2>Upload questions from file</h2>
+        <hr />
 
         {this.state.questions.length !== 0 ? 
           <div>
-            <h3>Approve questions to upload:</h3>
+            <h4>Approve the following questions for upload:</h4>
             {this.state.questions.map((q, key) => 
               <div key={key}>
                 {q.question}
               </div>
             )}
             <br />
-            <Button onClick={this.approveQuestions} variant="outlined" component="span">
+            <Button onClick={this.approveQuestions} component="span" color="primary">
               Approve
               <CheckIcon />
             </Button>
+            <Button onClick={() => this.setState({ questions: [] })} component="span" color="secondary">
+              Try Again
+              <CloseIcon />
+            </Button>
           </div>
         :
-          null
+        <div>
+          <p>Supported file types: .json and .yaml</p>
+          <input
+            onChange={(e) => this.handleFileChosen(e.target.files[0])}
+            style={{display: "none"}}
+            accept=".json, .yaml"
+            id="outlined-button-file"
+            multiple
+            type="file"
+          />
+
+          <label htmlFor="outlined-button-file">
+            <Button variant="outlined" component="span">
+              Upload 
+              <PublishIcon />
+            </Button>
+          </label>
+
+          <br />
+        </div>
         }
 
         <Snackbar
