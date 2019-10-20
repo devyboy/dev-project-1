@@ -8,6 +8,9 @@ import GeneratePage from './pages/GeneratePage';
 import FourOhFour from "./pages/FourOhFour";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import NavBar from "./components/NavBar";
+import Profile from "./components/Profile";
+import PrivateRoute from "./components/PrivateRoute";
 
 // Firebase Credentials
 var config = {
@@ -25,6 +28,9 @@ firebase.initializeApp(config);
 function App() {
     return (
         <Router>
+            <header>
+                <NavBar />
+            </header>
             <Switch>
                 <Route exact path="/create" render={(props) => <HomePage {...props} />} />
                 <Route exact path="/" render={(props) => <HomePage {...props} />} />
@@ -32,6 +38,8 @@ function App() {
                 <Route exact path="/upload" render={(props => <UploadPage {...props} />)} />
                 <Route exact path="/generate" render={(props => <GeneratePage {...props} />)} />
                 <Route render={(props) => <FourOhFour {...props} />} />
+                <Route path="/" exact />
+                <PrivateRoute path="/profile" component={Profile} />
             </Switch>
         </Router>
     );
