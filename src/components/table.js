@@ -18,6 +18,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import EditIcon from '@material-ui/icons/Edit';
+import MathJax from 'react-mathjax-preview'
 
 function desc(a, b, orderBy) {
   if (b[1][orderBy] < a[1][orderBy]) {
@@ -325,7 +326,7 @@ export default function EnhancedTable(props) {
                       <TableCell align="left">{row[1].topic}</TableCell>
                       <TableCell align="left">{row[1].diff}</TableCell>
                       <TableCell align="left">{row[1].type}</TableCell>
-                      <TableCell align="left">{row[1].question}</TableCell>
+                      <TableCell align="left"><MathJax math={row[1].question}/></TableCell>
                       <TableCell align="left">{row[1].answer}</TableCell>
                     </TableRow>
                   );
