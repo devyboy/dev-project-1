@@ -4,6 +4,8 @@ import Form from 'react-bootstrap/Form';
 import Button from '@material-ui/core/Button';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
+var isEnabled = false;
+var count = 0;
 
 class Forms extends React.Component {
 
@@ -24,8 +26,6 @@ class Forms extends React.Component {
       type: props.editingQuestion ? props.editingQuestion[1].type : "",
       course: props.editingQuestion ? props.editingQuestion[1].course : "",
     }
-
-    this.reqFields = "Missing Information in these fields: "
     this.submitQuestion = this.submitQuestion.bind(this);
     this.handleQuestionChange = this.handleQuestionChange.bind(this);
     this.handleUnitChange = this.handleUnitChange.bind(this);
@@ -40,19 +40,47 @@ class Forms extends React.Component {
     this.updateQuestion = this.updateQuestion.bind(this);
   }
 
+  enableButton(num){
+    count += num;
+    console.log(count)
+  }
+
   handleQuestionChange(event) {
+    if(event.target.value === ""){
+      this.enableButton(-1);
+    }
+    else {
+      if(event.target.value.length === 1){
+        this.enableButton(1);
+      }
+    }
     this.setState({ question: event.target.value });
   }
 
   handleUnitChange(event) {
+    if(event.target.value === ""){
+      this.enableButton(-1);
+    }else{
+      this.enableButton(1);
+    }
     this.setState({ unit: event.target.value });
   }
 
   handleTopicChange(event) {
+    if(event.target.value === ""){
+      this.enableButton(-1);
+    }else{
+      this.enableButton(1);
+    }
     this.setState({ topic: event.target.value });
   }
 
   handleAnswerChange(event) {
+    if(event.target.value === ""){
+      this.enableButton(-1);
+    }else{
+      this.enableButton(1);
+    }
     this.setState({ answer: event.target.value });
   }
 
@@ -70,6 +98,11 @@ class Forms extends React.Component {
   }
 
   handleSLOChange(event) {
+    if(event.target.value === ""){
+      this.enableButton(-1);
+    }else{
+      this.enableButton(1);
+    }
     this.setState({ SLO: event.target.value });
   }
 
@@ -167,7 +200,7 @@ class Forms extends React.Component {
               <Form.Control 
                 onChange={this.handleQuestionChange} 
                 value={this.state.question} 
-                placeholder="What's 2+2?" />
+                placeholder="What's 2+2?"/>
             </Form.Group>
 
             <Form.Group as={Col}>
@@ -299,7 +332,8 @@ class Forms extends React.Component {
               null
             }
           </Form.Row>
-          <Button 
+          <Button
+            disabled={!isEnabled} 
             variant="contained" 
             color="primary" 
             onClick={this.props.isEditing ? () => {this.updateQuestion(this.state); this.props.closeFn();} : this.submitQuestion} 
