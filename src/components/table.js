@@ -18,6 +18,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import EditIcon from '@material-ui/icons/Edit';
+import DescriptionIcon from '@material-ui/icons/Description';
 
 function desc(a, b, orderBy) {
   if (b[1][orderBy] < a[1][orderBy]) {
@@ -122,7 +123,7 @@ const useToolbarStyles = makeStyles(theme => ({
           backgroundColor: theme.palette.secondary.dark,
         },
   spacer: {
-    flex: '1 1 100%',
+    flex: '1 1 80%',
   },
   actions: {
     color: theme.palette.text.secondary,
@@ -156,11 +157,18 @@ const EnhancedTableToolbar = props => {
       <div className={classes.spacer} />
       <div className={classes.actions}>
         {numSelected > 0 ? (
+          <>
+          <Tooltip title="Generate Exam">
+            <IconButton aria-label="description">
+              <DescriptionIcon />
+            </IconButton>
+          </Tooltip>
           <Tooltip title="Delete">
             <IconButton aria-label="delete">
               <DeleteIcon />
             </IconButton>
           </Tooltip>
+          </>
         ) : (
           <Tooltip title="Filter list">
             <IconButton aria-label="filter list">
