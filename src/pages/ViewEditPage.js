@@ -45,6 +45,7 @@ class ViewEdit extends React.Component {
     }).catch(err => {
         console.log(err);
     })
+    console.log(questionArray);
   }
 
   componentDidMount() {
