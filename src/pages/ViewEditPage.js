@@ -66,7 +66,6 @@ class ViewEdit extends React.Component {
   openEditForm(q) {
     this.setState({isEditing: true});
     this.setState({editingQuestion: q});
-    console.log(q);
   }
 
   closeEditForm(refresh) {
@@ -86,9 +85,7 @@ class ViewEdit extends React.Component {
     let frQuestions = selectedQuestions.filter(q => q['type'] === 'Free Response');
     let pQuestions = selectedQuestions.filter(q => q['type'] === 'Programming');
     this.setState({examQuestions: [mcQuestions, frQuestions, pQuestions]});
-    console.log(mcQuestions);
-    console.log(frQuestions);
-    console.log(pQuestions);
+
   }
 
   closeExamForm(){
@@ -151,15 +148,15 @@ class ViewEdit extends React.Component {
               <div>
                 Multiple Choice
                 <ul>
-                  {this.state.examQuestions[0].map(q =>{return <li>{q.question}</li>})}
+                  {this.state.examQuestions[0].map((q, key) =>{return <li key={key}>{q.question}</li>})}
                 </ul>
                 Free Response
                 <ul>
-                  {this.state.examQuestions[1].map(q =>{return <li>{q.question}</li>})}
+                  {this.state.examQuestions[1].map((q, key) =>{return <li key={key}>{q.question}</li>})}
                 </ul>
                 Programming
                 <ul>
-                  {this.state.examQuestions[2].map(q =>{return <li>{q.question}</li>})}
+                  {this.state.examQuestions[2].map((q, key) =>{return <li key={key}>{q.question}</li>})}
                 </ul>
               </div>
               :

@@ -79,12 +79,12 @@ class drawer extends React.Component {
                             View/Edit Questions
                         </MenuItem>
                     </Link>
-                    <Link to={"/generate"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
+                    {/* <Link to={"/generate"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
                         <MenuItem>
                             <ExamIcon style={styles.icon} />
                             Generate Exam
                         </MenuItem>
-                    </Link>
+                    </Link> */}
                 </Menu>
             </div>
         );
