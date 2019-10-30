@@ -4,15 +4,22 @@ import Form from 'react-bootstrap/Form';
 import Button from '@material-ui/core/Button';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Editor from 'for-editor'
+import Chip from '@material-ui/core/Chip';
+
+const choiceStyle = {
+  marginBottom: '10px'
+}
 
 class Forms extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
+
+      value: '',
       questions: [],
+      SLOarray: [],
       choices: props.editingQuestion ? props.editingQuestion[1].choices : [],
-      isMult: props.editingQuestion ? props.editingQuestion[1].type === "Multiple Choice" : false,
 
       question: props.editingQuestion ? props.editingQuestion[1].question : "",
       unit: props.editingQuestion ? props.editingQuestion[1].unit : "",
@@ -37,10 +44,20 @@ class Forms extends React.Component {
     this.handleSLOChange = this.handleSLOChange.bind(this);
     this.handleCourseChange = this.handleCourseChange.bind(this);
     this.updateQuestion = this.updateQuestion.bind(this);
+    this.addSLO = this.addSLO.bind(this);
+    this.deleteSLO = this.deleteSLO.bind(this);
   }
 
-  handleQuestionChange(event) {
-    this.setState({ question: event.target.value });
+  handleQuestionChange(value) {
+    this.setState({ question: value });
+  }
+
+  addSLO(event) {
+    if (event.keyCode === 13) { // If they press the Enter key (which is number 13), add to SLO list
+      if (!this.state.SLOarray.includes(event.target.value)) {
+        this.setState({ SLOarray: this.state.SLOarray.concat(event.target.value), SLO: "" });
+      }
+    }
   }
 
   handleUnitChange(event) {
@@ -51,8 +68,14 @@ class Forms extends React.Component {
     this.setState({ topic: event.target.value });
   }
 
-  handleAnswerChange(event) {
-    this.setState({ answer: event.target.value });
+  deleteSLO(label) {
+    this.setState({ SLOarray: this.state.SLOarray.filter((slo) => 
+      slo !== label
+    )});
+  }
+
+  handleAnswerChange(value) {
+    this.setState({ answer: value });
   }
 
   handleCogChange(event) {
@@ -110,6 +133,7 @@ class Forms extends React.Component {
       cog: "",
       diff: "",
       SLO: "",
+      SLOarray: [],
       type: "",
       course: "",
     });
@@ -128,7 +152,7 @@ class Forms extends React.Component {
       diff: this.state.diff,
       type: this.state.type,
       choices: this.state.choices,
-      SLO: this.state.SLO.toLowerCase(),
+      SLO: this.state.SLOarray
     })
       .then(this.resetState(true, "Question saved"))
       .catch(err => {
@@ -160,52 +184,26 @@ class Forms extends React.Component {
     return (
       <div style={{ width: "65%", margin: '0 auto', marginTop: this.props.isEditing ? "0em" : "2.5em" }}>
         <Form>
-          <Form.Row>
-            <Form.Group as={Col}>
-              <Form.Label>Question</Form.Label>
-              <Form.Control 
-                onChange={this.handleQuestionChange} 
-                value={this.state.question} 
-                placeholder="What's 2+2?" />
-            </Form.Group>
-
-            <Form.Group as={Col}>
-              <Form.Label>Answer</Form.Label>
-              <Form.Control 
-                onChange={this.handleAnswerChange} 
-                value={this.state.answer} 
-                placeholder="4" />
-            </Form.Group>
-          </Form.Row>
 
           <Form.Row>
-            <Form.Group as={Col}>
-              <Form.Label>Topic</Form.Label>
-              <Form.Control 
-                onChange={this.handleTopicChange} 
-                value={this.state.topic} 
-                placeholder="Addition" />
+            <Form.Group as={Col} md="1">
+              <Form.Label>Course</Form.Label>
+              <Form.Control onChange={this.handleCourseChange} as="select">
+                <option>CISC</option>
+                <option>CPEG</option>
+                <option>MISY</option>
+              </Form.Control>
             </Form.Group>
 
-            <Form.Group as={Col}>
-              <Form.Label>Unit</Form.Label>
+            <Form.Group as={Col} md="1">
+              <Form.Label>Number</Form.Label>
               <Form.Control 
-                onChange={this.handleUnitChange} 
-                value={this.state.unit} 
-                placeholder="Chapter 2" />
+                onChange={this.handleCourseChange} 
+                placeholder="106" 
+              />  
             </Form.Group>
 
-            <Form.Group as={Col}>
-              <Form.Label>SLO</Form.Label>
-              <Form.Control 
-                onChange={this.handleSLOChange} 
-                value={this.state.SLO} 
-                placeholder="" />
-            </Form.Group>
-          </Form.Row>
-
-          <Form.Row>
-            <Form.Group as={Col}>
+            <Form.Group as={Col} md="3">
               <Form.Label>Question Type</Form.Label>
               <Form.Control onChange={this.handleTypeChange} as="select" value={this.state.type}>
                 <option>Select a Question Type</option>
@@ -215,7 +213,7 @@ class Forms extends React.Component {
               </Form.Control>
             </Form.Group>
 
-            <Form.Group as={Col}>
+            <Form.Group as={Col} md="3">
               <Form.Label>Cognitive Level</Form.Label>
               <Form.Control onChange={this.handleCogChange} as="select" value={this.state.cog}>
                 <option>Select a Cognitive Level</option>
@@ -228,7 +226,34 @@ class Forms extends React.Component {
               </Form.Control>
             </Form.Group>
 
-            <Form.Group as={Col}>
+            <Form.Group as={Col} md="4">
+              <Form.Label>Unit</Form.Label>
+              <Form.Control 
+                onChange={this.handleUnitChange} 
+                value={this.state.unit} 
+                placeholder="Chapter 2" />
+            </Form.Group>
+          </Form.Row>
+
+          <Form.Row>
+            <Form.Group as={Col} md="6">
+              <Form.Label>SLO</Form.Label>
+              <Form.Control 
+                onKeyDown={this.addSLO}
+                onChange={this.handleSLOChange} 
+                value={this.state.SLO} 
+                placeholder="" />
+            </Form.Group>
+
+            <Form.Group as={Col} md="3">
+              <Form.Label>Topic</Form.Label>
+              <Form.Control 
+                onChange={this.handleTopicChange} 
+                value={this.state.topic} 
+                placeholder="Addition" />
+            </Form.Group>
+
+            <Form.Group as={Col} md="3">
               <Form.Label>Difficulty</Form.Label>
               <Form.Control onChange={this.handleDiffChange} as="select" value={this.state.diff}>
                 <option>Select a Difficulty</option>
@@ -237,27 +262,86 @@ class Forms extends React.Component {
                 <option>Challenging</option>
               </Form.Control>
             </Form.Group>
-            <Form.Group >
-              <Form.Label>Course</Form.Label>
-              <Form.Control onChange={this.handleCourseChange} as="select">
-                <option>CISC</option>
-                <option>CPEG</option>
-                <option>MISY</option>
-              </Form.Control>
-            </Form.Group>
-            <Form.Group >
-              <Form.Label>Course</Form.Label>
-              <Form.Control 
-                style={{width: '3.5em'}} 
-                onChange={this.handleCourseChange} 
-                placeholder="106" />  
-            </Form.Group>
           </Form.Row>
+
+          <br />
+
+          {this.state.SLOarray ? this.state.SLOarray.map((slo, key) => {
+              return (
+                <Chip
+                  style={{ margin: '5px'}}
+                  key={key}
+                  onDelete={() => this.deleteSLO(slo)}
+                  label={slo}
+                />
+              );
+            })
+            :
+            null
+          }
+
+          <Form.Row>
+            <Form.Label>Question</Form.Label>
+            <Editor 
+              placeholder="Enter question here..."
+              onChange={this.handleQuestionChange} 
+              value={this.state.question} 
+              toolbar={{
+                h1: true,
+                h2: true,
+                h3: true,
+                img: true,
+                code: true,
+                preview: true,
+                expand: true,
+                undo: true,
+                redo: true,
+                subfield: true
+              }}
+              style={{height: '300px', width: '100%'}}
+              language="en"
+              subfield
+              lineNum
+              preview
+            />
+          </Form.Row>
+
+          <br />
+          
+          {this.state.type !== "Multiple Choice"
+            ?
+            <Form.Row style={{width: '100%'}}>
+              <Form.Label>Answer</Form.Label>
+              <Editor 
+                placeholder="Enter answer here..."
+                onChange={this.handleAnswerChange} 
+                value={this.state.answer} 
+                toolbar={{
+                  h1: true,
+                  h2: true,
+                  h3: true,
+                  code: true,
+                  preview: true,
+                  expand: true,
+                  undo: true,
+                  redo: true,
+                  subfield: true
+                }}
+                style={{height: '300px', width: '100%'}}
+                language="en"
+                subfield
+                lineNum
+                preview
+              />
+            </Form.Row>
+            :
+            null
+          }
           <Form.Row>
             {this.state.isMult ?
               <Form.Group as={Col} md="5">
                 <Form.Label>Answer Choices</Form.Label>
-                <InputGroup>
+                <InputGroup style={choiceStyle}>
                   <InputGroup.Prepend>
                     <InputGroup.Text>A</InputGroup.Text>
                   </InputGroup.Prepend>
@@ -266,7 +350,7 @@ class Forms extends React.Component {
                     value={this.state.choices[0]}
                   />
                 </InputGroup>
-                <InputGroup>
+                <InputGroup style={choiceStyle}> 
                   <InputGroup.Prepend>
                     <InputGroup.Text>B</InputGroup.Text>
                   </InputGroup.Prepend>
@@ -275,7 +359,7 @@ class Forms extends React.Component {
                     value={this.state.choices[1]}
                   />
                 </InputGroup>
-                <InputGroup>
+                <InputGroup style={choiceStyle}>
                   <InputGroup.Prepend>
                     <InputGroup.Text>C</InputGroup.Text>
                   </InputGroup.Prepend>
@@ -284,7 +368,7 @@ class Forms extends React.Component {
                     value={this.state.choices[2]}
                   />
                 </InputGroup>
-                <InputGroup>
+                <InputGroup style={{choiceStyle}}>
                   <InputGroup.Prepend>
                     <InputGroup.Text>D</InputGroup.Text>
                   </InputGroup.Prepend>
@@ -298,6 +382,7 @@ class Forms extends React.Component {
               null
             }
           </Form.Row>
+
           <Button 
             variant="contained" 
             color="primary" 
@@ -306,6 +391,7 @@ class Forms extends React.Component {
           >
             {this.props.isEditing ? 'Update' : 'Submit'}
           </Button>
+        
         </Form>
       </div>
     )
