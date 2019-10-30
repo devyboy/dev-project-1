@@ -30,7 +30,7 @@ function App() {
                 <Route exact path="/" render={(props) => <HomePage {...props} />} />
                 <Route exact path="/view-edit" render={(props => <ViewEditPage {...props} />)} />
                 <Route exact path="/upload" render={(props => <UploadPage {...props} />)} />
-                <Route exact path="/generate" render={(props => <GeneratePage {...props} />)} />
+                {/* <Route exact path="/generate" render={(props => <GeneratePage {...props} />)} /> */}
                 <Route render={(props) => <FourOhFour {...props} />} />
             </Switch>
         </Router>
