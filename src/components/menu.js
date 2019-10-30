@@ -67,16 +67,16 @@ class drawer extends React.Component {
                             Create Questions
                         </MenuItem>
                     </Link>
-                    <Link to={"/upload"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
-                        <MenuItem>
-                            <UploadIcon style={styles.icon} />
-                            Upload Questions
-                        </MenuItem>
-                    </Link>
                     <Link to={"/view-edit"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
                         <MenuItem>
                             <PencilIcon style={styles.icon} />
                             View/Edit Questions
+                        </MenuItem>
+                    </Link>
+                    <Link to={"/upload"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
+                        <MenuItem>
+                            <UploadIcon style={styles.icon} />
+                            Upload Questions
                         </MenuItem>
                     </Link>
                     {/* <Link to={"/generate"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
