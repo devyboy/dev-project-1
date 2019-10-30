@@ -22,11 +22,16 @@ class ViewEdit extends React.Component {
       questions: null, // An array of 2-tuples containing Doc ID and Question Data
       isEditing: false,
       editingQuestion: null,
+
+      isCreatingExam: false,
+      examQuestions: null,
     };
     this.deleteAll = this.deleteAll.bind(this);
     this.openSnackbar = this.openSnackbar.bind(this);
     this.openEditForm = this.openEditForm.bind(this);
     this.closeEditForm = this.closeEditForm.bind(this);
+    this.openExamForm = this.openExamForm.bind(this);
+    this.closeExamForm = this.closeExamForm.bind(this);
   }
 
   fetchQuestions() {
@@ -74,6 +79,23 @@ class ViewEdit extends React.Component {
     }
   }
 
+  openExamForm(selected){
+    this.setState({isCreatingExam: true});
+    let selectedQuestions = this.state.questions.filter(q => selected.includes(q[0])).map(q => q[1]);
+    let mcQuestions = selectedQuestions.filter(q => q['type'] === 'Multiple Choice');
+    let frQuestions = selectedQuestions.filter(q => q['type'] === 'Free Response');
+    let pQuestions = selectedQuestions.filter(q => q['type'] === 'Programming');
+    this.setState({examQuestions: [mcQuestions, frQuestions, pQuestions]});
+    console.log(mcQuestions);
+    console.log(frQuestions);
+    console.log(pQuestions);
+  }
+
+  closeExamForm(){
+    this.setState({isCreatingExam: false});
+    this.setState({examQuestions: null});
+  }
+
   render() {
     return(
       <div className="App">
@@ -84,6 +106,7 @@ class ViewEdit extends React.Component {
           <EnhancedTable
             rows={this.state.questions}
             handleEditQuestions={this.openEditForm}
+            handleGenerateExam={this.openExamForm}
           />
           </div>
           :
@@ -110,7 +133,39 @@ class ViewEdit extends React.Component {
               />
               <br/><br/>
             </DialogContent>
-            
+          </Dialog>
+          <Dialog
+            open={this.state.isCreatingExam}
+            onClose={() => this.closeExamForm()}
+            aria-labelledby="form-dialog-title"
+            maxWidth="lg"
+            fullWidth
+          >
+            <DialogActions disableSpacing>
+              <Button onClick={() => this.closeExamForm()} color="primary">
+                <CloseIcon />
+              </Button>
+            </DialogActions>
+            <DialogContent>
+              {this.state.examQuestions ?
+              <div>
+                Multiple Choice
+                <ul>
+                  {this.state.examQuestions[0].map(q =>{return <li>{q.question}</li>})}
+                </ul>
+                Free Response
+                <ul>
+                  {this.state.examQuestions[1].map(q =>{return <li>{q.question}</li>})}
+                </ul>
+                Programming
+                <ul>
+                  {this.state.examQuestions[2].map(q =>{return <li>{q.question}</li>})}
+                </ul>
+              </div>
+              :
+              <CircularProgress />
+              }
+            </DialogContent>
           </Dialog>
         </div>
         <Snackbar
