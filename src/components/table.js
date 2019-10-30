@@ -18,6 +18,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import EditIcon from '@material-ui/icons/Edit';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 
 function desc(a, b, orderBy) {
   if (b[1][orderBy] < a[1][orderBy]) {
@@ -122,7 +123,7 @@ const useToolbarStyles = makeStyles(theme => ({
           backgroundColor: theme.palette.secondary.dark,
         },
   spacer: {
-    flex: '1 1 100%',
+    flex: '1 1 80%',
   },
   actions: {
     color: theme.palette.text.secondary,
@@ -134,7 +135,7 @@ const useToolbarStyles = makeStyles(theme => ({
 
 const EnhancedTableToolbar = props => {
   const classes = useToolbarStyles();
-  const { numSelected } = props;
+  const { numSelected, examQuestions, handleGenerateExam } = props;
 
   return (
     <Toolbar
@@ -156,11 +157,21 @@ const EnhancedTableToolbar = props => {
       <div className={classes.spacer} />
       <div className={classes.actions}>
         {numSelected > 0 ? (
+          <>
+          <Tooltip title="Create Exam">
+            <IconButton 
+              aria-label="description"
+              onClick={() => handleGenerateExam(examQuestions)}
+            >
+              <AssignmentIcon />
+            </IconButton>
+          </Tooltip>
           <Tooltip title="Delete">
             <IconButton aria-label="delete">
               <DeleteIcon />
             </IconButton>
           </Tooltip>
+          </>
         ) : (
           <Tooltip title="Filter list">
             <IconButton aria-label="filter list">
@@ -264,7 +275,11 @@ export default function EnhancedTable(props) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar 
+          numSelected={selected.length} 
+          examQuestions={selected}
+          handleGenerateExam={props.handleGenerateExam}
+        />
         <div className={classes.tableWrapper}>
           <Table
             className={classes.table}
