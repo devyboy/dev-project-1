@@ -18,7 +18,7 @@ class Forms extends React.Component {
 
       value: '',
       questions: [],
-      SLOarray: [],
+      SLOarray: props.editingQuestion ? props.editingQuestion[1].SLO : [],
       choices: props.editingQuestion ? props.editingQuestion[1].choices : [],
 
       question: props.editingQuestion ? props.editingQuestion[1].question : "",
@@ -27,7 +27,7 @@ class Forms extends React.Component {
       answer: props.editingQuestion ? props.editingQuestion[1].answer : "",
       cog: props.editingQuestion ? props.editingQuestion[1].cog : "",
       diff: props.editingQuestion ? props.editingQuestion[1].diff : "",
-      SLO: props.editingQuestion ? props.editingQuestion[1].SLO : "",
+      SLO: "",
       type: props.editingQuestion ? props.editingQuestion[1].type : "",
       course: props.editingQuestion ? props.editingQuestion[1].course : "",
     }
@@ -172,7 +172,7 @@ class Forms extends React.Component {
       diff: state.diff,
       type: state.type,
       choices: state.choices,
-      SLO: state.SLO.toLowerCase(),
+      SLO: state.SLOarray,
     })
     .then(this.resetState(true, "Question updated"))
     .catch(err => {
