@@ -32,7 +32,9 @@ class ViewEdit extends React.Component {
     this.closeEditForm = this.closeEditForm.bind(this);
     this.openExamForm = this.openExamForm.bind(this);
     this.closeExamForm = this.closeExamForm.bind(this);
+    this.deleteQuestions = this.deleteQuestions.bind(this);
   }
+
 
   fetchQuestions() {
     let questionArray= [];
@@ -45,7 +47,6 @@ class ViewEdit extends React.Component {
     }).catch(err => {
         console.log(err);
     })
-    console.log(questionArray);
   }
 
   componentDidMount() {
@@ -80,13 +81,32 @@ class ViewEdit extends React.Component {
   }
 
   openExamForm(selected){
-    this.setState({isCreatingExam: true});
+    this.setState({ isCreatingExam: true });
     let selectedQuestions = this.state.questions.filter(q => selected.includes(q[0])).map(q => q[1]);
     let mcQuestions = selectedQuestions.filter(q => q['type'] === 'Multiple Choice');
     let frQuestions = selectedQuestions.filter(q => q['type'] === 'Free Response');
     let pQuestions = selectedQuestions.filter(q => q['type'] === 'Programming');
     this.setState({examQuestions: [mcQuestions, frQuestions, pQuestions]});
 
+  }
+
+  deleteQuestions(selected) {
+    let selectedQuestions = this.state.questions.filter(q => selected.includes(q[0])).map(q => q[1]);
+    let deleteQuestionsIDs = [];
+
+    selectedQuestions.forEach((selectedQuest) => { 
+      this.state.questions.forEach((quest) => {
+        if (selectedQuest === quest[1]) {
+          deleteQuestionsIDs.push(quest[0]);
+        }
+      });
+    });
+    
+    deleteQuestionsIDs.forEach((ID) => {
+      firebase.firestore().collection("questions").doc(ID).delete().then(() => this.fetchQuestions());
+    });
+
+    this.openSnackbar(true, "Question(s) deleted");
   }
 
   closeExamForm(){
@@ -105,6 +125,7 @@ class ViewEdit extends React.Component {
             rows={this.state.questions}
             handleEditQuestions={this.openEditForm}
             handleGenerateExam={this.openExamForm}
+            handleDeleteQuestions={this.deleteQuestions}
           />
           </div>
           :
