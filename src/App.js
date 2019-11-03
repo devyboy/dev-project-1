@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import HomePage from './pages/HomePage';
 import ViewEditPage from './pages/ViewEditPage';
 import UploadPage from './pages/UploadPage';
-import GeneratePage from './pages/GeneratePage';
+//import GeneratePage from './pages/GeneratePage';
 import FourOhFour from "./pages/FourOhFour";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
