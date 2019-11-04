@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from '@material-ui/core/Button';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
-import Editor from 'for-editor'
+// import Editor from 'for-editor'
 import Chip from '@material-ui/core/Chip';
 var count = 0;
 var qCount = 0;
@@ -56,10 +56,6 @@ class Forms extends React.Component {
     this.updateQuestion = this.updateQuestion.bind(this);
     this.addSLO = this.addSLO.bind(this);
     this.deleteSLO = this.deleteSLO.bind(this);
-  }
-
-  handleQuestionChange(value) {
-    this.setState({ question: value });
   }
 
   enableButton(){
@@ -372,63 +368,7 @@ class Forms extends React.Component {
             null
           }
 
-          <Form.Row>
-            <Form.Label>Question</Form.Label>
-            <Editor 
-              placeholder="Enter question here..."
-              onChange={this.handleQuestionChange} 
-              value={this.state.question} 
-              toolbar={{
-                h1: true,
-                h2: true,
-                h3: true,
-                img: true,
-                code: true,
-                preview: true,
-                expand: true,
-                undo: true,
-                redo: true,
-                subfield: true
-              }}
-              style={{height: '300px', width: '100%'}}
-              language="en"
-              subfield
-              lineNum
-              preview
-            />
-          </Form.Row>
-
-          <br />
           
-          {this.state.type !== "Multiple Choice"
-            ?
-            <Form.Row style={{width: '100%'}}>
-              <Form.Label>Answer</Form.Label>
-              <Editor 
-                placeholder="Enter answer here..."
-                onChange={this.handleAnswerChange} 
-                value={this.state.answer} 
-                toolbar={{
-                  h1: true,
-                  h2: true,
-                  h3: true,
-                  code: true,
-                  preview: true,
-                  expand: true,
-                  undo: true,
-                  redo: true,
-                  subfield: true
-                }}
-                style={{height: '300px', width: '100%'}}
-                language="en"
-                subfield
-                lineNum
-                preview
-              />
-            </Form.Row>
-            :
-            null
-          }
           <Form.Row>
             {this.state.isMult ?
               <Form.Group as={Col} md="5">
