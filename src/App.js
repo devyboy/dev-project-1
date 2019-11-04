@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import HomePage from './pages/HomePage';
 import ViewEditPage from './pages/ViewEditPage';
 import UploadPage from './pages/UploadPage';
-import GeneratePage from './pages/GeneratePage';
+//import GeneratePage from './pages/GeneratePage';
 import FourOhFour from "./pages/FourOhFour";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -30,7 +30,7 @@ function App() {
                 <Route exact path="/" render={(props) => <HomePage {...props} />} />
                 <Route exact path="/view-edit" render={(props => <ViewEditPage {...props} />)} />
                 <Route exact path="/upload" render={(props => <UploadPage {...props} />)} />
-                <Route exact path="/generate" render={(props => <GeneratePage {...props} />)} />
+                {/* <Route exact path="/generate" render={(props => <GeneratePage {...props} />)} /> */}
                 <Route render={(props) => <FourOhFour {...props} />} />
             </Switch>
         </Router>

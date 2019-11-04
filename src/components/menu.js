@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import PlusIcon from '@material-ui/icons/Add';
 import PencilIcon from '@material-ui/icons/Edit';
-import ExamIcon from '@material-ui/icons/Assignment';
+//import ExamIcon from '@material-ui/icons/Assignment';
 import UploadIcon from '@material-ui/icons/Publish';
 
 
@@ -67,24 +67,24 @@ class drawer extends React.Component {
                             Create Questions
                         </MenuItem>
                     </Link>
-                    <Link to={"/upload"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
-                        <MenuItem>
-                            <UploadIcon style={styles.icon} />
-                            Upload Questions
-                        </MenuItem>
-                    </Link>
                     <Link to={"/view-edit"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
                         <MenuItem>
                             <PencilIcon style={styles.icon} />
                             View/Edit Questions
                         </MenuItem>
                     </Link>
-                    <Link to={"/generate"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
+                    <Link to={"/upload"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
+                        <MenuItem>
+                            <UploadIcon style={styles.icon} />
+                            Upload Questions
+                        </MenuItem>
+                    </Link>
+                    {/* <Link to={"/generate"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
                         <MenuItem>
                             <ExamIcon style={styles.icon} />
                             Generate Exam
                         </MenuItem>
-                    </Link>
+                    </Link> */}
                 </Menu>
             </div>
         );
