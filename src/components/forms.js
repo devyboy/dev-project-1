@@ -4,8 +4,16 @@ import Form from 'react-bootstrap/Form';
 import Button from '@material-ui/core/Button';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
-var isEnabled = false;
 var count = 0;
+var qCount = 0;
+var aCount = 0;
+var tCount = 0;
+var uCount = 0;
+var sCount = 0;
+var qType = 0;
+var cType = 0;
+var dType = 0;
+var cCount = 0;
 
 class Forms extends React.Component {
 
@@ -40,18 +48,23 @@ class Forms extends React.Component {
     this.updateQuestion = this.updateQuestion.bind(this);
   }
 
-  enableButton(num){
-    count += num;
-    console.log(count)
+  enableButton(){
+    count = qCount + aCount + tCount + uCount + sCount + qType + dType + cType + cCount;
+    if(count !== 9){
+      return false;
+    }
+    else{
+      return true;
+    }
   }
 
   handleQuestionChange(event) {
     if(event.target.value === ""){
-      this.enableButton(-1);
+      qCount = 0;
     }
     else {
       if(event.target.value.length === 1){
-        this.enableButton(1);
+        qCount = 1;
       }
     }
     this.setState({ question: event.target.value });
@@ -59,54 +72,78 @@ class Forms extends React.Component {
 
   handleUnitChange(event) {
     if(event.target.value === ""){
-      this.enableButton(-1);
-    }else{
-      this.enableButton(1);
+      uCount = 0;
+    }else if(event.target.value.length === 1){
+      uCount = 1;
     }
     this.setState({ unit: event.target.value });
   }
 
   handleTopicChange(event) {
     if(event.target.value === ""){
-      this.enableButton(-1);
-    }else{
-      this.enableButton(1);
+      tCount = 0;
+    }else if(event.target.value.length === 1){
+      tCount = 1;
     }
     this.setState({ topic: event.target.value });
   }
 
   handleAnswerChange(event) {
     if(event.target.value === ""){
-      this.enableButton(-1);
-    }else{
-      this.enableButton(1);
+      aCount = 0;
+    }else if(event.target.value.length === 1){
+      aCount = 1;
     }
     this.setState({ answer: event.target.value });
   }
 
-  handleCogChange(event) {
+  handleCogChange(event) { //Cognitive level
+    if(event.target.value === "Select a Cognitive Level"){
+      cType = 0;
+    }
+    else{
+      cType = 1;
+    }
     this.setState({ cog: event.target.value });
   }
 
-  handleDiffChange(event) {
+  handleDiffChange(event) { //Difficulty
+    if(event.target.value === "Select a Difficulty"){
+      dType = 0;
+    }
+    else{
+      dType = 1;
+    }
     this.setState({ diff: event.target.value });
   }
 
-  handleTypeChange(event) {
+  handleTypeChange(event) { //Question Type
+    if(event.target.value === "Select a Question Type"){
+      qType = 0;
+    }
+    else{
+      qType = 1;
+    }
     this.setState({ isMult: event.target.value === "Multiple Choice" });
     this.setState({ type: event.target.value });
   }
 
   handleSLOChange(event) {
     if(event.target.value === ""){
-      this.enableButton(-1);
-    }else{
-      this.enableButton(1);
+      sCount = 0;
+    }else if(event.target.value.length === 1){
+      sCount = 1;
     }
     this.setState({ SLO: event.target.value });
   }
 
-  handleCourseChange(event) {
+  handleCourseChange(event) { //Course 1
+    if(event.target.value === ""){
+      cCount = 0;
+    }
+    else if(event.target.value.length === 1){
+      cCount = 1
+    }
     this.setState({ course: event.target.value });
   }
 
@@ -333,7 +370,7 @@ class Forms extends React.Component {
             }
           </Form.Row>
           <Button
-            disabled={!isEnabled} 
+            disabled={!this.enableButton()} 
             variant="contained" 
             color="primary" 
             onClick={this.props.isEditing ? () => {this.updateQuestion(this.state); this.props.closeFn();} : this.submitQuestion} 
