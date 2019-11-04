@@ -4,6 +4,8 @@ import Form from 'react-bootstrap/Form';
 import Button from '@material-ui/core/Button';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Editor from 'for-editor'
+import Chip from '@material-ui/core/Chip';
 var count = 0;
 var qCount = 0;
 var aCount = 0;
@@ -14,8 +16,7 @@ var qType = 0;
 var cType = 0;
 var dType = 0;
 var cCount = 0;
-import Editor from 'for-editor'
-import Chip from '@material-ui/core/Chip';
+
 
 const choiceStyle = {
   marginBottom: '10px'
@@ -258,7 +259,6 @@ class Forms extends React.Component {
     return (
       <div style={{ width: "65%", margin: '0 auto', marginTop: this.props.isEditing ? "0em" : "2.5em" }}>
         <Form>
-<<<<<<< HEAD
           <Form.Row>
             <Form.Group as={Col}>
               <Form.Label>Question</Form.Label>
@@ -276,8 +276,6 @@ class Forms extends React.Component {
                 placeholder="4" />
             </Form.Group>
           </Form.Row>
-=======
->>>>>>> 2859a0d4c1a1e4b8968820ffbe0271e35272e1c0
 
           <Form.Row>
             <Form.Group as={Col} md="1">
@@ -476,13 +474,8 @@ class Forms extends React.Component {
               null
             }
           </Form.Row>
-<<<<<<< HEAD
           <Button
             disabled={!this.enableButton()} 
-=======
-
-          <Button 
->>>>>>> 2859a0d4c1a1e4b8968820ffbe0271e35272e1c0
             variant="contained" 
             color="primary" 
             onClick={this.props.isEditing ? () => {this.updateQuestion(this.state); this.props.closeFn();} : this.submitQuestion} 
