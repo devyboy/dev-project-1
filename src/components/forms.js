@@ -4,19 +4,8 @@ import Form from 'react-bootstrap/Form';
 import Button from '@material-ui/core/Button';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
-// import Editor from 'for-editor'
+import Editor from 'for-editor'
 import Chip from '@material-ui/core/Chip';
-var count = 0;
-var qCount = 0;
-var aCount = 0;
-var tCount = 0;
-var uCount = 0;
-var sCount = 0;
-var qType = 0;
-var cType = 0;
-var dType = 0;
-var cCount = 0;
-
 
 const choiceStyle = {
   marginBottom: '10px'
@@ -42,6 +31,7 @@ class Forms extends React.Component {
       type: props.editingQuestion ? props.editingQuestion[1].type : "",
       course: props.editingQuestion ? props.editingQuestion[1].course : "",
     }
+
     this.submitQuestion = this.submitQuestion.bind(this);
     this.handleQuestionChange = this.handleQuestionChange.bind(this);
     this.handleUnitChange = this.handleUnitChange.bind(this);
@@ -58,27 +48,10 @@ class Forms extends React.Component {
     this.deleteSLO = this.deleteSLO.bind(this);
   }
 
-  enableButton(){
-    count = qCount + aCount + tCount + uCount + sCount + qType + dType + cType + cCount;
-    if(count !== 9){
-      return false;
-    }
-    else{
-      return true;
-    }
+  handleQuestionChange(value) {
+    this.setState({ question: value });
   }
 
-  handleQuestionChange(event) {
-    if(event.target.value === ""){
-      qCount = 0;
-    }
-    else {
-      if(event.target.value.length === 1){
-        qCount = 1;
-      }
-    }
-    this.setState({ question: event.target.value });
-  }
   addSLO(event) {
     if (event.keyCode === 13) { // If they press the Enter key (which is number 13), add to SLO list
       if (!this.state.SLOarray.includes(event.target.value)) {
@@ -88,30 +61,11 @@ class Forms extends React.Component {
   }
 
   handleUnitChange(event) {
-    if(event.target.value === ""){
-      uCount = 0;
-    }else if(event.target.value.length === 1){
-      uCount = 1;
-    }
     this.setState({ unit: event.target.value });
   }
 
   handleTopicChange(event) {
-    if(event.target.value === ""){
-      tCount = 0;
-    }else if(event.target.value.length === 1){
-      tCount = 1;
-    }
     this.setState({ topic: event.target.value });
-  }
-
-  handleAnswerChange(event) {
-    if(event.target.value === ""){
-      aCount = 0;
-    }else if(event.target.value.length === 1){
-      aCount = 1;
-    }
-    this.setState({ answer: event.target.value });
   }
 
   deleteSLO(label) {
@@ -120,53 +74,28 @@ class Forms extends React.Component {
     )});
   }
 
-  handleCogChange(event) { //Cognitive level
-    if(event.target.value === "Select a Cognitive Level"){
-      cType = 0;
-    }
-    else{
-      cType = 1;
-    }
+  handleAnswerChange(value) {
+    this.setState({ answer: value });
+  }
+
+  handleCogChange(event) {
     this.setState({ cog: event.target.value });
   }
 
-  handleDiffChange(event) { //Difficulty
-    if(event.target.value === "Select a Difficulty"){
-      dType = 0;
-    }
-    else{
-      dType = 1;
-    }
+  handleDiffChange(event) {
     this.setState({ diff: event.target.value });
   }
 
-  handleTypeChange(event) { //Question Type
-    if(event.target.value === "Select a Question Type"){
-      qType = 0;
-    }
-    else{
-      qType = 1;
-    }
+  handleTypeChange(event) {
     this.setState({ isMult: event.target.value === "Multiple Choice" });
     this.setState({ type: event.target.value });
   }
 
   handleSLOChange(event) {
-    if(event.target.value === ""){
-      sCount = 0;
-    }else if(event.target.value.length === 1){
-      sCount = 1;
-    }
     this.setState({ SLO: event.target.value });
   }
 
-  handleCourseChange(event) { //Course 1
-    if(event.target.value === ""){
-      cCount = 0;
-    }
-    else if(event.target.value.length === 1){
-      cCount = 1
-    }
+  handleCourseChange(event) {
     this.setState({ course: event.target.value });
   }
 
@@ -255,23 +184,6 @@ class Forms extends React.Component {
     return (
       <div style={{ width: "65%", margin: '0 auto', marginTop: this.props.isEditing ? "0em" : "2.5em" }}>
         <Form>
-          <Form.Row>
-            <Form.Group as={Col}>
-              <Form.Label>Question</Form.Label>
-              <Form.Control 
-                onChange={this.handleQuestionChange} 
-                value={this.state.question} 
-                placeholder="What's 2+2?"/>
-            </Form.Group>
-
-            <Form.Group as={Col}>
-              <Form.Label>Answer</Form.Label>
-              <Form.Control 
-                onChange={this.handleAnswerChange} 
-                value={this.state.answer} 
-                placeholder="4" />
-            </Form.Group>
-          </Form.Row>
 
           <Form.Row>
             <Form.Group as={Col} md="1">
@@ -368,7 +280,63 @@ class Forms extends React.Component {
             null
           }
 
+          <Form.Row>
+            <Form.Label>Question</Form.Label>
+            <Editor 
+              placeholder="Enter question here..."
+              onChange={this.handleQuestionChange} 
+              value={this.state.question} 
+              toolbar={{
+                h1: true,
+                h2: true,
+                h3: true,
+                img: true,
+                code: true,
+                preview: true,
+                expand: true,
+                undo: true,
+                redo: true,
+                subfield: true
+              }}
+              style={{height: '300px', width: '100%'}}
+              language="en"
+              subfield
+              lineNum
+              preview
+            />
+          </Form.Row>
+
+          <br />
           
+          {this.state.type !== "Multiple Choice"
+            ?
+            <Form.Row style={{width: '100%'}}>
+              <Form.Label>Answer</Form.Label>
+              <Editor 
+                placeholder="Enter answer here..."
+                onChange={this.handleAnswerChange} 
+                value={this.state.answer} 
+                toolbar={{
+                  h1: true,
+                  h2: true,
+                  h3: true,
+                  code: true,
+                  preview: true,
+                  expand: true,
+                  undo: true,
+                  redo: true,
+                  subfield: true
+                }}
+                style={{height: '300px', width: '100%'}}
+                language="en"
+                subfield
+                lineNum
+                preview
+              />
+            </Form.Row>
+            :
+            null
+          }
           <Form.Row>
             {this.state.isMult ?
               <Form.Group as={Col} md="5">
@@ -414,8 +382,8 @@ class Forms extends React.Component {
               null
             }
           </Form.Row>
-          <Button
-            disabled={!this.enableButton()} 
+
+          <Button 
             variant="contained" 
             color="primary" 
             onClick={this.props.isEditing ? () => {this.updateQuestion(this.state); this.props.closeFn();} : this.submitQuestion} 
