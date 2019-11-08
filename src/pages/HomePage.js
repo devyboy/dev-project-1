@@ -16,22 +16,17 @@ class HomePage extends React.Component {
     };
 
     this.openSnackbar = this.openSnackbar.bind(this);
-    this.changePage = this.changePage.bind(this);
   }
 
   openSnackbar(success, message) {
     this.setState({ message: message, success: success, open: true });
   }
 
-  changePage(event) {
-    this.setState({ currentPage: event });
-  }
-
   render() {
 
     return (
       <div className="App">
-        <Menu changePage={this.changePage} />
+        <Menu />
         <h2>Create A Question</h2>
         <Forms openSnackbar={this.openSnackbar} />
         <br />

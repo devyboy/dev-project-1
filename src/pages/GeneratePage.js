@@ -1,10 +1,28 @@
 import React from 'react';
 import Menu from '../components/menu';
-import Form from 'react-bootstrap/Form';
-import Col from 'react-bootstrap/Col';
-import Button from '@material-ui/core/Button';
+// import Form from 'react-bootstrap/Form';
+// import Col from 'react-bootstrap/Col';
+// import Button from '@material-ui/core/Button';
 import YAML from 'yaml';
+import { sortableContainer, sortableElement, sortableHandle } from 'react-sortable-hoc';
+import arrayMove from 'array-move';
+import Card from '@material-ui/core/Card';
+import DragHandleIcon from '@material-ui/icons/DragHandle';
 
+const styles = {
+  challenging: {
+    color: "red",
+    fontSize: "13px",
+  },
+  medium: {
+    color: "orange",
+    fontSize: "13px",
+  },
+  easy: {
+    color: "green",
+    fontSize: "13px",
+  }
+}
 
 class Generate extends React.Component {
   constructor(props) {
@@ -18,9 +36,16 @@ class Generate extends React.Component {
     this.handleFormatChange = this.handleFormatChange.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.downloadFile = this.downloadFile.bind(this);
+    this.onSortEnd = this.onSortEnd.bind(this);
   }
 
-  componentDidMount() { 
+  onSortEnd = ({ oldIndex, newIndex }) => {
+    this.setState(({ questions }) => ({
+      questions: arrayMove(questions, oldIndex, newIndex),
+    }));
+  };
+
+  componentDidMount() {
     if (this.props.location.state === undefined) {
       window.location.href = "/view-edit"
     }
@@ -35,8 +60,7 @@ class Generate extends React.Component {
 
   downloadFile() {
     var fileDownload = require('js-file-download');
-    console.log(this.state.format);
-    switch(this.state.format) {
+    switch (this.state.format) {
       case ".json":
         fileDownload(JSON.stringify(this.state.questions), this.state.filename + this.state.format);
         break;
@@ -53,7 +77,6 @@ class Generate extends React.Component {
   }
 
   convertToText(questions) {
-    console.log(questions);
     let str = ""
     let i = 1;
     questions.forEach((q) => {
@@ -78,15 +101,44 @@ class Generate extends React.Component {
   }
 
   render() {
-    return(
+
+    const DragHandle = sortableHandle(() => <DragHandleIcon style={{cursor: "move", float: 'right'}} />);
+
+    const SortableItem = sortableElement(({ value }) => {
+      let index = this.state.questions.indexOf(value) + 1;
+
+      return(
+      <Card style={{ padding: ".75em", margin: "1em", textAlign: 'left' }}>
+        <DragHandle />
+        <p style={{ margin: ".25em", fontSize: '13px', color: 'grey' }}>{"Question " + index}</p>
+        <p style={{ margin: ".25em", fontSize: '1em' }}>{value.question}</p>
+        <p style={{ fontSize: "13px", margin: ".25em" }}>{value.unit + " • " + value.type + " • "}<span style={styles[value.diff]}>{value.diff}</span></p>
+      </Card>
+      );
+    });
+
+    const SortableList = sortableContainer(({ items }) => {
+      return (
+        <ul>
+          {items.map((value, index) => (
+            <SortableItem key={`item-${value.question + index}`} index={index} value={value} />
+          ))}
+        </ul>
+      );
+    });
+
+  
+    return (
       <div className="App">
         <Menu />
 
-        {this.state.questions ? 
-          <div>
+        {this.state.questions ?
+          <div style={{ margin: "0 auto", width: "40%", overflow: "auto" }}>
             <h2>Generate Exam</h2>
 
-            <Form.Group as={Col} md="2">
+            <SortableList items={this.state.questions} onSortEnd={this.onSortEnd} useDragHandle />
+
+            {/* <Form.Group as={Col} md="2">
               <Form.Label>File Name</Form.Label>
               <Form.Control onChange={this.handleNameChange} value={this.state.filename}>
               </Form.Control>
@@ -103,7 +155,8 @@ class Generate extends React.Component {
 
             <Button color="primary" variant="contained" onClick={this.downloadFile}>
               Download
-            </Button>
+            </Button> */}
+
           </div>
           :
           null
