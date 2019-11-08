@@ -153,9 +153,11 @@ class Generate extends React.Component {
 
     const SortableList = sortableContainer(({ items }) => {
       return (
-        items.map((value, index) => (
-          <SortableItem key={`item-${value.question + index}`} index={index} value={value} />
-        ))
+        <ul>
+          {items.map((value, index) => (
+            <SortableItem key={`item-${value.question + index}`} index={index} value={value} />
+          ))}
+        </ul>
       );
     });
 
