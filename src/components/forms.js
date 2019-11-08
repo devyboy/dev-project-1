@@ -69,9 +69,11 @@ class Forms extends React.Component {
   }
 
   deleteSLO(label) {
-    this.setState({ SLOarray: this.state.SLOarray.filter((slo) => 
-      slo !== label
-    )});
+    this.setState({
+      SLOarray: this.state.SLOarray.filter((slo) =>
+        slo !== label
+      )
+    });
   }
 
   handleAnswerChange(value) {
@@ -174,19 +176,18 @@ class Forms extends React.Component {
       choices: state.choices,
       SLO: state.SLOarray,
     })
-    .then(this.resetState(true, "Question updated"))
-    .catch(err => {
-      this.resetState(false, err);
-    });
+      .then(this.resetState(true, "Question updated"))
+      .catch(err => {
+        this.resetState(false, err);
+      });
   }
 
   render() {
     return (
       <div style={{ width: "65%", margin: '0 auto', marginTop: this.props.isEditing ? "0em" : "2.5em" }}>
         <Form>
-
           <Form.Row>
-            <Form.Group as={Col} md="1">
+            <Form.Group as={Col} md="2">
               <Form.Label>Course</Form.Label>
               <Form.Control onChange={this.handleCourseChange} as="select">
                 <option>CISC</option>
@@ -197,10 +198,10 @@ class Forms extends React.Component {
 
             <Form.Group as={Col} md="1">
               <Form.Label>Number</Form.Label>
-              <Form.Control 
-                onChange={this.handleCourseChange} 
-                placeholder="106" 
-              />  
+              <Form.Control
+                onChange={this.handleCourseChange}
+                placeholder="106"
+              />
             </Form.Group>
 
             <Form.Group as={Col} md="3">
@@ -226,11 +227,11 @@ class Forms extends React.Component {
               </Form.Control>
             </Form.Group>
 
-            <Form.Group as={Col} md="4">
+            <Form.Group as={Col} md="3">
               <Form.Label>Unit</Form.Label>
-              <Form.Control 
-                onChange={this.handleUnitChange} 
-                value={this.state.unit} 
+              <Form.Control
+                onChange={this.handleUnitChange}
+                value={this.state.unit}
                 placeholder="Chapter 2" />
             </Form.Group>
           </Form.Row>
@@ -238,18 +239,18 @@ class Forms extends React.Component {
           <Form.Row>
             <Form.Group as={Col} md="6">
               <Form.Label>SLO</Form.Label>
-              <Form.Control 
+              <Form.Control
                 onKeyDown={this.addSLO}
-                onChange={this.handleSLOChange} 
-                value={this.state.SLO} 
+                onChange={this.handleSLOChange}
+                value={this.state.SLO}
                 placeholder="" />
             </Form.Group>
 
             <Form.Group as={Col} md="3">
               <Form.Label>Topic</Form.Label>
-              <Form.Control 
-                onChange={this.handleTopicChange} 
-                value={this.state.topic} 
+              <Form.Control
+                onChange={this.handleTopicChange}
+                value={this.state.topic}
                 placeholder="Addition" />
             </Form.Group>
 
@@ -267,25 +268,25 @@ class Forms extends React.Component {
           <br />
 
           {this.state.SLOarray ? this.state.SLOarray.map((slo, key) => {
-              return (
-                <Chip
-                  style={{ margin: '5px'}}
-                  key={key}
-                  onDelete={() => this.deleteSLO(slo)}
-                  label={slo}
-                />
-              );
-            })
+            return (
+              <Chip
+                style={{ margin: '5px' }}
+                key={key}
+                onDelete={() => this.deleteSLO(slo)}
+                label={slo}
+              />
+            );
+          })
             :
             null
           }
 
           <Form.Row>
             <Form.Label>Question</Form.Label>
-            <Editor 
+            <Editor
               placeholder="Enter question here..."
-              onChange={this.handleQuestionChange} 
-              value={this.state.question} 
+              onChange={this.handleQuestionChange}
+              value={this.state.question}
               toolbar={{
                 h1: true,
                 h2: true,
@@ -298,7 +299,7 @@ class Forms extends React.Component {
                 redo: true,
                 subfield: true
               }}
-              style={{height: '300px', width: '100%'}}
+              style={{ height: '300px', width: '100%' }}
               language="en"
               subfield
               lineNum
@@ -307,15 +308,15 @@ class Forms extends React.Component {
           </Form.Row>
 
           <br />
-          
+
           {this.state.type !== "Multiple Choice"
             ?
-            <Form.Row style={{width: '100%'}}>
+            <Form.Row style={{ width: '100%' }}>
               <Form.Label>Answer</Form.Label>
-              <Editor 
+              <Editor
                 placeholder="Enter answer here..."
-                onChange={this.handleAnswerChange} 
-                value={this.state.answer} 
+                onChange={this.handleAnswerChange}
+                value={this.state.answer}
                 toolbar={{
                   h1: true,
                   h2: true,
@@ -327,7 +328,7 @@ class Forms extends React.Component {
                   redo: true,
                   subfield: true
                 }}
-                style={{height: '300px', width: '100%'}}
+                style={{ height: '300px', width: '100%' }}
                 language="en"
                 subfield
                 lineNum
@@ -350,7 +351,7 @@ class Forms extends React.Component {
                     value={this.state.choices[0]}
                   />
                 </InputGroup>
-                <InputGroup style={choiceStyle}> 
+                <InputGroup style={choiceStyle}>
                   <InputGroup.Prepend>
                     <InputGroup.Text>B</InputGroup.Text>
                   </InputGroup.Prepend>
@@ -368,7 +369,7 @@ class Forms extends React.Component {
                     value={this.state.choices[2]}
                   />
                 </InputGroup>
-                <InputGroup style={{choiceStyle}}>
+                <InputGroup style={{ choiceStyle }}>
                   <InputGroup.Prepend>
                     <InputGroup.Text>D</InputGroup.Text>
                   </InputGroup.Prepend>
@@ -383,15 +384,15 @@ class Forms extends React.Component {
             }
           </Form.Row>
 
-          <Button 
-            variant="contained" 
-            color="primary" 
-            onClick={this.props.isEditing ? () => {this.updateQuestion(this.state); this.props.closeFn();} : this.submitQuestion} 
-            style={{ marginTop: '2em'}}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.props.isEditing ? () => { this.updateQuestion(this.state); this.props.closeFn(); } : this.submitQuestion}
+            style={{ marginTop: '2em' }}
           >
             {this.props.isEditing ? 'Update' : 'Submit'}
           </Button>
-        
+
         </Form>
       </div>
     )

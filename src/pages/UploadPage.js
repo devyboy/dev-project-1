@@ -53,12 +53,12 @@ class UploadPage extends React.Component {
     try {
       jayson = JSON.parse(content);
     }
-    catch(e) {
+    catch (e) {
       this.showSnackbar(false, e.message);
     }
     for (let i in jayson) {
       let yeet = this.state.questions;
-      this.setState({ questions: yeet.concat(jayson[i])});
+      this.setState({ questions: yeet.concat(jayson[i]) });
     }
   }
 
@@ -68,12 +68,12 @@ class UploadPage extends React.Component {
     try {
       yaml = YAML.parse(content);
     }
-    catch(e) {
+    catch (e) {
       this.showSnackbar(false, e.message);
     }
     for (let i in yaml) {
       let yeet = this.state.questions;
-      this.setState({ questions: yeet.concat(yaml[i])});
+      this.setState({ questions: yeet.concat(yaml[i]) });
     }
   }
 
@@ -108,17 +108,17 @@ class UploadPage extends React.Component {
   }
 
   render() {
-    return(
+    return (
       <div className="App">
 
         <Menu />
         <h2>Upload questions from file</h2>
         <hr />
 
-        {this.state.questions.length !== 0 ? 
+        {this.state.questions.length !== 0 ?
           <div>
             <h4>Approve the following questions for upload:</h4>
-            {this.state.questions.map((q, key) => 
+            {this.state.questions.map((q, key) =>
               <div key={key}>
                 {q.question}
               </div>
@@ -133,27 +133,27 @@ class UploadPage extends React.Component {
               <CloseIcon />
             </Button>
           </div>
-        :
-        <div>
-          <p>Supported file types: .json and .yaml</p>
-          <input
-            onChange={(e) => this.handleFileChosen(e.target.files[0])}
-            style={{display: "none"}}
-            accept=".json, .yaml"
-            id="outlined-button-file"
-            multiple
-            type="file"
-          />
+          :
+          <div>
+            <p>Supported file types: .json and .yaml</p>
+            <input
+              onChange={(e) => this.handleFileChosen(e.target.files[0])}
+              style={{ display: "none" }}
+              accept=".json, .yaml"
+              id="outlined-button-file"
+              multiple
+              type="file"
+            />
 
-          <label htmlFor="outlined-button-file">
-            <Button variant="outlined" component="span">
-              Upload 
+            <label htmlFor="outlined-button-file">
+              <Button variant="outlined" component="span">
+                Upload
               <PublishIcon />
-            </Button>
-          </label>
+              </Button>
+            </label>
 
-          <br />
-        </div>
+            <br />
+          </div>
         }
 
         <Snackbar
