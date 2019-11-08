@@ -7,7 +7,11 @@ import YAML from 'yaml';
 import { sortableContainer, sortableElement, sortableHandle } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import Card from '@material-ui/core/Card';
+import CardHeader from "@material-ui/core/CardHeader";
+import CardContent from "@material-ui/core/CardContent";
 import DragHandleIcon from '@material-ui/icons/DragHandle';
+import Collapse from '@material-ui/core/Collapse';
+
 
 const styles = {
   challenging: {
@@ -31,6 +35,7 @@ class Generate extends React.Component {
       questions: null,
       format: ".json",
       filename: "",
+      expanded: null,
     }
 
     this.handleFormatChange = this.handleFormatChange.bind(this);
@@ -100,6 +105,15 @@ class Generate extends React.Component {
     this.setState({ filename: event.target.value });
   }
 
+  expandCard(index) {
+    if (index === this.state.expanded) {
+      this.setState({ expanded: "" });
+    }
+    else{
+      this.setState({ expanded: index });
+    }
+  }
+
   render() {
 
     const DragHandle = sortableHandle(() => <DragHandleIcon style={{cursor: "move", float: 'right'}} />);
@@ -108,22 +122,40 @@ class Generate extends React.Component {
       let index = this.state.questions.indexOf(value) + 1;
 
       return(
-      <Card style={{ padding: ".75em", margin: "1em", textAlign: 'left' }}>
-        <DragHandle />
-        <p style={{ margin: ".25em", fontSize: '13px', color: 'grey' }}>{"Question " + index}</p>
-        <p style={{ margin: ".25em", fontSize: '1em' }}>{value.question}</p>
-        <p style={{ fontSize: "13px", margin: ".25em" }}>{value.unit + " • " + value.type + " • "}<span style={styles[value.diff]}>{value.diff}</span></p>
+      <Card onClick={() => this.expandCard(index)} style={{ padding: ".75em", margin: "1em", textAlign: 'left', cursor: "pointer" }}>
+        
+        <CardHeader 
+          style={{ padding: '.25em' }}
+          action={<DragHandle />} 
+          title={<p style={{ fontSize: '13px', color: 'grey', marginBottom: 0 }}>{"Question " + index}</p>}
+        />
+
+        <CardContent style={{ padding: '.25em' }}>
+          <p style={{ fontSize: '1em', marginBottom: ".5em" }}>{value.question}</p>
+          <p style={{ fontSize: "13px", marginBottom: 0 }}>{value.unit + " • " + value.type + " • "}<span style={styles[value.diff]}>{value.diff}</span></p>
+        </CardContent>
+
+        <Collapse in={this.state.expanded === index} unmountOnExit>
+          <CardContent style={{ padding: '.25em', fontSize: "13px" }}>
+            <p>Course: {value.course} </p>
+            <p>SLO's: {value.SLO.map((slo) => 
+                slo
+              )}
+            </p>
+            <p>Answer: {value.answer}</p>
+            <p>Cog Level: {value.cog}</p>
+          </CardContent>
+        </Collapse>
+
       </Card>
       );
     });
 
     const SortableList = sortableContainer(({ items }) => {
       return (
-        <ul>
-          {items.map((value, index) => (
-            <SortableItem key={`item-${value.question + index}`} index={index} value={value} />
-          ))}
-        </ul>
+        items.map((value, index) => (
+          <SortableItem key={`item-${value.question + index}`} index={index} value={value} />
+        ))
       );
     });
 
