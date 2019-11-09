@@ -122,12 +122,32 @@ class Generate extends React.Component {
       let index = this.state.questions.indexOf(value) + 1;
 
       return(
-      <Card onClick={() => this.expandCard(index)} style={{ padding: ".75em", margin: "1em", textAlign: 'left', cursor: "pointer" }}>
+      <Card 
+        onClick={() => this.expandCard(index)} 
+        style={{ 
+          width: '400px',
+          padding: ".75em", 
+          margin: "0 auto", 
+          textAlign: 'left', 
+          cursor: "pointer" 
+        }}
+      >
         
         <CardHeader 
           style={{ padding: '.25em' }}
           action={<DragHandle />} 
-          title={<p style={{ fontSize: '13px', color: 'grey', marginBottom: 0 }}>{"Question " + index}</p>}
+          title={
+            <p style={{ 
+              fontSize: '13px', 
+              color: 'grey', 
+              marginBottom: 0,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis"
+            }}>
+              {"Question " + index}
+            </p>
+          }
         />
 
         <CardContent style={{ padding: '.25em' }}>
@@ -137,13 +157,22 @@ class Generate extends React.Component {
 
         <Collapse in={this.state.expanded === index} unmountOnExit>
           <CardContent style={{ padding: '.25em', fontSize: "13px" }}>
-            <p>Course: {value.course} </p>
-            <p>SLO's: {value.SLO.map((slo) => 
-                slo
-              )}
-            </p>
-            <p>Answer: {value.answer}</p>
-            <p>Cog Level: {value.cog}</p>
+            <hr />
+            <ul>
+              <li><p>Course: {value.course}</p></li>
+              <li>
+              <li><p>Answer: {value.answer}</p></li>
+              <li><p>Cog Level: {value.cog}</p></li>
+              <li><p>Topic: {value.topic}</p></li>
+                <p>SLO's: 
+                  <ul>
+                    {value.SLO.map((slo) => 
+                      <li>{slo}</li>
+                    )}
+                  </ul>
+                </p>
+              </li>
+            </ul>
           </CardContent>
         </Collapse>
 
@@ -153,7 +182,7 @@ class Generate extends React.Component {
 
     const SortableList = sortableContainer(({ items }) => {
       return (
-        <ul>
+        <ul style={{ paddingLeft: 0 }}>
           {items.map((value, index) => (
             <SortableItem key={`item-${value.question + index}`} index={index} value={value} />
           ))}
@@ -167,7 +196,7 @@ class Generate extends React.Component {
         <Menu />
 
         {this.state.questions ?
-          <div style={{ margin: "0 auto", width: "40%", overflow: "auto" }}>
+          <div style={{ margin: "0 auto", overflow: "auto" }}>
             <h2>Generate Exam</h2>
 
             <SortableList items={this.state.questions} onSortEnd={this.onSortEnd} useDragHandle />
