@@ -20,6 +20,14 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import EditIcon from '@material-ui/icons/Edit';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 
+const styles = {
+  question: {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis"
+  }
+}
+
 function desc(a, b, orderBy) {
   if (b[1][orderBy] < a[1][orderBy]) {
     return -1;
@@ -51,7 +59,6 @@ const headCells = [
   { id: 'diff', numeric: false, disablePadding: false, label: 'Difficulty' },
   { id: 'type', numeric: false, disablePadding: false, label: 'Question Type' },
   { id: 'question', numeric: false, disablePadding: false, label: 'Question' },
-  { id: 'answer', numeric: false, disablePadding: false, label: 'Answer' },
 ];
 
 function EnhancedTableHead(props) {
@@ -344,14 +351,13 @@ export default function EnhancedTable(props) {
                       <TableCell align="left">{row[1].topic}</TableCell>
                       <TableCell align="left">{row[1].diff}</TableCell>
                       <TableCell align="left">{row[1].type}</TableCell>
-                      <TableCell align="left">{row[1].question}</TableCell>
-                      <TableCell align="left">{row[1].answer}</TableCell>
+                      <TableCell style={styles.question} align="left">{row[1].question}</TableCell>
                     </TableRow>
                   );
                 })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 33 * emptyRows }}>
-                  <TableCell colSpan={8} />
+                  <TableCell colSpan={7} />
                 </TableRow>
               )}
             </TableBody>
