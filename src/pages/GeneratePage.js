@@ -4,13 +4,14 @@ import Menu from '../components/menu';
 // import Col from 'react-bootstrap/Col';
 // import Button from '@material-ui/core/Button';
 import YAML from 'yaml';
-import { sortableContainer, sortableElement, sortableHandle } from 'react-sortable-hoc';
+import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import Card from '@material-ui/core/Card';
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import Collapse from '@material-ui/core/Collapse';
+import IconButton from "@material-ui/core/IconButton";
 
 
 const styles = {
@@ -26,15 +27,13 @@ const styles = {
     color: "green",
     fontSize: "13px",
   },
-  dragHandle: {
-    cursor: "move",
-    float: 'right'
-  },
   card: {
     padding: ".75em",
-    marginBottom: "1em",
+    width: "400px",
+    margin: ".75em",
     textAlign: 'left',
-    cursor: "pointer"
+    cursor: "pointer",
+    display: "inline-block"
   },
   questionNumber: {
     fontSize: '13px',
@@ -44,12 +43,18 @@ const styles = {
   cardHeader: {
     padding: ".25em",
   },
+  iconButton: { 
+    padding: "2px"
+  },
   cardContent: {
     padding: '.25em'
   },
   questionText: {
     fontSize: '1em',
-    marginBottom: ".5em"
+    marginBottom: ".5em",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
   unitTypeDifficulty: {
     fontSize: "13px",
@@ -59,12 +64,6 @@ const styles = {
     padding: '.25em',
     fontSize: "13px"
   },
-  listContainer: { 
-    paddingLeft: 0, 
-    width: '400px', 
-    margin: "auto" 
-  },
-
 }
 
 class Generate extends React.Component {
@@ -155,13 +154,17 @@ class Generate extends React.Component {
 
   render() {
 
-    const DragHandle = sortableHandle(() => <DragHandleIcon style={styles.dragHandle} />);
+    const DragHandle = () => 
+      <IconButton style={styles.iconButton}>
+        <DragHandleIcon />
+      </IconButton>
 
     const SortableItem = sortableElement(({ value }) => {
       let index = this.state.questions.indexOf(value) + 1;
 
       return (
         <Card
+          tabIndex={0}
           onClick={() => this.expandCard(index)}
           style={styles.card}
         >
@@ -188,18 +191,16 @@ class Generate extends React.Component {
             <CardContent style={styles.cardContent2}>
               <hr />
               <ul>
-                <li><p>Course: {value.course}</p></li>
-                <li><p>Answer: {value.answer}</p></li>
-                <li><p>Cog Level: {value.cog}</p></li>
-                <li><p>Topic: {value.topic}</p></li>
-                <p>
-                  SLO's:
-                  <ul>
-                    {value.SLO.map((slo, key) =>
-                      <li key={key}>{slo}</li>
-                    )}
-                  </ul>
-                </p>
+                <li><p><strong>Course: </strong>{value.course}</p></li>
+                <li><p><strong>Answer: </strong>{value.answer}</p></li>
+                <li><p><strong>Cog Level: </strong>{value.cog}</p></li>
+                <li><p><strong>Topic: </strong>{value.topic}</p></li>
+                <strong>SLO's:</strong>
+                <ul>
+                  {value.SLO.map((slo, key) =>
+                    <li key={key}>{slo}</li>
+                  )}
+                </ul>
               </ul>
             </CardContent>
           </Collapse>
@@ -210,7 +211,7 @@ class Generate extends React.Component {
 
     const SortableList = sortableContainer(({ items }) => {
       return (
-        <ul style={styles.listContainer}>
+        <ul>
           {items.map((value, index) => (
             <SortableItem key={`item-${value.question + index}`} index={index} value={value} />
           ))}
@@ -227,7 +228,7 @@ class Generate extends React.Component {
           <div>
             <h2>Generate Exam</h2>
 
-            <SortableList items={this.state.questions} onSortEnd={this.onSortEnd} useDragHandle />
+            <SortableList items={this.state.questions} onSortEnd={this.onSortEnd} axis="xy"/>
 
             {/* <Form.Group as={Col} md="2">
               <Form.Label>File Name</Form.Label>
