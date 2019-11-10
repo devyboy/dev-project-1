@@ -12,6 +12,8 @@ import CardContent from "@material-ui/core/CardContent";
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from "@material-ui/core/IconButton";
+import ShuffleIcon from "@material-ui/icons/Shuffle";
+import Button from "@material-ui/core/Button";
 
 
 const styles = {
@@ -64,6 +66,22 @@ const styles = {
     padding: '.25em',
     fontSize: "13px"
   },
+  listContainer: {
+    paddingLeft: 0
+  },
+  notice: {
+    width: '50%', 
+    textAlign: "left", 
+    margin: "0 auto", 
+    backgroundColor: "#ebebeb", 
+    padding: "1em", 
+    borderRadius: "7px",
+    boxShadow: `
+      0px 1px 5px 0px rgba(0,0,0,0.2), 
+      0px 2px 2px 0px rgba(0,0,0,0.14), 
+      0px 3px 1px -2px rgba(0,0,0,0.12)
+    `
+  }
 }
 
 class Generate extends React.Component {
@@ -80,6 +98,7 @@ class Generate extends React.Component {
     this.handleNameChange = this.handleNameChange.bind(this);
     this.downloadFile = this.downloadFile.bind(this);
     this.onSortEnd = this.onSortEnd.bind(this);
+    this.randomizeQuestions = this.randomizeQuestions.bind(this);
   }
 
   onSortEnd = ({ oldIndex, newIndex }) => {
@@ -152,12 +171,29 @@ class Generate extends React.Component {
     }
   }
 
+  randomizeQuestions() {
+    const array = this.state.questions
+
+    for (var i = array.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+    this.setState({ questions: array });
+  }
+
   render() {
+
+    // DragHandle component (upper right thingy)
 
     const DragHandle = () => 
       <IconButton style={styles.iconButton}>
         <DragHandleIcon />
       </IconButton>
+
+
+    // Individual Card component
 
     const SortableItem = sortableElement(({ value }) => {
       let index = this.state.questions.indexOf(value) + 1;
@@ -209,9 +245,12 @@ class Generate extends React.Component {
       );
     });
 
+
+    // Entire List component
+
     const SortableList = sortableContainer(({ items }) => {
       return (
-        <ul>
+        <ul style={styles.listContainer}>
           {items.map((value, index) => (
             <SortableItem key={`item-${value.question + index}`} index={index} value={value} />
           ))}
@@ -227,6 +266,19 @@ class Generate extends React.Component {
         {this.state.questions ?
           <div>
             <h2>Generate Exam</h2>
+            <hr  style={{width: "80%"}}/>
+
+            <p style={styles.notice}>
+              Please drag and drop the questions into any specific order you want for the exam. You can 
+              also click the "Randomize" button to shuffle the questions randomly. You can view a more detailed 
+              description of each question by clicking the details icon in the top right of each one. Once you 
+              are satisfied, please click the "Next" button at the bottom of the page to continue.
+            </p>
+
+            <Button variant="contained" color="primary" onClick={this.randomizeQuestions} style={{ margin: "1em"}}>
+              Randomize
+              <ShuffleIcon />
+            </Button>
 
             <SortableList items={this.state.questions} onSortEnd={this.onSortEnd} axis="xy"/>
 
