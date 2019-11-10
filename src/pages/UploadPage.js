@@ -113,7 +113,7 @@ class UploadPage extends React.Component {
 
         <Menu />
         <h2>Upload questions from file</h2>
-        <hr />
+        <hr style={{width: "80%"}}/>
 
         {this.state.questions.length !== 0 ?
           <div>
@@ -123,12 +123,14 @@ class UploadPage extends React.Component {
                 {q.question}
               </div>
             )}
+
             <br />
-            <Button onClick={this.approveQuestions} component="span" color="primary">
+
+            <Button style={{marginRight: "1em"}} onClick={this.approveQuestions} variant="contained" color="primary">
               Approve
               <CheckIcon />
             </Button>
-            <Button onClick={() => this.setState({ questions: [] })} component="span" color="secondary">
+            <Button onClick={() => this.setState({ questions: [] })} variant="contained" color="secondary">
               Try Again
               <CloseIcon />
             </Button>
@@ -152,7 +154,11 @@ class UploadPage extends React.Component {
               </Button>
             </label>
 
-            <br />
+            <hr style={{width: "80%"}} />
+            <h5>Example JSON File:</h5>
+            <Button variant="outlined" component="a" href="./test.json" style={{marginTop: "1em"}}>
+                View
+            </Button>
           </div>
         }
 
