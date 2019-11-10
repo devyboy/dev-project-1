@@ -258,9 +258,9 @@ class Forms extends React.Component {
               <Form.Label>Difficulty</Form.Label>
               <Form.Control onChange={this.handleDiffChange} as="select" value={this.state.diff}>
                 <option>Select a Difficulty</option>
-                <option>Easy</option>
-                <option>Medium</option>
-                <option>Challenging</option>
+                <option>easy</option>
+                <option>medium</option>
+                <option>challenging</option>
               </Form.Control>
             </Form.Group>
           </Form.Row>
