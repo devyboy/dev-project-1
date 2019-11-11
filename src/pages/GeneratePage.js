@@ -266,10 +266,11 @@ class Generate extends React.Component {
             <hr style={{ width: "80%" }} />
 
             <p style={styles.notice}>
-              Drag and drop the questions into any specific order you want for the exam. You can
-              also click the "Randomize" button to shuffle the questions randomly. You can view a more detailed
-              description of each question by clicking it. Once you are satisfied, please click the "Next" 
-              button at the bottom of the page to continue.
+              On this page, you can drag the questions into any specific order you want them to be on the exam.
+              To drag a question, use the drag handle in the top right of the card. To view a more detailed 
+              description of each question, just click on the card. You can also click the "Randomize" button 
+              to shuffle the questions randomly. Once you are satisfied, please click the "Next" button at the 
+              bottom of the page to continue.
             </p>
 
             <Button variant="contained" color="primary" onClick={this.randomizeQuestions} style={{ margin: "1em" }}>
