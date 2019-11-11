@@ -4,16 +4,20 @@ import Menu from '../components/menu';
 // import Col from 'react-bootstrap/Col';
 // import Button from '@material-ui/core/Button';
 import YAML from 'yaml';
-import { sortableContainer, sortableElement } from 'react-sortable-hoc';
+import { sortableContainer, sortableElement, sortableHandle } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import Card from '@material-ui/core/Card';
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import Collapse from '@material-ui/core/Collapse';
-import IconButton from "@material-ui/core/IconButton";
 import ShuffleIcon from "@material-ui/icons/Shuffle";
 import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Typography from '@material-ui/core/Typography';
 
 
 const styles = {
@@ -45,9 +49,6 @@ const styles = {
   cardHeader: {
     padding: ".25em",
   },
-  iconButton: { 
-    padding: "2px"
-  },
   cardContent: {
     padding: '.25em'
   },
@@ -70,17 +71,20 @@ const styles = {
     paddingLeft: 0
   },
   notice: {
-    width: '50%', 
-    textAlign: "left", 
-    margin: "0 auto", 
-    backgroundColor: "#ebebeb", 
-    padding: "1em", 
+    width: '50%',
+    textAlign: "left",
+    margin: "0 auto",
+    backgroundColor: "#ebebeb",
+    padding: "1em",
     borderRadius: "7px",
     boxShadow: `
       0px 1px 5px 0px rgba(0,0,0,0.2), 
       0px 2px 2px 0px rgba(0,0,0,0.14), 
       0px 3px 1px -2px rgba(0,0,0,0.12)
-    `
+      `
+  },
+  dragHandle: {
+    cursor: "move"
   }
 }
 
@@ -92,6 +96,8 @@ class Generate extends React.Component {
       format: ".json",
       filename: "",
       expanded: null,
+      detailsModal: false,
+      detailsQuestion: null,
     }
 
     this.handleFormatChange = this.handleFormatChange.bind(this);
@@ -163,20 +169,15 @@ class Generate extends React.Component {
   }
 
   expandCard(index) {
-    if (index === this.state.expanded) {
-      this.setState({ expanded: "" });
-    }
-    else {
-      this.setState({ expanded: index });
-    }
+    this.setState({ detailsModal: true, detailsQuestion: this.state.questions[index] });
   }
 
   randomizeQuestions() {
     const array = this.state.questions
 
-    for (var i = array.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var temp = array[i];
+    for (let i = array.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let temp = array[i];
       array[i] = array[j];
       array[j] = temp;
     }
@@ -187,11 +188,7 @@ class Generate extends React.Component {
 
     // DragHandle component (upper right thingy)
 
-    const DragHandle = () => 
-      <IconButton style={styles.iconButton}>
-        <DragHandleIcon />
-      </IconButton>
-
+    const DragHandle = sortableHandle(() => <DragHandleIcon style={styles.dragHandle} />);
 
     // Individual Card component
 
@@ -201,8 +198,8 @@ class Generate extends React.Component {
       return (
         <Card
           tabIndex={0}
-          onClick={() => this.expandCard(index)}
           style={styles.card}
+          onClick={() => this.expandCard(index - 1)}
         >
 
           <CardHeader
@@ -266,21 +263,112 @@ class Generate extends React.Component {
         {this.state.questions ?
           <div>
             <h2>Generate Exam</h2>
-            <hr  style={{width: "80%"}}/>
+            <hr style={{ width: "80%" }} />
 
             <p style={styles.notice}>
-              Please drag and drop the questions into any specific order you want for the exam. You can 
-              also click the "Randomize" button to shuffle the questions randomly. You can view a more detailed 
-              description of each question by clicking the details icon in the top right of each one. Once you 
-              are satisfied, please click the "Next" button at the bottom of the page to continue.
+              Drag and drop the questions into any specific order you want for the exam. You can
+              also click the "Randomize" button to shuffle the questions randomly. You can view a more detailed
+              description of each question by clicking it. Once you are satisfied, please click the "Next" 
+              button at the bottom of the page to continue.
             </p>
 
-            <Button variant="contained" color="primary" onClick={this.randomizeQuestions} style={{ margin: "1em"}}>
+            <Button variant="contained" color="primary" onClick={this.randomizeQuestions} style={{ margin: "1em" }}>
               Randomize
               <ShuffleIcon />
             </Button>
 
-            <SortableList items={this.state.questions} onSortEnd={this.onSortEnd} axis="xy"/>
+            <SortableList items={this.state.questions} onSortEnd={this.onSortEnd} axis="xy" useDragHandle />
+            
+            {this.state.detailsQuestion ? 
+            
+            <Dialog onClose={() => this.setState({ detailsModal: false })} open={this.state.detailsModal}>
+              <DialogTitle onClose={() => this.setState({ detailsModal: false })}>
+                {"Question " + (this.state.questions.indexOf(this.state.detailsQuestion) + 1) + " details"}
+              </DialogTitle>
+              <DialogContent dividers>
+                <ul>
+                  <li>
+                    <Typography gutterBottom>
+                      <strong>Course: </strong> {this.state.detailsQuestion.pre + " " + this.state.detailsQuestion.course}
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography gutterBottom>
+                      <strong>Question: </strong> {this.state.detailsQuestion.question}
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography gutterBottom>
+                      <strong>Answer: </strong> {this.state.detailsQuestion.answer}
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography gutterBottom>
+                      <strong>Topic: </strong> {this.state.detailsQuestion.topic}
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography gutterBottom>
+                      <strong>Unit: </strong> {this.state.detailsQuestion.unit}
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography gutterBottom>
+                      <strong>Type: </strong> {this.state.detailsQuestion.type}
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography gutterBottom>
+                      <strong>Difficulty: </strong> {this.state.detailsQuestion.diff}
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography gutterBottom>
+                      <strong>Cognitive Level: </strong> {this.state.detailsQuestion.cog}
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography gutterBottom>
+                      <strong>Choices: </strong> 
+                      {this.state.detailsQuestion.choices.length !== 0 ?
+                        <ul>
+                          {this.state.detailsQuestion.choices.map((choice, key) => {
+                            return(
+                              <li key={key}>{choice}</li>
+                            );
+                          })}
+                        </ul>
+                        :
+                        "N/A"
+                      }
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography gutterBottom>
+                      <strong>SLO's: </strong> 
+                      {this.state.detailsQuestion.SLO && 
+                        <ul>
+                          {this.state.detailsQuestion.SLO.map((slo, key) => {
+                            return(
+                              <li key={key}>{slo}</li>
+                            );
+                          })}
+                        </ul>
+                      }
+                    </Typography>
+                  </li>
+                </ul>
+              </DialogContent>
+              <DialogActions>
+                <Button autoFocus onClick={() => this.setState({ detailsModal: false })} color="primary">
+                  Close
+                </Button>
+              </DialogActions>
+            </Dialog>
+
+            :
+            null
+            }
 
             {/* <Form.Group as={Col} md="2">
               <Form.Label>File Name</Form.Label>
@@ -302,6 +390,7 @@ class Generate extends React.Component {
             </Button> */}
 
           </div>
+
           :
           null
         }
