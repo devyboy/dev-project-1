@@ -70,7 +70,7 @@ class drawer extends React.Component {
                     <Link to={"/view-edit"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
                         <MenuItem>
                             <PencilIcon style={styles.icon} />
-                            View/Edit Questions
+                            View Questions
                         </MenuItem>
                     </Link>
                     <Link to={"/upload"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
