@@ -1,8 +1,7 @@
 import React from 'react';
 import Menu from '../components/menu';
-// import Form from 'react-bootstrap/Form';
-// import Col from 'react-bootstrap/Col';
-// import Button from '@material-ui/core/Button';
+import Form from 'react-bootstrap/Form';
+import Col from 'react-bootstrap/Col';
 import YAML from 'yaml';
 import { sortableContainer, sortableElement, sortableHandle } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
@@ -98,6 +97,7 @@ class Generate extends React.Component {
       expanded: null,
       detailsModal: false,
       detailsQuestion: null,
+      page: 1,
     }
 
     this.handleFormatChange = this.handleFormatChange.bind(this);
@@ -260,7 +260,8 @@ class Generate extends React.Component {
       <div className="App">
         <Menu />
 
-        {this.state.questions ?
+        {this.state.questions &&
+          this.state.page === 1 && 
           <div>
             <h2>Generate Exam</h2>
             <hr style={{ width: "80%" }} />
@@ -371,7 +372,16 @@ class Generate extends React.Component {
             null
             }
 
-            {/* <Form.Group as={Col} md="2">
+            <Button variant="contained" color="primary" onClick={() => this.setState({ page: 2 })} style={{ margin: "1em" }}>
+              Next
+            </Button>
+
+          </div>
+        }
+
+        {this.state.page === 2 &&
+          <div>
+            <Form.Group as={Col} md="2">
               <Form.Label>File Name</Form.Label>
               <Form.Control onChange={this.handleNameChange} value={this.state.filename}>
               </Form.Control>
@@ -388,12 +398,11 @@ class Generate extends React.Component {
 
             <Button color="primary" variant="contained" onClick={this.downloadFile}>
               Download
-            </Button> */}
-
+            </Button>
+            <Button color="secondary" variant="contained" onClick={() => this.setState({ page: 1 })}>
+              Go Back
+            </Button>
           </div>
-
-          :
-          null
         }
 
       </div>
