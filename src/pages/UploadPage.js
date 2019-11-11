@@ -97,10 +97,13 @@ class UploadPage extends React.Component {
       type: q.type,
       choices: q.choices,
       SLO: q.SLO,
+      pre: q.pre,
     }).then(this.showSnackbar(true, "Question(s) saved"))
       .catch(err => {
         this.showSnackbar(false, err);
       })
+      .then(() => window.location.href="/view-edit")
+
   }
 
   showSnackbar(success, message) {
@@ -113,7 +116,7 @@ class UploadPage extends React.Component {
 
         <Menu />
         <h2>Upload questions from file</h2>
-        <hr style={{width: "80%"}}/>
+        <hr style={{ width: "80%" }} />
 
         {this.state.questions.length !== 0 ?
           <div>
@@ -126,7 +129,7 @@ class UploadPage extends React.Component {
 
             <br />
 
-            <Button style={{marginRight: "1em"}} onClick={this.approveQuestions} variant="contained" color="primary">
+            <Button style={{ marginRight: "1em" }} onClick={this.approveQuestions} variant="contained" color="primary">
               Approve
               <CheckIcon />
             </Button>
@@ -154,10 +157,10 @@ class UploadPage extends React.Component {
               </Button>
             </label>
 
-            <hr style={{width: "80%"}} />
-            <h5>Example JSON File:</h5>
-            <Button variant="outlined" component="a" href="./test.json" style={{marginTop: "1em"}}>
-                View
+            <hr style={{ width: "80%" }} />
+            <h4>Example JSON File</h4>
+            <Button variant="outlined" component="a" href="./test.json" style={{ marginTop: "1em" }}>
+              View
             </Button>
           </div>
         }
