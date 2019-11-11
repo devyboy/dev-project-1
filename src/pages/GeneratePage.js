@@ -228,7 +228,7 @@ class Generate extends React.Component {
                 <li><p><strong>Answer: </strong>{value.answer}</p></li>
                 <li><p><strong>Cog Level: </strong>{value.cog}</p></li>
                 <li><p><strong>Topic: </strong>{value.topic}</p></li>
-                <strong>SLO's:</strong>
+                <strong>SLOs:</strong>
                 <ul>
                   {value.SLO.map((slo, key) =>
                     <li key={key}>{slo}</li>
@@ -266,7 +266,7 @@ class Generate extends React.Component {
             <hr style={{ width: "80%" }} />
 
             <p style={styles.notice}>
-              On this page, you can drag the questions into any specific order you want them to be on the exam.
+              On this page, you can drag the questions into the specific order you want them to be on the exam.
               To drag a question, use the drag handle in the top right of the card. To view a more detailed 
               description of each question, just click on the card. You can also click the "Randomize" button 
               to shuffle the questions randomly. Once you are satisfied, please click the "Next" button at the 
@@ -290,17 +290,17 @@ class Generate extends React.Component {
                 <ul>
                   <li>
                     <Typography gutterBottom>
-                      <strong>Course: </strong> {this.state.detailsQuestion.pre + " " + this.state.detailsQuestion.course}
-                    </Typography>
-                  </li>
-                  <li>
-                    <Typography gutterBottom>
                       <strong>Question: </strong> {this.state.detailsQuestion.question}
                     </Typography>
                   </li>
                   <li>
                     <Typography gutterBottom>
                       <strong>Answer: </strong> {this.state.detailsQuestion.answer}
+                    </Typography>
+                  </li>
+                  <li>
+                    <Typography gutterBottom>
+                      <strong>Course: </strong> {this.state.detailsQuestion.pre + " " + this.state.detailsQuestion.course}
                     </Typography>
                   </li>
                   <li>
