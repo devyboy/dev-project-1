@@ -345,7 +345,7 @@ export default function EnhancedTable(props) {
                         </IconButton>
                       </TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row[1].course}
+                        {row[1].pre + " " + row[1].course}
                       </TableCell>
                       <TableCell align="left">{row[1].unit}</TableCell>
                       <TableCell align="left">{row[1].topic}</TableCell>

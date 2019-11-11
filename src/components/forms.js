@@ -30,6 +30,7 @@ class Forms extends React.Component {
       SLO: "",
       type: props.editingQuestion ? props.editingQuestion[1].type : "",
       course: props.editingQuestion ? props.editingQuestion[1].course : "",
+      pre: props.editingQuestion ? props.editingQuestion[1].pre : "",
     }
 
     this.submitQuestion = this.submitQuestion.bind(this);
@@ -46,6 +47,7 @@ class Forms extends React.Component {
     this.updateQuestion = this.updateQuestion.bind(this);
     this.addSLO = this.addSLO.bind(this);
     this.deleteSLO = this.deleteSLO.bind(this);
+    this.handlePreChange = this.handlePreChange.bind(this);
   }
 
   handleQuestionChange(value) {
@@ -138,6 +140,7 @@ class Forms extends React.Component {
       SLOarray: [],
       type: "",
       course: "",
+      pre: "",
     });
     this.props.openSnackbar(success, message);
   }
@@ -147,6 +150,7 @@ class Forms extends React.Component {
     questionsRef.add({
       question: this.state.question,
       unit: this.state.unit.toLowerCase(),
+      pre: this.state.pre,
       course: this.state.course,
       topic: this.state.topic.toLowerCase(),
       answer: this.state.answer,
@@ -171,6 +175,7 @@ class Forms extends React.Component {
       topic: state.topic.toLowerCase(),
       answer: state.answer,
       cog: state.cog,
+      pre: state.pre,
       diff: state.diff,
       type: state.type,
       choices: state.choices,
@@ -182,6 +187,10 @@ class Forms extends React.Component {
       });
   }
 
+  handlePreChange(event) {
+    this.setState({ pre: event.target.value })
+  }
+
   render() {
     return (
       <div style={{ width: "65%", margin: '0 auto', marginTop: this.props.isEditing ? "0em" : "2.5em" }}>
@@ -189,7 +198,8 @@ class Forms extends React.Component {
           <Form.Row>
             <Form.Group as={Col} md="2">
               <Form.Label>Course</Form.Label>
-              <Form.Control onChange={this.handleCourseChange} as="select">
+              <Form.Control onChange={this.handlePreChange} as="select" value={this.state.pre}>
+                <option>Select course</option>
                 <option>CISC</option>
                 <option>CPEG</option>
                 <option>MISY</option>
