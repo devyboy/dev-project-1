@@ -53,12 +53,12 @@ class UploadPage extends React.Component {
     try {
       jayson = JSON.parse(content);
     }
-    catch(e) {
+    catch (e) {
       this.showSnackbar(false, e.message);
     }
     for (let i in jayson) {
       let yeet = this.state.questions;
-      this.setState({ questions: yeet.concat(jayson[i])});
+      this.setState({ questions: yeet.concat(jayson[i]) });
     }
   }
 
@@ -68,12 +68,12 @@ class UploadPage extends React.Component {
     try {
       yaml = YAML.parse(content);
     }
-    catch(e) {
+    catch (e) {
       this.showSnackbar(false, e.message);
     }
     for (let i in yaml) {
       let yeet = this.state.questions;
-      this.setState({ questions: yeet.concat(yaml[i])});
+      this.setState({ questions: yeet.concat(yaml[i]) });
     }
   }
 
@@ -97,10 +97,13 @@ class UploadPage extends React.Component {
       type: q.type,
       choices: q.choices,
       SLO: q.SLO,
+      pre: q.pre,
     }).then(this.showSnackbar(true, "Question(s) saved"))
       .catch(err => {
         this.showSnackbar(false, err);
       })
+      .then(() => window.location.href="/view-edit")
+
   }
 
   showSnackbar(success, message) {
@@ -108,52 +111,58 @@ class UploadPage extends React.Component {
   }
 
   render() {
-    return(
+    return (
       <div className="App">
 
         <Menu />
         <h2>Upload questions from file</h2>
-        <hr />
+        <hr style={{ width: "80%" }} />
 
-        {this.state.questions.length !== 0 ? 
+        {this.state.questions.length !== 0 ?
           <div>
             <h4>Approve the following questions for upload:</h4>
-            {this.state.questions.map((q, key) => 
+            {this.state.questions.map((q, key) =>
               <div key={key}>
                 {q.question}
               </div>
             )}
+
             <br />
-            <Button onClick={this.approveQuestions} component="span" color="primary">
+
+            <Button style={{ marginRight: "1em" }} onClick={this.approveQuestions} variant="contained" color="primary">
               Approve
               <CheckIcon />
             </Button>
-            <Button onClick={() => this.setState({ questions: [] })} component="span" color="secondary">
+            <Button onClick={() => this.setState({ questions: [] })} variant="contained" color="secondary">
               Try Again
               <CloseIcon />
             </Button>
           </div>
-        :
-        <div>
-          <p>Supported file types: .json and .yaml</p>
-          <input
-            onChange={(e) => this.handleFileChosen(e.target.files[0])}
-            style={{display: "none"}}
-            accept=".json, .yaml"
-            id="outlined-button-file"
-            multiple
-            type="file"
-          />
+          :
+          <div>
+            <p>Supported file types: .json and .yaml</p>
+            <input
+              onChange={(e) => this.handleFileChosen(e.target.files[0])}
+              style={{ display: "none" }}
+              accept=".json, .yaml"
+              id="outlined-button-file"
+              multiple
+              type="file"
+            />
 
-          <label htmlFor="outlined-button-file">
-            <Button variant="outlined" component="span">
-              Upload 
+            <label htmlFor="outlined-button-file">
+              <Button variant="outlined" component="span">
+                Upload
               <PublishIcon />
-            </Button>
-          </label>
+              </Button>
+            </label>
 
-          <br />
-        </div>
+            <hr style={{ width: "80%" }} />
+            <h4>Example JSON File</h4>
+            <Button variant="outlined" component="a" href="./test.json" style={{ marginTop: "1em" }}>
+              View
+            </Button>
+          </div>
         }
 
         <Snackbar

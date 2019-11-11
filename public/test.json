@@ -1,0 +1,62 @@
+[
+  {
+    "question": "How do you loop from 0 to 9 in Python?",
+    "answer": "for i in range(0, 10)",
+    "topic": "For Loops",
+    "unit": "Chapter 2",
+    "SLO": ["Demonstrate understanding of for loop and range"],
+    "type": "multiple choice",
+    "diff": "medium",
+    "course": "108",
+    "cog": "remembering",
+    "choices": [
+      "for i in 10",
+      "for i in range(1, 9)",
+      "for i in 0-9",
+      "for i in range(0, 9)"
+    ]
+  },
+  {
+    "question": "How do you find the length of a list in Python?",
+    "answer": "len(list)",
+    "topic": "Lists",
+    "unit": "Chapter 4",
+    "SLO": ["Access the length of a list"],
+    "type": "multiple choice",
+    "diff": "easy",
+    "course": "106",
+    "cog": "analyzing",
+    "choices": [
+      "list.length()",
+      "list.length",
+      "len(list)",
+      "length(list)"
+    ]
+  },
+  {
+    "question": "What class is the parent of Error and Exception in Java",
+    "answer": "Throwable",
+    "topic": "Errors",
+    "unit": "Chapter 9",
+    "SLO": ["Understand class hierarchies"],
+    "type": "free response",
+    "diff": "medium",
+    "course": "181",
+    "cog": "understanding",
+    "choices": [
+    ]
+  },
+  {
+    "question": "How do you make a new instance of a Cow object in C++?",
+    "answer": "Cow *Sally = new Cow();",
+    "topic": "Memory Management",
+    "unit": "Chapter 10",
+    "SLO": ["Creating objects on the heap"],
+    "type": "programming",
+    "diff": "challenging",
+    "course": "220",
+    "cog": "applying",
+    "choices": [
+    ]
+  }
+]
