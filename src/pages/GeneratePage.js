@@ -1,22 +1,22 @@
 import React from 'react';
+import YAML from 'yaml';
+import arrayMove from 'array-move';
 import Menu from '../components/menu';
 import Form from 'react-bootstrap/Form';
-import Col from 'react-bootstrap/Col';
-import YAML from 'yaml';
-import { sortableContainer, sortableElement, sortableHandle } from 'react-sortable-hoc';
-import arrayMove from 'array-move';
 import Card from '@material-ui/core/Card';
-import CardHeader from "@material-ui/core/CardHeader";
-import CardContent from "@material-ui/core/CardContent";
-import DragHandleIcon from '@material-ui/icons/DragHandle';
-import Collapse from '@material-ui/core/Collapse';
-import ShuffleIcon from "@material-ui/icons/Shuffle";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
+import Collapse from '@material-ui/core/Collapse';
+import ShuffleIcon from "@material-ui/icons/Shuffle";
+import Typography from '@material-ui/core/Typography';
+import CardHeader from "@material-ui/core/CardHeader";
 import DialogTitle from '@material-ui/core/DialogTitle';
+import CardContent from "@material-ui/core/CardContent";
+import DragHandleIcon from '@material-ui/icons/DragHandle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import Typography from '@material-ui/core/Typography';
+import { sortableContainer, sortableElement, sortableHandle } from 'react-sortable-hoc';
+
 
 
 const styles = {
@@ -71,16 +71,7 @@ const styles = {
   },
   notice: {
     width: '50%',
-    textAlign: "left",
     margin: "0 auto",
-    backgroundColor: "#ebebeb",
-    padding: "1em",
-    borderRadius: "7px",
-    boxShadow: `
-      0px 1px 5px 0px rgba(0,0,0,0.2), 
-      0px 2px 2px 0px rgba(0,0,0,0.14), 
-      0px 3px 1px -2px rgba(0,0,0,0.12)
-      `
   },
   dragHandle: {
     cursor: "move"
@@ -92,12 +83,11 @@ class Generate extends React.Component {
     super(props);
     this.state = {
       questions: null,
-      format: ".json",
+      format: ".txt",
       filename: "",
       expanded: null,
       detailsModal: false,
       detailsQuestion: null,
-      page: 1,
     }
 
     this.handleFormatChange = this.handleFormatChange.bind(this);
@@ -255,24 +245,14 @@ class Generate extends React.Component {
       );
     });
 
-
     return (
       <div className="App">
         <Menu />
 
         {this.state.questions &&
-          this.state.page === 1 && 
           <div>
             <h2>Generate Exam</h2>
             <hr style={{ width: "80%" }} />
-
-            <p style={styles.notice}>
-              On this page, you can drag the questions into the specific order you want them to be on the exam.
-              To drag a question, use the drag handle in the top right of the card. To view a more detailed 
-              description of each question, just click on the card. You can also click the "Randomize" button 
-              to shuffle the questions randomly. Once you are satisfied, please click the "Next" button at the 
-              bottom of the page to continue.
-            </p>
 
             <Button variant="contained" color="primary" onClick={this.randomizeQuestions} style={{ margin: "1em" }}>
               Randomize
@@ -280,131 +260,125 @@ class Generate extends React.Component {
             </Button>
 
             <SortableList items={this.state.questions} onSortEnd={this.onSortEnd} axis="xy" useDragHandle />
-            
-            {this.state.detailsQuestion ? 
-            
-            <Dialog onClose={() => this.setState({ detailsModal: false })} open={this.state.detailsModal}>
-              <DialogTitle onClose={() => this.setState({ detailsModal: false })}>
-                {"Question " + (this.state.questions.indexOf(this.state.detailsQuestion) + 1) + " details"}
-              </DialogTitle>
-              <DialogContent dividers>
-                <ul>
-                  <li>
-                    <Typography gutterBottom>
-                      <strong>Question: </strong> {this.state.detailsQuestion.question}
-                    </Typography>
-                  </li>
-                  <li>
-                    <Typography gutterBottom>
-                      <strong>Answer: </strong> {this.state.detailsQuestion.answer}
-                    </Typography>
-                  </li>
-                  <li>
-                    <Typography gutterBottom>
-                      <strong>Course: </strong> {this.state.detailsQuestion.pre + " " + this.state.detailsQuestion.course}
-                    </Typography>
-                  </li>
-                  <li>
-                    <Typography gutterBottom>
-                      <strong>Topic: </strong> {this.state.detailsQuestion.topic}
-                    </Typography>
-                  </li>
-                  <li>
-                    <Typography gutterBottom>
-                      <strong>Unit: </strong> {this.state.detailsQuestion.unit}
-                    </Typography>
-                  </li>
-                  <li>
-                    <Typography gutterBottom>
-                      <strong>Type: </strong> {this.state.detailsQuestion.type}
-                    </Typography>
-                  </li>
-                  <li>
-                    <Typography gutterBottom>
-                      <strong>Difficulty: </strong> {this.state.detailsQuestion.diff}
-                    </Typography>
-                  </li>
-                  <li>
-                    <Typography gutterBottom>
-                      <strong>Cognitive Level: </strong> {this.state.detailsQuestion.cog}
-                    </Typography>
-                  </li>
-                  <li>
-                    <Typography gutterBottom>
-                      <strong>Choices: </strong> 
-                      {this.state.detailsQuestion.choices.length !== 0 ?
-                        <ul>
-                          {this.state.detailsQuestion.choices.map((choice, key) => {
-                            return(
-                              <li key={key}>{choice}</li>
-                            );
-                          })}
-                        </ul>
-                        :
-                        "N/A"
-                      }
-                    </Typography>
-                  </li>
-                  <li>
-                    <Typography gutterBottom>
-                      <strong>SLO's: </strong> 
-                      {this.state.detailsQuestion.SLO && 
-                        <ul>
-                          {this.state.detailsQuestion.SLO.map((slo, key) => {
-                            return(
-                              <li key={key}>{slo}</li>
-                            );
-                          })}
-                        </ul>
-                      }
-                    </Typography>
-                  </li>
-                </ul>
-              </DialogContent>
-              <DialogActions>
-                <Button autoFocus onClick={() => this.setState({ detailsModal: false })} color="primary">
-                  Close
-                </Button>
-              </DialogActions>
-            </Dialog>
 
-            :
-            null
+            {this.state.detailsQuestion &&
+              <Dialog onClose={() => this.setState({ detailsModal: false })} open={this.state.detailsModal}>
+                <DialogTitle onClose={() => this.setState({ detailsModal: false })}>
+                  {"Question " + (this.state.questions.indexOf(this.state.detailsQuestion) + 1) + " details"}
+                </DialogTitle>
+                <DialogContent dividers>
+                  <ul>
+                    <li>
+                      <Typography gutterBottom>
+                        <strong>Question: </strong> {this.state.detailsQuestion.question}
+                      </Typography>
+                    </li>
+                    <li>
+                      <Typography gutterBottom>
+                        <strong>Answer: </strong> {this.state.detailsQuestion.answer}
+                      </Typography>
+                    </li>
+                    <li>
+                      <Typography gutterBottom>
+                        <strong>Course: </strong> {this.state.detailsQuestion.pre + " " + this.state.detailsQuestion.course}
+                      </Typography>
+                    </li>
+                    <li>
+                      <Typography gutterBottom>
+                        <strong>Topic: </strong> {this.state.detailsQuestion.topic}
+                      </Typography>
+                    </li>
+                    <li>
+                      <Typography gutterBottom>
+                        <strong>Unit: </strong> {this.state.detailsQuestion.unit}
+                      </Typography>
+                    </li>
+                    <li>
+                      <Typography gutterBottom>
+                        <strong>Type: </strong> {this.state.detailsQuestion.type}
+                      </Typography>
+                    </li>
+                    <li>
+                      <Typography gutterBottom>
+                        <strong>Difficulty: </strong> {this.state.detailsQuestion.diff}
+                      </Typography>
+                    </li>
+                    <li>
+                      <Typography gutterBottom>
+                        <strong>Cognitive Level: </strong> {this.state.detailsQuestion.cog}
+                      </Typography>
+                    </li>
+                    <li>
+                      <Typography gutterBottom>
+                        <strong>Choices: </strong>
+                        {this.state.detailsQuestion.choices.length !== 0 ?
+                          <ul>
+                            {this.state.detailsQuestion.choices.map((choice, key) => {
+                              return (
+                                <li key={key}>{choice}</li>
+                              );
+                            })}
+                          </ul>
+                          :
+                          "N/A"
+                        }
+                      </Typography>
+                    </li>
+                    <li>
+                      <Typography gutterBottom>
+                        <strong>SLO's: </strong>
+                        {this.state.detailsQuestion.SLO &&
+                          <ul>
+                            {this.state.detailsQuestion.SLO.map((slo, key) => {
+                              return (
+                                <li key={key}>{slo}</li>
+                              );
+                            })}
+                          </ul>
+                        }
+                      </Typography>
+                    </li>
+                  </ul>
+                </DialogContent>
+                <DialogActions>
+                  <Button autoFocus onClick={() => this.setState({ detailsModal: false })} color="primary">
+                    Close
+                  </Button>
+                </DialogActions>
+              </Dialog>
             }
 
-            <Button variant="contained" color="primary" onClick={() => this.setState({ page: 2 })} style={{ margin: "1em" }}>
-              Next
-            </Button>
-
           </div>
         }
 
-        {this.state.page === 2 &&
-          <div>
-            <Form.Group as={Col} md="2">
-              <Form.Label>File Name</Form.Label>
-              <Form.Control onChange={this.handleNameChange} value={this.state.filename}>
-              </Form.Control>
-            </Form.Group>
+        <hr style={{ width: "80%" }} />
 
-            <Form.Group as={Col} md="1">
-              <Form.Label>File Format</Form.Label>
-              <Form.Control onChange={this.handleFormatChange} as="select" value={this.state.format}>
-                <option>.json</option>
-                <option>.yaml</option>
-                <option>.txt</option>
-              </Form.Control>
-            </Form.Group>
+        <div style={{ width: "50%", margin: "0 auto" }}>
+          <Form>
+            <Form.Row style={{ justifyContent: "center" }}>
+              <Form.Group>
+                <Form.Control onChange={this.handleNameChange} value={this.state.name} />
+              </Form.Group>
 
-            <Button color="primary" variant="contained" onClick={this.downloadFile}>
-              Download
-            </Button>
-            <Button color="secondary" variant="contained" onClick={() => this.setState({ page: 1 })}>
-              Go Back
-            </Button>
-          </div>
-        }
+              <Form.Group>
+                <Form.Control
+                  onChange={this.handleFormatChange}
+                  value={this.state.format}
+                  as="select"
+                >
+                  <option>.txt</option>
+                  <option>.json</option>
+                  <option>.yaml</option>
+                </Form.Control>
+              </Form.Group>
+            </Form.Row>
+          </Form>
 
+          <Button style={{ margin: '1em' }} color="primary" variant="contained" onClick={this.downloadFile}>
+            Download
+          </Button>
+
+        </div>
       </div>
     );
   }
