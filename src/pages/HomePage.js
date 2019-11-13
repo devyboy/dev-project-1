@@ -28,6 +28,7 @@ class HomePage extends React.Component {
       <div className="App">
         <Menu />
         <h2>Create A Question</h2>
+        <hr style={{width: "80%"}} />
         <Forms openSnackbar={this.openSnackbar} />
         <br />
         <Snackbar
