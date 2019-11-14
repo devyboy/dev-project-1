@@ -51,6 +51,10 @@ class ViewEdit extends React.Component {
     this.fetchQuestions();
   }
 
+  componentWillUnmount() {
+    firebase.firestore().terminate();
+  }
+  
   openSnackbar(success, message) {
     this.setState({ message: message, snackbarSuccess: success, snackbarOpen: true });
   }
@@ -72,10 +76,6 @@ class ViewEdit extends React.Component {
 
   openExamForm(selected) {
     let selectedQuestions = this.state.questions.filter(q => selected.includes(q[0])).map(q => q[1]);
-    // let mcQuestions = selectedQuestions.filter(q => q['type'] === 'Multiple Choice');
-    // let frQuestions = selectedQuestions.filter(q => q['type'] === 'Free Response');
-    // let pQuestions = selectedQuestions.filter(q => q['type'] === 'Programming');
-
     this.setState({ selectedQuestions: selectedQuestions });
 
   }
@@ -105,65 +105,74 @@ class ViewEdit extends React.Component {
   }
 
   render() {
+    if (this.props.user === false) {
+      return(null);
+    }
     return (
       <div className="App">
-        {this.state.selectedQuestions !== null &&
-          <Redirect to={{
-            pathname: "/generate",
-            state: { questions: this.state.selectedQuestions }
-          }}
-          />
-        }
-        <Menu />
-        <div>
-          {this.state.questions ?
+        {!this.props.user ? 
+          <Redirect to={"/login"} />
+          :
+          <div>
+            {this.state.selectedQuestions !== null &&
+              <Redirect to={{
+                pathname: "/generate",
+                state: { questions: this.state.selectedQuestions }
+              }}
+              />
+            }
+            <Menu />
             <div>
-              <EnhancedTable
-                rows={this.state.questions}
-                handleEditQuestions={this.openEditForm}
-                handleGenerateExam={this.openExamForm}
-                handleDeleteQuestions={this.deleteQuestions}
-              />
+              {this.state.questions ?
+                <div>
+                  <EnhancedTable
+                    rows={this.state.questions}
+                    handleEditQuestions={this.openEditForm}
+                    handleGenerateExam={this.openExamForm}
+                    handleDeleteQuestions={this.deleteQuestions}
+                  />
+                </div>
+                :
+                <CircularProgress />
+              }
+              <Dialog
+                open={this.state.isEditing}
+                onClose={() => this.closeEditForm(false)}
+                aria-labelledby="form-dialog-title"
+                maxWidth="lg"
+                fullWidth
+              >
+                <DialogActions disableSpacing>
+                  <Button onClick={() => this.closeEditForm(false)} color="primary">
+                    <CloseIcon />
+                  </Button>
+                </DialogActions>
+                <DialogContent>
+                  <Forms
+                    openSnackbar={this.openSnackbar}
+                    isEditing={true}
+                    editingQuestion={this.state.editingQuestion}
+                    closeFn={() => this.closeEditForm(true)}
+                  />
+                  <br /><br />
+                </DialogContent>
+              </Dialog>
             </div>
-            :
-            <CircularProgress />
-          }
-          <Dialog
-            open={this.state.isEditing}
-            onClose={() => this.closeEditForm(false)}
-            aria-labelledby="form-dialog-title"
-            maxWidth="lg"
-            fullWidth
-          >
-            <DialogActions disableSpacing>
-              <Button onClick={() => this.closeEditForm(false)} color="primary">
-                <CloseIcon />
-              </Button>
-            </DialogActions>
-            <DialogContent>
-              <Forms
-                openSnackbar={this.openSnackbar}
-                isEditing={true}
-                editingQuestion={this.state.editingQuestion}
-                closeFn={() => this.closeEditForm(true)}
-              />
-              <br /><br />
-            </DialogContent>
-          </Dialog>
-        </div>
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          open={this.state.snackbarOpen}
-          autoHideDuration={6000}
-          onClose={() => this.setState({ snackbarOpen: false })}
-          message={<span id="message-id">{this.state.message}</span>}
-          action={
-            this.state.snackbarSuccess ? <CheckIcon /> : <CloseIcon />
-          }
-        />
+            <Snackbar
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              open={this.state.snackbarOpen}
+              autoHideDuration={6000}
+              onClose={() => this.setState({ snackbarOpen: false })}
+              message={<span id="message-id">{this.state.message}</span>}
+              action={
+                this.state.snackbarSuccess ? <CheckIcon /> : <CloseIcon />
+              }
+            />
+          </div>
+        }
       </div>
     );
   }

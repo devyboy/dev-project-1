@@ -4,6 +4,7 @@ import arrayMove from 'array-move';
 import Menu from '../components/menu';
 import Form from 'react-bootstrap/Form';
 import Card from '@material-ui/core/Card';
+import { Redirect } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import Collapse from '@material-ui/core/Collapse';
@@ -16,7 +17,6 @@ import DragHandleIcon from '@material-ui/icons/DragHandle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import { sortableContainer, sortableElement, sortableHandle } from 'react-sortable-hoc';
-
 
 
 const styles = {
@@ -105,7 +105,7 @@ class Generate extends React.Component {
 
   componentDidMount() {
     if (this.props.location.state === undefined) {
-      window.location.href = "/view-edit"
+      window.location.href = "/view-edit";
     }
     else {
       this.setState({ questions: this.props.location.state.questions });
@@ -245,109 +245,117 @@ class Generate extends React.Component {
       );
     });
 
+    if (this.props.user === false) {
+      return(null);
+    }
     return (
       <div className="App">
-        <Menu />
-
-        {this.state.questions &&
+        {!this.props.user ?
+          <Redirect to={"/login"} />
+          :
           <div>
-            <h2>Generate Exam</h2>
-            <hr style={{ width: "80%" }} />
+            <Menu />
+            {this.state.questions &&
+              <div>
+                <h2>Generate Exam</h2>
+                <hr style={{ width: "80%" }} />
 
-            <Button variant="contained" color="primary" onClick={this.randomizeQuestions} style={{ margin: "1em" }}>
-              Randomize
-              <ShuffleIcon />
-            </Button>
+                <Button variant="contained" color="primary" onClick={this.randomizeQuestions} style={{ margin: "1em" }}>
+                  Randomize
+                  <ShuffleIcon />
+                </Button>
 
-            <SortableList items={this.state.questions} onSortEnd={this.onSortEnd} axis="xy" useDragHandle />
+                <SortableList items={this.state.questions} onSortEnd={this.onSortEnd} axis="xy" useDragHandle />
 
-            {this.state.detailsQuestion &&
-              <Dialog onClose={() => this.setState({ detailsModal: false })} open={this.state.detailsModal}>
-                <DialogTitle onClose={() => this.setState({ detailsModal: false })}>
-                  {"Question " + (this.state.questions.indexOf(this.state.detailsQuestion) + 1) + " details"}
-                </DialogTitle>
-                <DialogContent dividers>
-                  <ul>
-                    <li>
-                      <Typography gutterBottom>
-                        <strong>Question: </strong> {this.state.detailsQuestion.question}
-                      </Typography>
-                    </li>
-                    <li>
-                      <Typography gutterBottom>
-                        <strong>Answer: </strong> {this.state.detailsQuestion.answer}
-                      </Typography>
-                    </li>
-                    <li>
-                      <Typography gutterBottom>
-                        <strong>Course: </strong> {this.state.detailsQuestion.pre + " " + this.state.detailsQuestion.course}
-                      </Typography>
-                    </li>
-                    <li>
-                      <Typography gutterBottom>
-                        <strong>Topic: </strong> {this.state.detailsQuestion.topic}
-                      </Typography>
-                    </li>
-                    <li>
-                      <Typography gutterBottom>
-                        <strong>Unit: </strong> {this.state.detailsQuestion.unit}
-                      </Typography>
-                    </li>
-                    <li>
-                      <Typography gutterBottom>
-                        <strong>Type: </strong> {this.state.detailsQuestion.type}
-                      </Typography>
-                    </li>
-                    <li>
-                      <Typography gutterBottom>
-                        <strong>Difficulty: </strong> {this.state.detailsQuestion.diff}
-                      </Typography>
-                    </li>
-                    <li>
-                      <Typography gutterBottom>
-                        <strong>Cognitive Level: </strong> {this.state.detailsQuestion.cog}
-                      </Typography>
-                    </li>
-                    <li>
-                      <Typography gutterBottom>
-                        <strong>Choices: </strong>
-                        {this.state.detailsQuestion.choices.length !== 0 ?
-                          <ul>
-                            {this.state.detailsQuestion.choices.map((choice, key) => {
-                              return (
-                                <li key={key}>{choice}</li>
-                              );
-                            })}
-                          </ul>
-                          :
-                          "N/A"
-                        }
-                      </Typography>
-                    </li>
-                    <li>
-                      <Typography gutterBottom>
-                        <strong>SLO's: </strong>
-                        {this.state.detailsQuestion.SLO &&
-                          <ul>
-                            {this.state.detailsQuestion.SLO.map((slo, key) => {
-                              return (
-                                <li key={key}>{slo}</li>
-                              );
-                            })}
-                          </ul>
-                        }
-                      </Typography>
-                    </li>
-                  </ul>
-                </DialogContent>
-                <DialogActions>
-                  <Button autoFocus onClick={() => this.setState({ detailsModal: false })} color="primary">
-                    Close
+                {this.state.detailsQuestion &&
+                  <Dialog onClose={() => this.setState({ detailsModal: false })} open={this.state.detailsModal}>
+                    <DialogTitle onClose={() => this.setState({ detailsModal: false })}>
+                      {"Question " + (this.state.questions.indexOf(this.state.detailsQuestion) + 1) + " details"}
+                    </DialogTitle>
+                    <DialogContent dividers>
+                      <ul>
+                        <li>
+                          <Typography gutterBottom>
+                            <strong>Question: </strong> {this.state.detailsQuestion.question}
+                          </Typography>
+                        </li>
+                        <li>
+                          <Typography gutterBottom>
+                            <strong>Answer: </strong> {this.state.detailsQuestion.answer}
+                          </Typography>
+                        </li>
+                        <li>
+                          <Typography gutterBottom>
+                            <strong>Course: </strong> {this.state.detailsQuestion.pre + " " + this.state.detailsQuestion.course}
+                          </Typography>
+                        </li>
+                        <li>
+                          <Typography gutterBottom>
+                            <strong>Topic: </strong> {this.state.detailsQuestion.topic}
+                          </Typography>
+                        </li>
+                        <li>
+                          <Typography gutterBottom>
+                            <strong>Unit: </strong> {this.state.detailsQuestion.unit}
+                          </Typography>
+                        </li>
+                        <li>
+                          <Typography gutterBottom>
+                            <strong>Type: </strong> {this.state.detailsQuestion.type}
+                          </Typography>
+                        </li>
+                        <li>
+                          <Typography gutterBottom>
+                            <strong>Difficulty: </strong> {this.state.detailsQuestion.diff}
+                          </Typography>
+                        </li>
+                        <li>
+                          <Typography gutterBottom>
+                            <strong>Cognitive Level: </strong> {this.state.detailsQuestion.cog}
+                          </Typography>
+                        </li>
+                        <li>
+                          <Typography gutterBottom>
+                            <strong>Choices: </strong>
+                            {this.state.detailsQuestion.choices.length !== 0 ?
+                              <ul>
+                                {this.state.detailsQuestion.choices.map((choice, key) => {
+                                  return (
+                                    <li key={key}>{choice}</li>
+                                  );
+                                })}
+                              </ul>
+                              :
+                              "N/A"
+                            }
+                          </Typography>
+                        </li>
+                        <li>
+                          <Typography gutterBottom>
+                            <strong>SLO's: </strong>
+                            {this.state.detailsQuestion.SLO &&
+                              <ul>
+                                {this.state.detailsQuestion.SLO.map((slo, key) => {
+                                  return (
+                                    <li key={key}>{slo}</li>
+                                  );
+                                })}
+                              </ul>
+                            }
+                          </Typography>
+                        </li>
+                      </ul>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button autoFocus onClick={() => this.setState({ detailsModal: false })} color="primary">
+                        Close
                   </Button>
-                </DialogActions>
-              </Dialog>
-            }
+                    </DialogActions>
+                  </Dialog>
+                }
 
+              </div>
+            }
           </div>
         }
 

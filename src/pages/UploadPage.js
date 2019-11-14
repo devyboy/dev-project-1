@@ -1,5 +1,6 @@
 import React from 'react';
 import firebase from 'firebase';
+import { Redirect } from "react-router-dom";
 import Menu from '../components/menu';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -102,7 +103,7 @@ class UploadPage extends React.Component {
       .catch(err => {
         this.showSnackbar(false, err);
       })
-      .then(() => window.location.href="/view-edit")
+      .then(() => window.location.href = "/view-edit")
 
   }
 
@@ -111,74 +112,81 @@ class UploadPage extends React.Component {
   }
 
   render() {
+    if (this.props.user === false) {
+      return (null);
+    }
     return (
       <div className="App">
-
-        <Menu />
-        <h2>Upload questions from file</h2>
-        <hr style={{ width: "80%" }} />
-
-        {this.state.questions.length !== 0 ?
-          <div>
-            <h4>Approve the following questions for upload:</h4>
-            {this.state.questions.map((q, key) =>
-              <div key={key}>
-                {q.question}
-              </div>
-            )}
-
-            <br />
-
-            <Button style={{ marginRight: "1em" }} onClick={this.approveQuestions} variant="contained" color="primary">
-              Approve
-              <CheckIcon />
-            </Button>
-            <Button onClick={() => this.setState({ questions: [] })} variant="contained" color="secondary">
-              Try Again
-              <CloseIcon />
-            </Button>
-          </div>
+        {!this.props.user ?
+          <Redirect to={"/login"} />
           :
           <div>
-            <p>Supported file types: .json and .yaml</p>
-            <input
-              onChange={(e) => this.handleFileChosen(e.target.files[0])}
-              style={{ display: "none" }}
-              accept=".json, .yaml"
-              id="outlined-button-file"
-              multiple
-              type="file"
-            />
-
-            <label htmlFor="outlined-button-file">
-              <Button variant="outlined" component="span">
-                Upload
-              <PublishIcon />
-              </Button>
-            </label>
-
+            <Menu />
+            <h2>Upload questions from file</h2>
             <hr style={{ width: "80%" }} />
-            <h4>Example JSON File</h4>
-            <Button variant="outlined" component="a" href="./test.json" style={{ marginTop: "1em" }}>
-              View
+
+            {this.state.questions.length !== 0 ?
+              <div>
+                <h4>Approve the following questions for upload:</h4>
+                {this.state.questions.map((q, key) =>
+                  <div key={key}>
+                    {q.question}
+                  </div>
+                )}
+
+                <br />
+
+                <Button style={{ marginRight: "1em" }} onClick={this.approveQuestions} variant="contained" color="primary">
+                  Approve
+              <CheckIcon />
+                </Button>
+                <Button onClick={() => this.setState({ questions: [] })} variant="contained" color="secondary">
+                  Try Again
+              <CloseIcon />
+                </Button>
+              </div>
+              :
+              <div>
+                <p>Supported file types: .json and .yaml</p>
+                <input
+                  onChange={(e) => this.handleFileChosen(e.target.files[0])}
+                  style={{ display: "none" }}
+                  accept=".json, .yaml"
+                  id="outlined-button-file"
+                  multiple
+                  type="file"
+                />
+
+                <label htmlFor="outlined-button-file">
+                  <Button variant="outlined" component="span">
+                    Upload
+              <PublishIcon />
+                  </Button>
+                </label>
+
+                <hr style={{ width: "80%" }} />
+                <h4>Example JSON File</h4>
+                <Button variant="outlined" component="a" href="./test.json" style={{ marginTop: "1em" }}>
+                  View
             </Button>
+              </div>
+            }
+
+            <Snackbar
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              open={this.state.open}
+              autoHideDuration={6000}
+              onClose={() => this.setState({ open: false })}
+              message={<span id="message-id">{this.state.message}</span>}
+              action={
+                this.state.success ? <CheckIcon /> : <CloseIcon />
+              }
+            />
           </div>
         }
-
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          open={this.state.open}
-          autoHideDuration={6000}
-          onClose={() => this.setState({ open: false })}
-          message={<span id="message-id">{this.state.message}</span>}
-          action={
-            this.state.success ? <CheckIcon /> : <CloseIcon />
-          }
-        />
-
       </div>
     )
   }
