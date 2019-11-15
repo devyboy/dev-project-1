@@ -85,7 +85,6 @@ class Generate extends React.Component {
       questions: null,
       format: ".txt",
       filename: "",
-      expanded: null,
       detailsModal: false,
       detailsQuestion: null,
     }
@@ -164,11 +163,12 @@ class Generate extends React.Component {
   }
 
   closeCard(index) {
-    let newQues = this.state.questions.slice(index, 1);
+    let newQues = this.state.questions
+    newQues.splice(index - 1, 1);
     if (newQues.length === 0) {
       window.location.href = "/view-edit";
     }
-    this.setState({ questions: newQues, expanded: false });
+    this.setState({ detailsModal: false, questions: newQues });
   }
 
   randomizeQuestions() {
