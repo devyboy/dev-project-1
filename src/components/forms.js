@@ -6,6 +6,15 @@ import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Editor from 'for-editor'
 import Chip from '@material-ui/core/Chip';
+var count = 0;
+var qCount = 0; 
+var aCount = 0;
+var tCount = 0;
+var uCount = 0;
+var qType = 0;
+var cType = 0;
+var dType = 0;
+var cCount = 0;
 
 const choiceStyle = {
   marginBottom: '10px'
@@ -50,7 +59,25 @@ class Forms extends React.Component {
     this.handlePreChange = this.handlePreChange.bind(this);
   }
 
+  enableButton() {
+    console.log("old", count)
+    count = qCount + aCount + tCount + uCount + qType + dType + cType + cCount;
+    console.log("new", count)
+    if (count !== 8) {
+      return false;
+    }
+    return true;
+  }
+
   handleQuestionChange(value) {
+    if (value === "") {
+      qCount = 0;
+    }
+    else {
+      if (value.length === 1) {
+        qCount = 1;
+      }
+    }
     this.setState({ question: value });
   }
 
@@ -63,10 +90,20 @@ class Forms extends React.Component {
   }
 
   handleUnitChange(event) {
+    if (event.target.value === "") {
+      uCount = 0;
+    } else if (event.target.value.length === 1) {
+      uCount = 1;
+    }
     this.setState({ unit: event.target.value });
   }
 
   handleTopicChange(event) {
+    if (event.target.value === "") {
+      tCount = 0;
+    } else if (event.target.value.length === 1) {
+      tCount = 1;
+    }
     this.setState({ topic: event.target.value });
   }
 
@@ -79,18 +116,44 @@ class Forms extends React.Component {
   }
 
   handleAnswerChange(value) {
+    if (value === "") {
+      aCount = 0;
+    } else if (value.length === 1) {
+      aCount = 1;
+    }
     this.setState({ answer: value });
   }
 
   handleCogChange(event) {
+    if (event.target.value === "Select a Cognitive Level") {
+      cType = 0;
+    }
+    else {
+      cType = 1;
+    }
     this.setState({ cog: event.target.value });
   }
 
   handleDiffChange(event) {
+    if (event.target.value === "Select a Difficulty") {
+      dType = 0;
+    }
+    else {
+      dType = 1;
+    }
     this.setState({ diff: event.target.value });
   }
 
   handleTypeChange(event) {
+    if (event.target.value === "Select a Question Type") {
+      qType = 0;
+    }
+    else {
+      qType = 1;
+      if (event.target.value === "Multiple Choice" && aCount === 0) {
+        qType = 2;
+      }
+    }
     this.setState({ isMult: event.target.value === "Multiple Choice" });
     this.setState({ type: event.target.value });
   }
@@ -100,6 +163,12 @@ class Forms extends React.Component {
   }
 
   handleCourseChange(event) {
+    if (event.target.value === "") {
+      cCount = 0;
+    }
+    else if (event.target.value.length === 1) {
+      cCount = 1
+    }
     this.setState({ course: event.target.value });
   }
 
@@ -395,6 +464,7 @@ class Forms extends React.Component {
           </Form.Row>
 
           <Button
+            disabled={!this.enableButton()}
             variant="contained"
             color="primary"
             onClick={this.props.isEditing ? () => { this.updateQuestion(this.state); this.props.closeFn(); } : this.submitQuestion}
