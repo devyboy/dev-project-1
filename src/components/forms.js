@@ -7,7 +7,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Editor from 'for-editor'
 import Chip from '@material-ui/core/Chip';
 var count = 0;
-var qCount = 0;
+var qCount = 0; 
 var aCount = 0;
 var tCount = 0;
 var uCount = 0;
