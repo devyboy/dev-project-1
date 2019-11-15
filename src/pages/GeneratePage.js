@@ -95,6 +95,7 @@ class Generate extends React.Component {
     this.downloadFile = this.downloadFile.bind(this);
     this.onSortEnd = this.onSortEnd.bind(this);
     this.randomizeQuestions = this.randomizeQuestions.bind(this);
+    this.closeCard = this.closeCard.bind(this);
   }
 
   onSortEnd = ({ oldIndex, newIndex }) => {
@@ -162,6 +163,14 @@ class Generate extends React.Component {
     this.setState({ detailsModal: true, detailsQuestion: this.state.questions[index] });
   }
 
+  closeCard(index) {
+    let newQues = this.state.questions.slice(index, 1);
+    if (newQues.length === 0) {
+      window.location.href = "/view-edit";
+    }
+    this.setState({ questions: newQues, expanded: false });
+  }
+
   randomizeQuestions() {
     const array = this.state.questions
 
@@ -176,20 +185,20 @@ class Generate extends React.Component {
 
   render() {
 
-    // DragHandle component (upper right thingy)
+    // Action Components
 
     const DragHandle = sortableHandle(() => <DragHandleIcon style={styles.dragHandle} />);
 
     // Individual Card component
 
     const SortableItem = sortableElement(({ value }) => {
-      let index = this.state.questions.indexOf(value) + 1;
+      let index = this.state.questions.indexOf(value);
 
       return (
         <Card
           tabIndex={0}
           style={styles.card}
-          onClick={() => this.expandCard(index - 1)}
+          onClick={() => this.expandCard(index)}
         >
 
           <CardHeader
@@ -197,7 +206,7 @@ class Generate extends React.Component {
             action={<DragHandle />}
             title={
               <p style={styles.questionNumber}>
-                {"Question " + index}
+                {"Question " + (index + 1)}
               </p>
             }
           />
@@ -246,7 +255,7 @@ class Generate extends React.Component {
     });
 
     if (this.props.user === false) {
-      return(null);
+      return (null);
     }
     return (
       <div className="App">
@@ -347,9 +356,12 @@ class Generate extends React.Component {
                       </ul>
                     </DialogContent>
                     <DialogActions>
+                      <Button onClick={() => this.closeCard(this.state.questions.indexOf(this.state.detailsQuestion) + 1)} color="secondary">
+                        Remove
+                      </Button>
                       <Button autoFocus onClick={() => this.setState({ detailsModal: false })} color="primary">
                         Close
-                  </Button>
+                      </Button>
                     </DialogActions>
                   </Dialog>
                 }
