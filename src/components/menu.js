@@ -1,4 +1,5 @@
 import React from 'react';
+import firebase from "firebase";
 import { Link } from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -9,13 +10,14 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import PlusIcon from '@material-ui/icons/Add';
 import PencilIcon from '@material-ui/icons/Edit';
-//import ExamIcon from '@material-ui/icons/Assignment';
+import Button from "@material-ui/core/Button";
 import UploadIcon from '@material-ui/icons/Publish';
 
 
 let styles = {
     menu: {
         marginBottom: "2em",
+        flexGrow: "1"
     },
     icon: {
         marginRight: ".5em",
@@ -23,10 +25,13 @@ let styles = {
     link: {
         textDecoration: "none",
         color: "black",
+    },
+    login: {
+        marginLeft: "auto"
     }
 }
 
-class drawer extends React.Component {
+class Drawer extends React.Component {
 
     constructor(props) {
         super(props);
@@ -35,24 +40,30 @@ class drawer extends React.Component {
             anchorEl: null,
         };
         this.handleOpen = this.handleOpen.bind(this);
+        this.signOut = this.signOut.bind(this);
     }
 
     handleOpen(event) {
         this.setState({ drawer: true, anchorEl: event.currentTarget });
     }
 
+    signOut() {
+        firebase.auth().signOut();
+        this.setState({ userObject: null })
+    }
 
     render() {
         return (
             <div style={styles.menu}>
                 <AppBar position="static">
                     <Toolbar>
-                        <IconButton onClick={this.handleOpen} edge="start" color="inherit" aria-label="menu">
+                        <IconButton edge="start" color="inherit" aria-label="menu" onClick={this.handleOpen}>
                             <MenuIcon />
                         </IconButton>
-                        <Typography style={{ paddingLeft: '.75em' }} variant="h6">
-                            UDel PAPER
+                        <Typography variant="h6" >
+                            UDel Paper
                         </Typography>
+                        <Button color="inherit" style={styles.login} onClick={this.signOut} >Logout</Button>
                     </Toolbar>
                 </AppBar>
                 <Menu
@@ -60,7 +71,7 @@ class drawer extends React.Component {
                     keepMounted
                     open={this.state.drawer}
                     onClose={() => this.setState({ drawer: false })}
-                >   
+                >
                     <Link to={"/create"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
                         <MenuItem>
                             <PlusIcon style={styles.icon} />
@@ -91,4 +102,4 @@ class drawer extends React.Component {
     }
 }
 
-export default drawer;
+export default Drawer;

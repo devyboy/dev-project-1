@@ -6,6 +6,7 @@ import ViewEditPage from './pages/ViewEditPage';
 import UploadPage from './pages/UploadPage';
 import GeneratePage from './pages/GeneratePage';
 import FourOhFour from "./pages/FourOhFour";
+import LoginPage from "./pages/LoginPage";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -22,19 +23,34 @@ var config = {
 
 firebase.initializeApp(config);
 
-function App() {
-    return (
-        <Router>
-            <Switch>
-                <Route exact path="/" component={HomePage} />
-                <Route exact path="/create" component={HomePage} />
-                <Route exact path="/view-edit" component={ViewEditPage} />
-                <Route exact path="/upload" component={UploadPage} />
-                <Route exact path="/generate" component={GeneratePage} />
-                <Route component={FourOhFour} />
-            </Switch>
-        </Router>
-    );
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            userObject: false,
+        };
+
+        // When the user logs in, set userObject to them
+        firebase.auth().onAuthStateChanged((user) => {
+            this.setState({ userObject: user });
+        });
+    }
+
+    render() {
+        return (
+            <Router>
+                <Switch>
+                    <Route exact path="/" render={(props) => <HomePage {...props} user={this.state.userObject} />} />
+                    <Route exact path="/create" render={(props) => <HomePage {...props} user={this.state.userObject} />} />
+                    <Route exact path="/view-edit" render={(props) => <ViewEditPage {...props} user={this.state.userObject} />} />
+                    <Route exact path="/upload" render={(props) => <UploadPage {...props} user={this.state.userObject} />} />
+                    <Route exact path="/generate" render={(props) => <GeneratePage {...props} user={this.state.userObject} />} />
+                    <Route exact path="/login" render={(props) => <LoginPage {...props} user={this.state.userObject} />} />
+                    <Route render={(props) => <FourOhFour {...props} user={this.state.userObject} />} />
+                </Switch>
+            </Router>
+        );
+    }
 }
 
 export default App;
