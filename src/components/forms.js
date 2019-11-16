@@ -1,23 +1,17 @@
 import React from 'react';
 import firebase from "firebase";
-import Form from 'react-bootstrap/Form';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
-import Col from 'react-bootstrap/Col';
-import InputGroup from 'react-bootstrap/InputGroup';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import Editor from 'for-editor'
 import Chip from '@material-ui/core/Chip';
-var count = 0;
-var qCount = 0; 
-var aCount = 0;
-var tCount = 0;
-var uCount = 0;
-var qType = 0;
-var cType = 0;
-var dType = 0;
-var cCount = 0;
 
-const choiceStyle = {
-  marginBottom: '10px'
+
+const styles = {
+  multChoice: {
+    width: "300px"
+  }
 }
 
 class Forms extends React.Component {
@@ -25,7 +19,7 @@ class Forms extends React.Component {
     super(props);
     this.state = {
 
-      value: '',
+      value: "",
       questions: [],
       SLOarray: props.editingQuestion ? props.editingQuestion[1].SLO : [],
       choices: props.editingQuestion ? props.editingQuestion[1].choices : [],
@@ -37,6 +31,7 @@ class Forms extends React.Component {
       cog: props.editingQuestion ? props.editingQuestion[1].cog : "",
       diff: props.editingQuestion ? props.editingQuestion[1].diff : "",
       SLO: "",
+      isMult: props.editingQuestion ? (props.editingQuestion[1].type === "Multiple Choice") : "",
       type: props.editingQuestion ? props.editingQuestion[1].type : "",
       course: props.editingQuestion ? props.editingQuestion[1].course : "",
       pre: props.editingQuestion ? props.editingQuestion[1].pre : "",
@@ -59,25 +54,7 @@ class Forms extends React.Component {
     this.handlePreChange = this.handlePreChange.bind(this);
   }
 
-  enableButton() {
-    console.log("old", count)
-    count = qCount + aCount + tCount + uCount + qType + dType + cType + cCount;
-    console.log("new", count)
-    if (count !== 8) {
-      return false;
-    }
-    return true;
-  }
-
   handleQuestionChange(value) {
-    if (value === "") {
-      qCount = 0;
-    }
-    else {
-      if (value.length === 1) {
-        qCount = 1;
-      }
-    }
     this.setState({ question: value });
   }
 
@@ -90,20 +67,10 @@ class Forms extends React.Component {
   }
 
   handleUnitChange(event) {
-    if (event.target.value === "") {
-      uCount = 0;
-    } else if (event.target.value.length === 1) {
-      uCount = 1;
-    }
     this.setState({ unit: event.target.value });
   }
 
   handleTopicChange(event) {
-    if (event.target.value === "") {
-      tCount = 0;
-    } else if (event.target.value.length === 1) {
-      tCount = 1;
-    }
     this.setState({ topic: event.target.value });
   }
 
@@ -116,44 +83,18 @@ class Forms extends React.Component {
   }
 
   handleAnswerChange(value) {
-    if (value === "") {
-      aCount = 0;
-    } else if (value.length === 1) {
-      aCount = 1;
-    }
     this.setState({ answer: value });
   }
 
   handleCogChange(event) {
-    if (event.target.value === "Select a Cognitive Level") {
-      cType = 0;
-    }
-    else {
-      cType = 1;
-    }
     this.setState({ cog: event.target.value });
   }
 
   handleDiffChange(event) {
-    if (event.target.value === "Select a Difficulty") {
-      dType = 0;
-    }
-    else {
-      dType = 1;
-    }
     this.setState({ diff: event.target.value });
   }
 
   handleTypeChange(event) {
-    if (event.target.value === "Select a Question Type") {
-      qType = 0;
-    }
-    else {
-      qType = 1;
-      if (event.target.value === "Multiple Choice" && aCount === 0) {
-        qType = 2;
-      }
-    }
     this.setState({ isMult: event.target.value === "Multiple Choice" });
     this.setState({ type: event.target.value });
   }
@@ -163,12 +104,6 @@ class Forms extends React.Component {
   }
 
   handleCourseChange(event) {
-    if (event.target.value === "") {
-      cCount = 0;
-    }
-    else if (event.target.value.length === 1) {
-      cCount = 1
-    }
     this.setState({ course: event.target.value });
   }
 
@@ -211,17 +146,21 @@ class Forms extends React.Component {
       course: "",
       pre: "",
     });
+
     this.props.openSnackbar(success, message);
   }
 
   submitQuestion() {
     let questionsRef = firebase.firestore().collection('questions');
+    if (!this.state.isMult) {
+      this.setState({ choices: [] });
+    }
     questionsRef.add({
       question: this.state.question,
-      unit: this.state.unit.toLowerCase(),
+      unit: this.state.unit,
       pre: this.state.pre,
       course: this.state.course,
-      topic: this.state.topic.toLowerCase(),
+      topic: this.state.topic,
       answer: this.state.answer,
       cog: this.state.cog,
       diff: this.state.diff,
@@ -237,6 +176,9 @@ class Forms extends React.Component {
 
   updateQuestion(state) {
     let questionsRef = firebase.firestore().collection('questions');
+    if (!state.isMult) {
+      state.choices = [];
+    }
     questionsRef.doc(this.props.editingQuestion[0]).update({
       question: state.question,
       unit: state.unit.toLowerCase(),
@@ -263,218 +205,230 @@ class Forms extends React.Component {
   render() {
     return (
       <div style={{ width: "65%", margin: '0 auto', marginTop: this.props.isEditing ? "0em" : "2.5em" }}>
-        <Form>
-          <Form.Row>
-            <Form.Group as={Col} md="2">
-              <Form.Label>Course</Form.Label>
-              <Form.Control onChange={this.handlePreChange} as="select" value={this.state.pre}>
-                <option>Select course</option>
-                <option>CISC</option>
-                <option>CPEG</option>
-                <option>MISY</option>
-              </Form.Control>
-            </Form.Group>
-
-            <Form.Group as={Col} md="1">
-              <Form.Label>Number</Form.Label>
-              <Form.Control
-                onChange={this.handleCourseChange}
-                placeholder="106"
-              />
-            </Form.Group>
-
-            <Form.Group as={Col} md="3">
-              <Form.Label>Question Type</Form.Label>
-              <Form.Control onChange={this.handleTypeChange} as="select" value={this.state.type}>
-                <option>Select a Question Type</option>
-                <option>Multiple Choice</option>
-                <option>Free Response</option>
-                <option>Programming</option>
-              </Form.Control>
-            </Form.Group>
-
-            <Form.Group as={Col} md="3">
-              <Form.Label>Cognitive Level</Form.Label>
-              <Form.Control onChange={this.handleCogChange} as="select" value={this.state.cog}>
-                <option>Select a Cognitive Level</option>
-                <option>Remembering</option>
-                <option>Understanding</option>
-                <option>Applying</option>
-                <option>Analyzing</option>
-                <option>Evaluating</option>
-                <option>Creating</option>
-              </Form.Control>
-            </Form.Group>
-
-            <Form.Group as={Col} md="3">
-              <Form.Label>Unit</Form.Label>
-              <Form.Control
-                onChange={this.handleUnitChange}
-                value={this.state.unit}
-                placeholder="Chapter 2" />
-            </Form.Group>
-          </Form.Row>
-
-          <Form.Row>
-            <Form.Group as={Col} md="6">
-              <Form.Label>SLO</Form.Label>
-              <Form.Control
-                onKeyDown={this.addSLO}
-                onChange={this.handleSLOChange}
-                value={this.state.SLO}
-                placeholder="" />
-            </Form.Group>
-
-            <Form.Group as={Col} md="3">
-              <Form.Label>Topic</Form.Label>
-              <Form.Control
-                onChange={this.handleTopicChange}
-                value={this.state.topic}
-                placeholder="Addition" />
-            </Form.Group>
-
-            <Form.Group as={Col} md="3">
-              <Form.Label>Difficulty</Form.Label>
-              <Form.Control onChange={this.handleDiffChange} as="select" value={this.state.diff}>
-                <option>Select a Difficulty</option>
-                <option>easy</option>
-                <option>medium</option>
-                <option>challenging</option>
-              </Form.Control>
-            </Form.Group>
-          </Form.Row>
-
-          <br />
-
-          {this.state.SLOarray ? this.state.SLOarray.map((slo, key) => {
-            return (
-              <Chip
-                style={{ margin: '5px' }}
-                key={key}
-                onDelete={() => this.deleteSLO(slo)}
-                label={slo}
-              />
-            );
-          })
-            :
-            null
-          }
-
-          <Form.Row>
-            <Form.Label>Question</Form.Label>
-            <Editor
-              placeholder="Enter question here..."
-              onChange={this.handleQuestionChange}
-              value={this.state.question}
-              toolbar={{
-                h1: true,
-                h2: true,
-                h3: true,
-                img: true,
-                code: true,
-                preview: true,
-                expand: true,
-                undo: true,
-                redo: true,
-                subfield: true
-              }}
-              style={{ height: '300px', width: '100%' }}
-              language="en"
-              subfield
-              lineNum
-              preview
+        <form>
+          <div>
+            <TextField
+              style={{ width: 75 }}
+              label="Course"
+              margin="normal"
+              onChange={this.handlePreChange}
+              value={this.state.pre}
+              select
+            >
+              <MenuItem value="CISC">CISC</MenuItem>
+              <MenuItem value="CPEG">CPEG</MenuItem>
+              <MenuItem value="MISY">MISY</MenuItem>
+            </TextField>
+            <TextField
+              style={{ width: 50, marginLeft: 10 }}
+              label="#"
+              margin="normal"
+              type="number"
+              onChange={this.handleCourseChange}
+              value={this.state.course}
             />
-          </Form.Row>
 
-          <br />
+            <TextField
+              style={{ width: 150, marginLeft: "1em" }}
+              label="Question Type"
+              margin="normal"
+              onChange={this.handleTypeChange}
+              value={this.state.type}
+              select
+            >
+              <MenuItem value="Multiple Choice">Multiple Choice</MenuItem>
+              <MenuItem value="Free Response">Free Response</MenuItem>
+              <MenuItem value="Programming">Programming</MenuItem>
+            </TextField>
 
-          {this.state.type !== "Multiple Choice"
-            ?
-            <Form.Row style={{ width: '100%' }}>
-              <Form.Label>Answer</Form.Label>
-              <Editor
-                placeholder="Enter answer here..."
-                onChange={this.handleAnswerChange}
-                value={this.state.answer}
-                toolbar={{
-                  h1: true,
-                  h2: true,
-                  h3: true,
-                  code: true,
-                  preview: true,
-                  expand: true,
-                  undo: true,
-                  redo: true,
-                  subfield: true
+            <TextField
+              style={{ width: 150, marginLeft: "1em" }}
+              label="Difficulty"
+              margin="normal"
+              onChange={this.handleDiffChange}
+              value={this.state.diff}
+              select
+            >
+              <MenuItem value="Easy">Easy</MenuItem>
+              <MenuItem value="Medium">Medium</MenuItem>
+              <MenuItem value="Challenging">Challenging</MenuItem>
+            </TextField>
+          </div>
+
+          <div>
+            <TextField
+              style={{ width: 157 }}
+              label="Topic"
+              margin="normal"
+              onChange={this.handleTopicChange}
+              value={this.state.topic}
+            />
+
+            <TextField
+              style={{ width: 130, marginLeft: "1em" }}
+              label="Unit"
+              margin="normal"
+              onChange={this.handleUnitChange}
+              value={this.state.unit}
+            />
+
+            <TextField
+              style={{ width: 150, marginLeft: "1em" }}
+              label="Cognitive Level"
+              margin="normal"
+              onChange={this.handleCogChange}
+              value={this.state.cog}
+              select
+            >
+              <MenuItem value="Remembering">Remembering</MenuItem>
+              <MenuItem value="Understanding">Understanding</MenuItem>
+              <MenuItem value="Applying">Applying</MenuItem>
+              <MenuItem value="Analyzing">Analyzing</MenuItem>
+              <MenuItem value="Evaluating">Evaluating</MenuItem>
+              <MenuItem value="Creating">Creating</MenuItem>
+            </TextField>
+
+          </div>
+
+          <div>
+            <TextField
+              style={{ width: 470 }}
+              label="SLO(s)"
+              margin="normal"
+              onChange={this.handleSLOChange}
+              onKeyDown={this.addSLO}
+              value={this.state.SLO}
+            />
+          </div>
+        </form>
+
+        {this.state.SLOarray ? this.state.SLOarray.map((slo, key) => {
+          return (
+            <Chip
+              style={{ margin: '5px' }}
+              key={key}
+              onDelete={() => this.deleteSLO(slo)}
+              label={slo}
+            />
+          );
+        })
+          :
+          null
+        }
+
+        <h5 style={{ textAlign: "left", marginTop: "2em" }}>Question:</h5>
+        <Editor
+          placeholder="Enter question here..."
+          onChange={this.handleQuestionChange}
+          value={this.state.question}
+          toolbar={{
+            h1: true,
+            h2: true,
+            h3: true,
+            img: true,
+            code: true,
+            preview: true,
+            expand: true,
+            undo: true,
+            redo: true,
+            subfield: true
+          }}
+          style={{ height: '300px', width: '100%' }}
+          language="en"
+          subfield
+          lineNum
+          preview
+        />
+
+        <br />
+
+        <h5 style={{ textAlign: "left", marginTop: "1em" }}>Answer:</h5>
+
+        <div style={{ width: '100%' }}>
+          <Editor
+            placeholder="Enter answer here..."
+            onChange={this.handleAnswerChange}
+            value={this.state.answer}
+            toolbar={{
+              h1: true,
+              h2: true,
+              h3: true,
+              code: true,
+              preview: true,
+              expand: true,
+              undo: true,
+              redo: true,
+              subfield: true
+            }}
+            style={{ height: '300px', width: '100%' }}
+            language="en"
+            subfield
+            lineNum
+            preview
+          />
+        </div>
+        {this.state.isMult ?
+          <div style={{width: "300px"}}>
+            <h5 style={{ textAlign: "left", marginTop: "2em" }}>Answer Choices:</h5>
+
+            <div style={{marginRight: "auto"}}>
+              <TextField
+                style={styles.multChoice}
+                onChange={(e) => this.handleChoicesChange("A", e)}
+                value={this.state.choices[0]}
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">A.</InputAdornment>
                 }}
-                style={{ height: '300px', width: '100%' }}
-                language="en"
-                subfield
-                lineNum
-                preview
               />
-            </Form.Row>
-            :
-            null
-          }
-          <Form.Row>
-            {this.state.isMult ?
-              <Form.Group as={Col} md="5">
-                <Form.Label>Answer Choices</Form.Label>
-                <InputGroup style={choiceStyle}>
-                  <InputGroup.Prepend>
-                    <InputGroup.Text>A</InputGroup.Text>
-                  </InputGroup.Prepend>
-                  <Form.Control onChange={(e) => this.handleChoicesChange("A", e)}
-                    type="text"
-                    value={this.state.choices[0]}
-                  />
-                </InputGroup>
-                <InputGroup style={choiceStyle}>
-                  <InputGroup.Prepend>
-                    <InputGroup.Text>B</InputGroup.Text>
-                  </InputGroup.Prepend>
-                  <Form.Control onChange={(e) => this.handleChoicesChange("B", e)}
-                    type="text"
-                    value={this.state.choices[1]}
-                  />
-                </InputGroup>
-                <InputGroup style={choiceStyle}>
-                  <InputGroup.Prepend>
-                    <InputGroup.Text>C</InputGroup.Text>
-                  </InputGroup.Prepend>
-                  <Form.Control onChange={(e) => this.handleChoicesChange("C", e)}
-                    type="text"
-                    value={this.state.choices[2]}
-                  />
-                </InputGroup>
-                <InputGroup style={{ choiceStyle }}>
-                  <InputGroup.Prepend>
-                    <InputGroup.Text>D</InputGroup.Text>
-                  </InputGroup.Prepend>
-                  <Form.Control onChange={(e) => this.handleChoicesChange("D", e)}
-                    type="text"
-                    value={this.state.choices[3]}
-                  />
-                </InputGroup>
-              </Form.Group>
-              :
-              null
-            }
-          </Form.Row>
+            </div>
 
-          <Button
-            disabled={!this.enableButton()}
-            variant="contained"
-            color="primary"
-            onClick={this.props.isEditing ? () => { this.updateQuestion(this.state); this.props.closeFn(); } : this.submitQuestion}
-            style={{ marginTop: '2em' }}
-          >
-            {this.props.isEditing ? 'Update' : 'Submit'}
-          </Button>
+            <div>
+              <TextField
+                style={styles.multChoice}
+                onChange={(e) => this.handleChoicesChange("B", e)}
+                value={this.state.choices[1]}
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">B.</InputAdornment>
+                }}
+              />
+            </div>
 
-        </Form>
-      </div>
+            <div>
+              <TextField
+                style={styles.multChoice}
+                onChange={(e) => this.handleChoicesChange("C", e)}
+                value={this.state.choices[2]}
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">C.</InputAdornment>
+                }}
+              />
+            </div>
+
+            <div>
+              <TextField
+                style={styles.multChoice}
+                onChange={(e) => this.handleChoicesChange("D", e)}
+                value={this.state.choices[3]}
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">D.</InputAdornment>
+                }}
+              />
+            </div>
+          </div>
+          :
+          null
+        }
+
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={this.props.isEditing ? () => { this.updateQuestion(this.state); this.props.closeFn(); } : this.submitQuestion}
+          style={{ marginTop: '2em' }}
+        >
+          {this.props.isEditing ? 'Update' : 'Submit'}
+        </Button>
+
+      </div >
     )
   }
 }
