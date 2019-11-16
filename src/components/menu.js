@@ -57,7 +57,13 @@ class Drawer extends React.Component {
             <div style={styles.menu}>
                 <AppBar position="static">
                     <Toolbar>
-                        <IconButton edge="start" color="inherit" aria-label="menu" onClick={this.handleOpen}>
+                        <IconButton 
+                            style={{marginRight: ".5em"}} 
+                            edge="start" 
+                            color="inherit" 
+                            aria-label="menu" 
+                            onClick={this.handleOpen}
+                        >
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" >
