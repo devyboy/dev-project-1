@@ -2,12 +2,12 @@ import React from 'react';
 import YAML from 'yaml';
 import arrayMove from 'array-move';
 import Menu from '../components/menu';
-import Form from 'react-bootstrap/Form';
 import Card from '@material-ui/core/Card';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from "@material-ui/core/MenuItem";
 import { Redirect } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import Collapse from '@material-ui/core/Collapse';
 import ShuffleIcon from "@material-ui/icons/Shuffle";
 import Typography from '@material-ui/core/Typography';
 import CardHeader from "@material-ui/core/CardHeader";
@@ -20,15 +20,15 @@ import { sortableContainer, sortableElement, sortableHandle } from 'react-sortab
 
 
 const styles = {
-  challenging: {
+  Challenging: {
     color: "red",
     fontSize: "13px",
   },
-  medium: {
+  Medium: {
     color: "orange",
     fontSize: "13px",
   },
-  easy: {
+  Easy: {
     color: "green",
     fontSize: "13px",
   },
@@ -218,25 +218,6 @@ class Generate extends React.Component {
               <span style={styles[value.diff]}>{value.diff}</span>
             </p>
           </CardContent>
-
-          <Collapse in={this.state.expanded === index} unmountOnExit>
-            <CardContent style={styles.cardContent2}>
-              <hr />
-              <ul>
-                <li><p><strong>Course: </strong>{value.course}</p></li>
-                <li><p><strong>Answer: </strong>{value.answer}</p></li>
-                <li><p><strong>Cog Level: </strong>{value.cog}</p></li>
-                <li><p><strong>Topic: </strong>{value.topic}</p></li>
-                <strong>SLOs:</strong>
-                <ul>
-                  {value.SLO.map((slo, key) =>
-                    <li key={key}>{slo}</li>
-                  )}
-                </ul>
-              </ul>
-            </CardContent>
-          </Collapse>
-
         </Card>
       );
     });
@@ -359,7 +340,7 @@ class Generate extends React.Component {
                       <Button onClick={() => this.closeCard(this.state.questions.indexOf(this.state.detailsQuestion) + 1)} color="secondary">
                         Remove
                       </Button>
-                      <Button autoFocus onClick={() => this.setState({ detailsModal: false })} color="primary">
+                      <Button onClick={() => this.setState({ detailsModal: false })} color="primary">
                         Close
                       </Button>
                     </DialogActions>
@@ -374,25 +355,27 @@ class Generate extends React.Component {
         <hr style={{ width: "80%" }} />
 
         <div style={{ width: "50%", margin: "0 auto" }}>
-          <Form>
-            <Form.Row style={{ justifyContent: "center" }}>
-              <Form.Group>
-                <Form.Control onChange={this.handleNameChange} value={this.state.name} />
-              </Form.Group>
+          <TextField 
+            style={{width: 150}}
+            label="Filename"
+            margin="normal"
+            onChange={this.handleNameChange} 
+            value={this.state.name}
+          />
+          <TextField
+            style={{marginLeft: 7, width: 70}}
+            label="Type"
+            margin="normal"
+            onChange={this.handleFormatChange}
+            value={this.state.format}
+            select
+          >
+            <MenuItem value=".json">.json</MenuItem>
+            <MenuItem value=".txt">.txt</MenuItem>
+            <MenuItem value=".yaml">.yaml</MenuItem>
+          </TextField>
 
-              <Form.Group>
-                <Form.Control
-                  onChange={this.handleFormatChange}
-                  value={this.state.format}
-                  as="select"
-                >
-                  <option>.txt</option>
-                  <option>.json</option>
-                  <option>.yaml</option>
-                </Form.Control>
-              </Form.Group>
-            </Form.Row>
-          </Form>
+          <br />
 
           <Button style={{ margin: '1em' }} color="primary" variant="contained" onClick={this.downloadFile}>
             Download
