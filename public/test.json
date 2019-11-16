@@ -5,11 +5,11 @@
     "topic": "For Loops",
     "unit": "Chapter 2",
     "SLO": ["Demonstrate understanding of for loop and range", "Access the length of a list"],
-    "type": "multiple choice",
+    "type": "Multiple Choice",
     "diff": "Medium",
     "pre": "CISC",
     "course": "108",
-    "cog": "remembering",
+    "cog": "Remembering",
     "choices": [
       "for i in 10",
       "for i in range(1, 9)",
@@ -23,11 +23,11 @@
     "topic": "Lists",
     "unit": "Chapter 4",
     "SLO": ["Access the length of a list", "Understand class hierarchies"],
-    "type": "multiple choice",
+    "type": "Multiple Choice",
     "diff": "Easy",
     "pre": "CPEG",
     "course": "106",
-    "cog": "analyzing",
+    "cog": "Analyzing",
     "choices": [
       "list.length()",
       "list.length",
@@ -41,11 +41,11 @@
     "topic": "Errors",
     "unit": "Chapter 9",
     "SLO": ["Understand class hierarchies", "Creating objects on the heap"],
-    "type": "free response",
+    "type": "Free Response",
     "diff": "Medium",
     "pre": "MISY",
     "course": "181",
-    "cog": "understanding",
+    "cog": "Understanding",
     "choices": [
     ]
   },
@@ -55,11 +55,11 @@
     "topic": "Memory Management",
     "unit": "Chapter 10",
     "SLO": ["Demonstrate understanding of for loop and range", "Creating objects on the heap"],
-    "type": "programming",
+    "type": "Programming",
     "diff": "Challenging",
     "pre": "CISC",
     "course": "220",
-    "cog": "applying",
+    "cog": "Applying",
     "choices": [
     ]
   }

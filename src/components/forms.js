@@ -181,9 +181,9 @@ class Forms extends React.Component {
     }
     questionsRef.doc(this.props.editingQuestion[0]).update({
       question: state.question,
-      unit: state.unit.toLowerCase(),
+      unit: state.unit,
       course: state.course,
-      topic: state.topic.toLowerCase(),
+      topic: state.topic,
       answer: state.answer,
       cog: state.cog,
       pre: state.pre,
