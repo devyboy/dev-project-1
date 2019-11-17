@@ -107,7 +107,7 @@ class Generate extends React.Component {
 
   componentDidMount() {
     if (this.props.location.state === undefined) {
-      window.location.href = "/view-edit";
+      this.props.history.push("/view-edit");
     }
     else {
       this.setState({ questions: this.props.location.state.questions });
@@ -168,7 +168,7 @@ class Generate extends React.Component {
     let newQues = this.state.questions
     newQues.splice(index - 1, 1);
     if (newQues.length === 0) {
-      window.location.href = "/view-edit";
+      this.props.history.push("/view-edit");
     }
     this.setState({ detailsModal: false, questions: newQues });
   }

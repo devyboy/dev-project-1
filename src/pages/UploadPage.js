@@ -99,7 +99,7 @@ class UploadPage extends React.Component {
       .catch(err => {
         this.showSnackbar(false, err);
       })
-      .then(() => window.location.href = "/view-edit")
+      .then(() => this.props.history.push("/view-edit"))
 
   }
 

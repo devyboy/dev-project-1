@@ -91,11 +91,11 @@ function EnhancedTableHead(props) {
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
-              {orderBy === headCell.id ? (
+              {orderBy === headCell.id && (
                 <span className={classes.visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </span>
-              ) : null}
+              )}
             </TableSortLabel>
           </TableCell>
         ))}
@@ -122,13 +122,13 @@ const useToolbarStyles = makeStyles(theme => ({
   highlight:
     theme.palette.type === 'light'
       ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
+        color: theme.palette.secondary.main,
+        backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+      }
       : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.secondary.dark,
+      },
   spacer: {
     flex: '1 1 80%',
   },
@@ -156,39 +156,39 @@ const EnhancedTableToolbar = props => {
             {numSelected} selected
           </Typography>
         ) : (
-          <Typography variant="h6" id="tableTitle">
-            Questions
+            <Typography variant="h6" id="tableTitle">
+              Questions
           </Typography>
-        )}
+          )}
       </div>
       <div className={classes.spacer} />
       <div className={classes.actions}>
         {numSelected > 0 ? (
           <>
-          <Tooltip title="Create Exam">
-            <IconButton 
-              aria-label="description"
-              onClick={() => handleGenerateExam(examQuestions)}
-            >
-              <AssignmentIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Delete">
-            <IconButton 
-              aria-label="delete"
-              onClick={() => handleDeleteQuestions(examQuestions)}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
+            <Tooltip title="Create Exam">
+              <IconButton
+                aria-label="description"
+                onClick={() => handleGenerateExam(examQuestions)}
+              >
+                <AssignmentIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete">
+              <IconButton
+                aria-label="delete"
+                onClick={() => handleDeleteQuestions(examQuestions)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
           </>
         ) : (
-          <Tooltip title="Filter list">
-            <IconButton aria-label="filter list">
-              <FilterListIcon />
-            </IconButton>
-          </Tooltip>
-        )}
+            <Tooltip title="Filter list">
+              <IconButton aria-label="filter list">
+                <FilterListIcon />
+              </IconButton>
+            </Tooltip>
+          )}
       </div>
     </Toolbar>
   );
@@ -285,8 +285,8 @@ export default function EnhancedTable(props) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar 
-          numSelected={selected.length} 
+        <EnhancedTableToolbar
+          numSelected={selected.length}
           examQuestions={selected}
           handleGenerateExam={props.handleGenerateExam}
           handleDeleteQuestions={props.handleDeleteQuestions}
@@ -298,14 +298,14 @@ export default function EnhancedTable(props) {
             size='medium'
           >
             <colgroup>
-                <col width="10%" />
-                <col width="5%" />
-                <col width="5%" />
-                <col width="5%" />
-                <col width="5%" />
-                <col width="5%" />
-                <col width="40%" />
-                <col width="25%" />
+              <col width="10%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="40%" />
+              <col width="25%" />
             </colgroup>
             <EnhancedTableHead
               classes={classes}
@@ -339,9 +339,9 @@ export default function EnhancedTable(props) {
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
                         <IconButton
-                            onClick={() => props.handleEditQuestions(row)}
+                          onClick={() => props.handleEditQuestions(row)}
                         >
-                            <EditIcon />
+                          <EditIcon />
                         </IconButton>
                       </TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
