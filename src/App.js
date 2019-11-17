@@ -8,7 +8,7 @@ import GeneratePage from './pages/GeneratePage';
 import FourOhFour from "./pages/FourOhFour";
 import LoginPage from "./pages/LoginPage";
 import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import './bootstrap.min.css';
 
 // Firebase Credentials
 var config = {
