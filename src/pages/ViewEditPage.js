@@ -109,11 +109,10 @@ class ViewEdit extends React.Component {
           :
           <div>
             {this.state.selectedQuestions !== null &&
-              <Redirect to={{
+              this.props.history.push({
                 pathname: "/generate",
                 state: { questions: this.state.selectedQuestions }
-              }}
-              />
+              })
             }
             <Menu />
             <div>
