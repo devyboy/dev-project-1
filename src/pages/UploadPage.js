@@ -15,10 +15,6 @@ class UploadPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
-      message: "",
-      success: true,
-      fileName: "",
       questions: [],
     };
 
@@ -30,7 +26,7 @@ class UploadPage extends React.Component {
   }
 
   handleFileChosen(file) {
-    this.setState({ fileName: file.name, questions: [] });
+    this.setState({ questions: [] });
     let ext = file.name.split('.').pop();
     reader = new FileReader();
 

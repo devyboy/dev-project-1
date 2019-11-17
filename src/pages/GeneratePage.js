@@ -82,11 +82,7 @@ class Generate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      questions: null,
       format: ".txt",
-      filename: "",
-      detailsModal: false,
-      detailsQuestion: null,
     }
 
     this.handleFormatChange = this.handleFormatChange.bind(this);
@@ -108,7 +104,6 @@ class Generate extends React.Component {
     kapp.choices = arrayMove(kapp.choices, oldIndex, newIndex);
     this.setState({ detailsQuestion: kapp });
   };
-  
 
   componentDidMount() {
     if (this.props.location.state === undefined) {
@@ -201,7 +196,7 @@ class Generate extends React.Component {
       array[j] = temp;
     }
     dab.choices = array;
-    
+
     this.setState({ detailsQuestion: dab });
   }
 
@@ -245,8 +240,8 @@ class Generate extends React.Component {
     });
 
     const SortableChoice = sortableElement(({ value }) => {
-      return(
-        <li style={{cursor: "move", zIndex: 1301}}>
+      return (
+        <li style={{ cursor: "move", zIndex: 1301 }}>
           {value}
         </li>
       );
@@ -254,7 +249,7 @@ class Generate extends React.Component {
 
 
     const SortableChoices = sortableContainer(({ items }) => {
-      return(
+      return (
         <ul>
           {items.map((value, index) => (
             <SortableChoice key={`item-${value + index}`} index={index} value={value} />
@@ -303,7 +298,7 @@ class Generate extends React.Component {
                     <DialogTitle onClose={() => this.setState({ detailsModal: false })}>
                       {"Question " + (this.state.questions.indexOf(this.state.detailsQuestion) + 1) + " details"}
                     </DialogTitle>
-                    <DialogContent dividers>
+                    <DialogContent dividers >
                       <ul>
                         <li>
                           <Typography gutterBottom>
@@ -371,10 +366,12 @@ class Generate extends React.Component {
                         </li>
                       </ul>
                     </DialogContent>
-                    <DialogActions>
-                      <Button style={{marginRight: "auto" }} onClick={this.randomizeChoices} color="primary">
-                        Shuffle Choices
-                      </Button>
+                    <DialogActions >
+                      {this.state.detailsQuestion.choices.length !== 0 &&
+                        <Button style={{ marginRight: "auto" }} onClick={this.randomizeChoices} color="primary">
+                          Shuffle Choices
+                        </Button>
+                      }
                       <Button onClick={() => this.closeCard(this.state.questions.indexOf(this.state.detailsQuestion) + 1)} color="secondary">
                         Remove
                       </Button>
@@ -393,15 +390,15 @@ class Generate extends React.Component {
         <hr style={{ width: "80%" }} />
 
         <div style={{ width: "50%", margin: "0 auto" }}>
-          <TextField 
-            style={{width: 150}}
+          <TextField
+            style={{ width: 150 }}
             label="Filename"
             margin="normal"
-            onChange={this.handleNameChange} 
+            onChange={this.handleNameChange}
             value={this.state.name}
           />
           <TextField
-            style={{marginLeft: 7, width: 70}}
+            style={{ marginLeft: 7, width: 70 }}
             label="Type"
             margin="normal"
             onChange={this.handleFormatChange}

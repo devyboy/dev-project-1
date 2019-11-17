@@ -35,10 +35,7 @@ class Drawer extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            drawer: false,
-            anchorEl: null,
-        };
+        this.state = {};
         this.handleOpen = this.handleOpen.bind(this);
         this.signOut = this.signOut.bind(this);
     }
@@ -57,11 +54,11 @@ class Drawer extends React.Component {
             <div style={styles.menu}>
                 <AppBar position="static">
                     <Toolbar>
-                        <IconButton 
-                            style={{marginRight: ".5em"}} 
-                            edge="start" 
-                            color="inherit" 
-                            aria-label="menu" 
+                        <IconButton
+                            style={{ marginRight: ".5em" }}
+                            edge="start"
+                            color="inherit"
+                            aria-label="menu"
                             onClick={this.handleOpen}
                         >
                             <MenuIcon />

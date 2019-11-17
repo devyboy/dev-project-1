@@ -13,10 +13,10 @@ class LoginPage extends React.Component {
 
   render() {
     if (this.props.user === false) {
-      return(<CircularProgress />);
+      return (<CircularProgress />);
     }
     if (this.props.user === null) {
-      return(
+      return (
         <div>
           <p>You need to login to proceed</p>
           <Button onClick={this.login}>Login</Button>
@@ -24,8 +24,8 @@ class LoginPage extends React.Component {
       );
     }
     else {
-      return( 
-        <Redirect to={{pathname: "/"}} />
+      return (
+        <Redirect to={{ pathname: "/" }} />
       );
     }
   }

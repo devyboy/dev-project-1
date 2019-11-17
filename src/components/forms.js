@@ -18,23 +18,18 @@ class Forms extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
-      value: "",
-      questions: [],
       SLOarray: props.editingQuestion ? props.editingQuestion[1].SLO : [],
       choices: props.editingQuestion ? props.editingQuestion[1].choices : [],
-
-      question: props.editingQuestion ? props.editingQuestion[1].question : "",
-      unit: props.editingQuestion ? props.editingQuestion[1].unit : "",
-      topic: props.editingQuestion ? props.editingQuestion[1].topic : "",
-      answer: props.editingQuestion ? props.editingQuestion[1].answer : "",
-      cog: props.editingQuestion ? props.editingQuestion[1].cog : "",
-      diff: props.editingQuestion ? props.editingQuestion[1].diff : "",
-      SLO: "",
-      isMult: props.editingQuestion ? (props.editingQuestion[1].type === "Multiple Choice") : "",
-      type: props.editingQuestion ? props.editingQuestion[1].type : "",
-      course: props.editingQuestion ? props.editingQuestion[1].course : "",
-      pre: props.editingQuestion ? props.editingQuestion[1].pre : "",
+      question: props.editingQuestion && props.editingQuestion[1].question,
+      unit: props.editingQuestion && props.editingQuestion[1].unit,
+      topic: props.editingQuestion && props.editingQuestion[1].topic,
+      answer: props.editingQuestion && props.editingQuestion[1].answer,
+      cog: props.editingQuestion && props.editingQuestion[1].cog,
+      diff: props.editingQuestion && props.editingQuestion[1].diff,
+      isMult: props.editingQuestion && (props.editingQuestion[1].type === "Multiple Choice"),
+      type: props.editingQuestion && props.editingQuestion[1].type,
+      course: props.editingQuestion && props.editingQuestion[1].course,
+      pre: props.editingQuestion && props.editingQuestion[1].pre,
     }
 
     this.submitQuestion = this.submitQuestion.bind(this);
@@ -58,14 +53,6 @@ class Forms extends React.Component {
     this.setState({ question: value });
   }
 
-  addSLO(event) {
-    if (event.keyCode === 13) { // If they press the Enter key (which is number 13), add to SLO list
-      if (!this.state.SLOarray.includes(event.target.value)) {
-        this.setState({ SLOarray: this.state.SLOarray.concat(event.target.value), SLO: "" });
-      }
-    }
-  }
-
   handleUnitChange(event) {
     this.setState({ unit: event.target.value });
   }
@@ -74,16 +61,12 @@ class Forms extends React.Component {
     this.setState({ topic: event.target.value });
   }
 
-  deleteSLO(label) {
-    this.setState({
-      SLOarray: this.state.SLOarray.filter((slo) =>
-        slo !== label
-      )
-    });
-  }
-
   handleAnswerChange(value) {
     this.setState({ answer: value });
+  }
+
+  handlePreChange(event) {
+    this.setState({ pre: event.target.value })
   }
 
   handleCogChange(event) {
@@ -128,33 +111,129 @@ class Forms extends React.Component {
     this.setState({ choices: temp });
   }
 
+  addSLO(event) {
+    if (event.keyCode === 13) { // If they press the Enter key (which is number 13), add to SLO list
+      if (!this.state.SLOarray.includes(event.target.value)) {
+        this.setState({ SLOarray: this.state.SLOarray.concat(event.target.value), SLO: "" });
+      }
+    }
+  }
+
+  deleteSLO(label) {
+    this.setState({
+      SLOarray: this.state.SLOarray.filter((slo) =>
+        slo !== label
+      )
+    });
+  }
+
   resetState(success, message) {
     this.setState({
-      questions: [],
+      SLOarray: [],
       choices: [],
-      isMult: false,
-
       question: "",
       unit: "",
       topic: "",
       answer: "",
-      cog: "",
-      diff: "",
-      SLO: "",
-      SLOarray: [],
-      type: "",
+      cog: undefined,
+      diff: undefined,
+      isMult: false,
+      type: undefined,
       course: "",
-      pre: "",
+      pre: undefined,
     });
 
     this.props.openSnackbar(success, message);
   }
 
+  validateInputs() { // There's probably a better way to do this...
+    let flag = true;
+    if (!this.state.course) {
+      this.setState({ courseErr: true });
+      flag = false;
+    }
+    else {
+      this.setState({ courseErr: false });
+    }
+    if (!this.state.pre) {
+      this.setState({ preErr: true });
+      flag = false;
+    }
+    else {
+      this.setState({ preErr: false });
+    }
+    if (!this.state.type) {
+      this.setState({ typeErr: true });
+      flag = false;
+    }
+    else {
+      this.setState({ typeErr: false });
+    }
+    if (!this.state.diff) {
+      this.setState({ diffErr: true });
+      flag = false;
+    }
+    else {
+      this.setState({ diffErr: false });
+    }
+    if (!this.state.topic) {
+      this.setState({ topicErr: true });
+      flag = false;
+    }
+    else {
+      this.setState({ topicErr: false });
+    }
+    if (!this.state.unit) {
+      this.setState({ unitErr: true });
+      flag = false;
+    }
+    else {
+      this.setState({ unitErr: false });
+    }
+    if (!this.state.cog) {
+      this.setState({ cogErr: true });
+      flag = false;
+    }
+    else {
+      this.setState({ cogErr: false });
+    }
+    if (this.state.SLOarray.length === 0) {
+      this.setState({ sloErr: true });
+      flag = false;
+    }
+    else {
+      this.setState({ sloErr: false });
+    }
+    if (!this.state.question) {
+      this.setState({ questionErr: true });
+      flag = false;
+    }
+    else {
+      this.setState({ questionErr: false });
+    }
+    if (!this.state.answer) {
+      this.setState({ answerErr: true });
+      flag = false;
+    }
+    else {
+      this.setState({ answerErr: false });
+    }
+    return flag;
+  }
+
   submitQuestion() {
     let questionsRef = firebase.firestore().collection('questions');
+
+    if (!this.validateInputs()) {
+      window.scrollTo(0, 0);
+      this.props.openSnackbar(false, "Please fill every input before submitting");
+      return;
+    }
+
     if (!this.state.isMult) {
       this.setState({ choices: [] });
     }
+
     questionsRef.add({
       question: this.state.question,
       unit: this.state.unit,
@@ -198,14 +277,10 @@ class Forms extends React.Component {
       });
   }
 
-  handlePreChange(event) {
-    this.setState({ pre: event.target.value })
-  }
-
   render() {
     return (
       <div style={{ width: "65%", margin: '0 auto', marginTop: this.props.isEditing ? "0em" : "2.5em" }}>
-        <form>
+        <form noValidate autoComplete="off">
           <div>
             <TextField
               style={{ width: 75 }}
@@ -213,6 +288,7 @@ class Forms extends React.Component {
               margin="normal"
               onChange={this.handlePreChange}
               value={this.state.pre}
+              error={this.state.preErr}
               select
             >
               <MenuItem value="CISC">CISC</MenuItem>
@@ -226,6 +302,7 @@ class Forms extends React.Component {
               type="number"
               onChange={this.handleCourseChange}
               value={this.state.course}
+              error={this.state.courseErr}
             />
 
             <TextField
@@ -234,6 +311,7 @@ class Forms extends React.Component {
               margin="normal"
               onChange={this.handleTypeChange}
               value={this.state.type}
+              error={this.state.typeErr}
               select
             >
               <MenuItem value="Multiple Choice">Multiple Choice</MenuItem>
@@ -247,6 +325,7 @@ class Forms extends React.Component {
               margin="normal"
               onChange={this.handleDiffChange}
               value={this.state.diff}
+              error={this.state.diffErr}
               select
             >
               <MenuItem value="Easy">Easy</MenuItem>
@@ -262,6 +341,7 @@ class Forms extends React.Component {
               margin="normal"
               onChange={this.handleTopicChange}
               value={this.state.topic}
+              error={this.state.topicErr}
             />
 
             <TextField
@@ -270,6 +350,7 @@ class Forms extends React.Component {
               margin="normal"
               onChange={this.handleUnitChange}
               value={this.state.unit}
+              error={this.state.unitErr}
             />
 
             <TextField
@@ -278,6 +359,7 @@ class Forms extends React.Component {
               margin="normal"
               onChange={this.handleCogChange}
               value={this.state.cog}
+              error={this.state.cogErr}
               select
             >
               <MenuItem value="Remembering">Remembering</MenuItem>
@@ -298,6 +380,7 @@ class Forms extends React.Component {
               onChange={this.handleSLOChange}
               onKeyDown={this.addSLO}
               value={this.state.SLO}
+              error={this.state.sloErr}
             />
           </div>
         </form>
@@ -333,7 +416,7 @@ class Forms extends React.Component {
             redo: true,
             subfield: true
           }}
-          style={{ height: '300px', width: '100%' }}
+          style={{ height: '300px', width: '100%', borderColor: this.state.questionErr ? "red" : "#ddd" }}
           language="en"
           subfield
           lineNum
@@ -360,7 +443,7 @@ class Forms extends React.Component {
               redo: true,
               subfield: true
             }}
-            style={{ height: '300px', width: '100%' }}
+            style={{ height: '300px', width: '100%', borderColor: this.state.answerErr ? "red" : "#ddd" }}
             language="en"
             subfield
             lineNum
@@ -368,10 +451,10 @@ class Forms extends React.Component {
           />
         </div>
         {this.state.isMult ?
-          <div style={{width: "300px"}}>
+          <div style={{ width: "300px" }}>
             <h5 style={{ textAlign: "left", marginTop: "2em" }}>Answer Choices:</h5>
 
-            <div style={{marginRight: "auto"}}>
+            <div style={{ marginRight: "auto" }}>
               <TextField
                 style={styles.multChoice}
                 onChange={(e) => this.handleChoicesChange("A", e)}

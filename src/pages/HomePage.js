@@ -11,8 +11,6 @@ class HomePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
-      success: true,
     };
 
     this.openSnackbar = this.openSnackbar.bind(this);
@@ -24,7 +22,7 @@ class HomePage extends React.Component {
 
   render() {
     if (this.props.user === false) {
-      return(null);
+      return (null);
     }
     return (
       <div className="App">

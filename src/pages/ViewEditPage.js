@@ -17,14 +17,8 @@ class ViewEdit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      snackbarOpen: false,
-      snackbarSuccess: true,
-
-      questions: null, // An array of 2-tuples containing Doc ID and Question Data
-      isEditing: false,
-      editingQuestion: null,
+      questions: null,
       selectedQuestions: null,
-
     };
     this.openExamForm = this.openExamForm.bind(this);
     this.openSnackbar = this.openSnackbar.bind(this);
@@ -54,7 +48,7 @@ class ViewEdit extends React.Component {
   componentWillUnmount() {
     firebase.firestore().terminate();
   }
-  
+
   openSnackbar(success, message) {
     this.setState({ message: message, snackbarSuccess: success, snackbarOpen: true });
   }
@@ -106,11 +100,11 @@ class ViewEdit extends React.Component {
 
   render() {
     if (this.props.user === false) {
-      return(null);
+      return (null);
     }
     return (
       <div className="App">
-        {!this.props.user ? 
+        {!this.props.user ?
           <Redirect to={"/login"} />
           :
           <div>
