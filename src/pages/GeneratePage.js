@@ -92,16 +92,23 @@ class Generate extends React.Component {
     this.handleFormatChange = this.handleFormatChange.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.downloadFile = this.downloadFile.bind(this);
-    this.onSortEnd = this.onSortEnd.bind(this);
     this.randomizeQuestions = this.randomizeQuestions.bind(this);
+    this.randomizeChoices = this.randomizeChoices.bind(this);
     this.closeCard = this.closeCard.bind(this);
   }
 
-  onSortEnd = ({ oldIndex, newIndex }) => {
+  onSortEndCards = ({ oldIndex, newIndex }) => {
     this.setState(({ questions }) => ({
       questions: arrayMove(questions, oldIndex, newIndex),
     }));
   };
+
+  onSortEndChoices = ({ oldIndex, newIndex }) => {
+    let kapp = this.state.detailsQuestion;
+    kapp.choices = arrayMove(kapp.choices, oldIndex, newIndex);
+    this.setState({ detailsQuestion: kapp });
+  };
+  
 
   componentDidMount() {
     if (this.props.location.state === undefined) {
@@ -172,7 +179,7 @@ class Generate extends React.Component {
   }
 
   randomizeQuestions() {
-    const array = this.state.questions
+    let array = this.state.questions
 
     for (let i = array.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));
@@ -181,6 +188,21 @@ class Generate extends React.Component {
       array[j] = temp;
     }
     this.setState({ questions: array });
+  }
+
+  randomizeChoices() {
+    let dab = this.state.detailsQuestion;
+    let array = dab.choices;
+
+    for (let i = array.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+    dab.choices = array;
+    
+    this.setState({ detailsQuestion: dab });
   }
 
   render() {
@@ -222,6 +244,25 @@ class Generate extends React.Component {
       );
     });
 
+    const SortableChoice = sortableElement(({ value }) => {
+      return(
+        <li style={{cursor: "move", zIndex: 1301}}>
+          {value}
+        </li>
+      );
+    });
+
+
+    const SortableChoices = sortableContainer(({ items }) => {
+      return(
+        <ul>
+          {items.map((value, index) => (
+            <SortableChoice key={`item-${value + index}`} index={index} value={value} />
+          ))}
+        </ul>
+      )
+    });
+
 
     // Entire List component
 
@@ -250,12 +291,12 @@ class Generate extends React.Component {
                 <h2>Generate Exam</h2>
                 <hr style={{ width: "80%" }} />
 
-                <Button variant="contained" color="primary" onClick={this.randomizeQuestions} style={{ margin: "1em" }}>
+                <Button variant="contained" color="primary" onClick={this.randomizeQuestions} style={{ margin: "1em", display: "block", marginLeft: "auto" }}>
                   Randomize
                   <ShuffleIcon />
                 </Button>
 
-                <SortableList items={this.state.questions} onSortEnd={this.onSortEnd} axis="xy" useDragHandle />
+                <SortableList items={this.state.questions} onSortEnd={this.onSortEndCards} axis="xy" useDragHandle />
 
                 {this.state.detailsQuestion &&
                   <Dialog onClose={() => this.setState({ detailsModal: false })} open={this.state.detailsModal}>
@@ -308,13 +349,7 @@ class Generate extends React.Component {
                           <Typography gutterBottom>
                             <strong>Choices: </strong>
                             {this.state.detailsQuestion.choices.length !== 0 ?
-                              <ul>
-                                {this.state.detailsQuestion.choices.map((choice, key) => {
-                                  return (
-                                    <li key={key}>{choice}</li>
-                                  );
-                                })}
-                              </ul>
+                              <SortableChoices items={this.state.detailsQuestion.choices} onSortEnd={this.onSortEndChoices} />
                               :
                               "N/A"
                             }
@@ -337,6 +372,9 @@ class Generate extends React.Component {
                       </ul>
                     </DialogContent>
                     <DialogActions>
+                      <Button style={{marginRight: "auto" }} onClick={this.randomizeChoices} color="primary">
+                        Shuffle Choices
+                      </Button>
                       <Button onClick={() => this.closeCard(this.state.questions.indexOf(this.state.detailsQuestion) + 1)} color="secondary">
                         Remove
                       </Button>
