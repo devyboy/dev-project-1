@@ -67,7 +67,7 @@ class Drawer extends React.Component {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" >
-                            UDel Paper
+                            UDel PAPER
                         </Typography>
                         <Button color="inherit" style={styles.login} onClick={this.signOut} >Logout</Button>
                     </Toolbar>
