@@ -3,7 +3,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import { Redirect } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
+//import CircularProgress from "@material-ui/core/CircularProgress";
 import Menu from '../components/menu';
 
 class LoginPage extends React.Component {
