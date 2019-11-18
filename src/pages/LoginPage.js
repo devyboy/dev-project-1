@@ -1,5 +1,6 @@
 import React from 'react'
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 import { Redirect } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -9,15 +10,18 @@ class LoginPage extends React.Component {
 
   login() {
     let provider = new firebase.auth.GoogleAuthProvider();
+    // firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
+    //   firebase.auth().signInWithPopup(provider);
+    // });
     firebase.auth().signInWithPopup(provider);
   }
 
   render() {
     if (this.props.user === false) {
-      return(<CircularProgress />);
+      return(null);
     }
     if (this.props.user === null) {
-      return(
+      return (
         <div>
           <Menu />
           <p>You need to login to proceed</p>
@@ -26,8 +30,8 @@ class LoginPage extends React.Component {
       );
     }
     else {
-      return( 
-        <Redirect to={{pathname: "/"}} />
+      return (
+        <Redirect to={{ pathname: "/" }} />
       );
     }
   }

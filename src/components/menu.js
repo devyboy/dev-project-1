@@ -1,5 +1,6 @@
 import React from 'react';
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 import { Link } from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -37,7 +38,6 @@ class Drawer extends React.Component {
         super(props);
         this.state = {
             drawer: false,
-            anchorEl: null,
         };
         this.handleOpen = this.handleOpen.bind(this);
         this.signOut = this.signOut.bind(this);
@@ -57,11 +57,17 @@ class Drawer extends React.Component {
             <div style={styles.menu}>
                 <AppBar position="static">
                     <Toolbar>
-                        <IconButton edge="start" color="inherit" aria-label="menu" onClick={this.handleOpen}>
+                        <IconButton
+                            style={{ marginRight: ".5em" }}
+                            edge="start"
+                            color="inherit"
+                            aria-label="menu"
+                            onClick={this.handleOpen}
+                        >
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" >
-                            UDel Paper
+                            UDel PAPER
                         </Typography>
                         <Button color="inherit" style={styles.login} onClick={this.signOut} >Logout</Button>
                     </Toolbar>

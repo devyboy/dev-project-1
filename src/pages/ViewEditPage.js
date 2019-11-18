@@ -1,30 +1,25 @@
 import React from 'react';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import "firebase/firestore";
 import { Redirect } from "react-router-dom";
 import Menu from '../components/menu';
 import Forms from '../components/forms';
+import CustomSnackbar from "../components/customSnackbar";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import EnhancedTable from '../components/table';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import Snackbar from '@material-ui/core/Snackbar';
-import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 
 class ViewEdit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      snackbarOpen: false,
-      snackbarSuccess: true,
-
-      questions: null, // An array of 2-tuples containing Doc ID and Question Data
-      isEditing: false,
-      editingQuestion: null,
+      questions: null,
       selectedQuestions: null,
-
+      isEditing: false,
     };
     this.openExamForm = this.openExamForm.bind(this);
     this.openSnackbar = this.openSnackbar.bind(this);
@@ -53,10 +48,6 @@ class ViewEdit extends React.Component {
 
   componentWillUnmount() {
     firebase.firestore().terminate();
-  }
-  
-  openSnackbar(success, message) {
-    this.setState({ message: message, snackbarSuccess: success, snackbarOpen: true });
   }
 
   openEditForm(q) {
@@ -104,22 +95,29 @@ class ViewEdit extends React.Component {
     this.setState({ examQuestions: null });
   }
 
+  openSnackbar(success, message) {
+    this.setState({ snackOpen: true, snackSuccess: success, snackMessage: message });
+  }
+
+  closeSnackbar() {
+    this.setState({ snackOpen: false });
+  }
+
   render() {
     if (this.props.user === false) {
-      return(null);
+      return (null);
     }
     return (
       <div className="App">
-        {!this.props.user ? 
+        {!this.props.user ?
           <Redirect to={"/login"} />
           :
           <div>
             {this.state.selectedQuestions !== null &&
-              <Redirect to={{
+              this.props.history.push({
                 pathname: "/generate",
                 state: { questions: this.state.selectedQuestions }
-              }}
-              />
+              })
             }
             <Menu />
             <div>
@@ -158,18 +156,11 @@ class ViewEdit extends React.Component {
                 </DialogContent>
               </Dialog>
             </div>
-            <Snackbar
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              open={this.state.snackbarOpen}
-              autoHideDuration={6000}
-              onClose={() => this.setState({ snackbarOpen: false })}
-              message={<span id="message-id">{this.state.message}</span>}
-              action={
-                this.state.snackbarSuccess ? <CheckIcon /> : <CloseIcon />
-              }
+            <CustomSnackbar 
+              message={this.state.snackMessage} 
+              success={this.state.snackSuccess} 
+              open={this.state.snackOpen}
+              closeSnack={this.state.closeSnackbar}
             />
           </div>
         }

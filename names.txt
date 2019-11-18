@@ -1,5 +1,18 @@
-PAPER: Project for the Authentic Partition of Automated Exams and Responses
-CODE: Compilation Of Dedicated Exams
-QUEST: Question and Exam System for Testing
-BYTE: Basically You Tabulate Exams
-COMPILE: Collection of Operations to Manage, Produce and Implement Logical Exams
+Normal:	
+    PAPER: Project for the Authenticated Partitioning of Automated Exams and Responses
+    CODE: Compilation Of Dedicated Exams
+    QUEST: Question and Exam System for Testing
+    BYTE: Basically You Tabulate Exams
+    COMPILE: Collection of Operations to Manage, Produce, and Implement Logical Exams
+
+Recursive:
+    CORE: CORE Organizes Rational Exams
+    PHOTON: PHOTON Helps Organize Tests On a Network
+    CUBE: CUBE Unifies Brilliant Exams
+
+Greek:
+    LAMBDA: Logical Application to Manage, Build and Distribute Assessments
+    DELTA: Develop Exams for Logical Assessment
+    SIGMA: System to Implement, Generate, and Manage Assessments
+    OMEGA: Optimized Management of Exam Generating Applications
+    THETA: Tool that Handles Exam Tweaking and Administration

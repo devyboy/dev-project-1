@@ -2,12 +2,12 @@ import React from 'react';
 import YAML from 'yaml';
 import arrayMove from 'array-move';
 import Menu from '../components/menu';
-import Form from 'react-bootstrap/Form';
 import Card from '@material-ui/core/Card';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from "@material-ui/core/MenuItem";
 import { Redirect } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import Collapse from '@material-ui/core/Collapse';
 import ShuffleIcon from "@material-ui/icons/Shuffle";
 import Typography from '@material-ui/core/Typography';
 import CardHeader from "@material-ui/core/CardHeader";
@@ -20,15 +20,15 @@ import { sortableContainer, sortableElement, sortableHandle } from 'react-sortab
 
 
 const styles = {
-  challenging: {
+  Challenging: {
     color: "red",
     fontSize: "13px",
   },
-  medium: {
+  Medium: {
     color: "orange",
     fontSize: "13px",
   },
-  easy: {
+  Easy: {
     color: "green",
     fontSize: "13px",
   },
@@ -82,31 +82,32 @@ class Generate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      questions: null,
       format: ".txt",
-      filename: "",
-      expanded: null,
-      detailsModal: false,
-      detailsQuestion: null,
     }
 
     this.handleFormatChange = this.handleFormatChange.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.downloadFile = this.downloadFile.bind(this);
-    this.onSortEnd = this.onSortEnd.bind(this);
     this.randomizeQuestions = this.randomizeQuestions.bind(this);
+    this.randomizeChoices = this.randomizeChoices.bind(this);
     this.closeCard = this.closeCard.bind(this);
   }
 
-  onSortEnd = ({ oldIndex, newIndex }) => {
+  onSortEndCards = ({ oldIndex, newIndex }) => {
     this.setState(({ questions }) => ({
       questions: arrayMove(questions, oldIndex, newIndex),
     }));
   };
 
+  onSortEndChoices = ({ oldIndex, newIndex }) => {
+    let kapp = this.state.detailsQuestion;
+    kapp.choices = arrayMove(kapp.choices, oldIndex, newIndex);
+    this.setState({ detailsQuestion: kapp });
+  };
+
   componentDidMount() {
     if (this.props.location.state === undefined) {
-      window.location.href = "/view-edit";
+      this.props.history.push("/view-edit");
     }
     else {
       this.setState({ questions: this.props.location.state.questions });
@@ -164,15 +165,16 @@ class Generate extends React.Component {
   }
 
   closeCard(index) {
-    let newQues = this.state.questions.slice(index, 1);
+    let newQues = this.state.questions
+    newQues.splice(index - 1, 1);
     if (newQues.length === 0) {
-      window.location.href = "/view-edit";
+      this.props.history.push("/view-edit");
     }
-    this.setState({ questions: newQues, expanded: false });
+    this.setState({ detailsModal: false, questions: newQues });
   }
 
   randomizeQuestions() {
-    const array = this.state.questions
+    let array = this.state.questions
 
     for (let i = array.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));
@@ -181,6 +183,21 @@ class Generate extends React.Component {
       array[j] = temp;
     }
     this.setState({ questions: array });
+  }
+
+  randomizeChoices() {
+    let dab = this.state.detailsQuestion;
+    let array = dab.choices;
+
+    for (let i = array.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+    dab.choices = array;
+
+    this.setState({ detailsQuestion: dab });
   }
 
   render() {
@@ -218,27 +235,27 @@ class Generate extends React.Component {
               <span style={styles[value.diff]}>{value.diff}</span>
             </p>
           </CardContent>
-
-          <Collapse in={this.state.expanded === index} unmountOnExit>
-            <CardContent style={styles.cardContent2}>
-              <hr />
-              <ul>
-                <li><p><strong>Course: </strong>{value.course}</p></li>
-                <li><p><strong>Answer: </strong>{value.answer}</p></li>
-                <li><p><strong>Cog Level: </strong>{value.cog}</p></li>
-                <li><p><strong>Topic: </strong>{value.topic}</p></li>
-                <strong>SLOs:</strong>
-                <ul>
-                  {value.SLO.map((slo, key) =>
-                    <li key={key}>{slo}</li>
-                  )}
-                </ul>
-              </ul>
-            </CardContent>
-          </Collapse>
-
         </Card>
       );
+    });
+
+    const SortableChoice = sortableElement(({ value }) => {
+      return (
+        <li style={{ cursor: "move", zIndex: 1301 }}>
+          {value}
+        </li>
+      );
+    });
+
+
+    const SortableChoices = sortableContainer(({ items }) => {
+      return (
+        <ul>
+          {items.map((value, index) => (
+            <SortableChoice key={`item-${value + index}`} index={index} value={value} />
+          ))}
+        </ul>
+      )
     });
 
 
@@ -269,19 +286,19 @@ class Generate extends React.Component {
                 <h2>Generate Exam</h2>
                 <hr style={{ width: "80%" }} />
 
-                <Button variant="contained" color="primary" onClick={this.randomizeQuestions} style={{ margin: "1em" }}>
+                <Button variant="contained" color="primary" onClick={this.randomizeQuestions} style={{ margin: "1em", display: "block", marginLeft: "auto" }}>
                   Randomize
                   <ShuffleIcon />
                 </Button>
 
-                <SortableList items={this.state.questions} onSortEnd={this.onSortEnd} axis="xy" useDragHandle />
+                <SortableList items={this.state.questions} onSortEnd={this.onSortEndCards} axis="xy" useDragHandle />
 
                 {this.state.detailsQuestion &&
                   <Dialog onClose={() => this.setState({ detailsModal: false })} open={this.state.detailsModal}>
                     <DialogTitle onClose={() => this.setState({ detailsModal: false })}>
                       {"Question " + (this.state.questions.indexOf(this.state.detailsQuestion) + 1) + " details"}
                     </DialogTitle>
-                    <DialogContent dividers>
+                    <DialogContent dividers >
                       <ul>
                         <li>
                           <Typography gutterBottom>
@@ -324,23 +341,17 @@ class Generate extends React.Component {
                           </Typography>
                         </li>
                         <li>
-                          <Typography gutterBottom>
+                          <Typography gutterBottom component="span">
                             <strong>Choices: </strong>
                             {this.state.detailsQuestion.choices.length !== 0 ?
-                              <ul>
-                                {this.state.detailsQuestion.choices.map((choice, key) => {
-                                  return (
-                                    <li key={key}>{choice}</li>
-                                  );
-                                })}
-                              </ul>
+                              <SortableChoices items={this.state.detailsQuestion.choices} onSortEnd={this.onSortEndChoices} />
                               :
                               "N/A"
                             }
                           </Typography>
                         </li>
                         <li>
-                          <Typography gutterBottom>
+                          <Typography gutterBottom component="span">
                             <strong>SLO's: </strong>
                             {this.state.detailsQuestion.SLO &&
                               <ul>
@@ -355,11 +366,16 @@ class Generate extends React.Component {
                         </li>
                       </ul>
                     </DialogContent>
-                    <DialogActions>
+                    <DialogActions >
+                      {this.state.detailsQuestion.choices.length !== 0 &&
+                        <Button style={{ marginRight: "auto" }} onClick={this.randomizeChoices} color="primary">
+                          Shuffle Choices
+                        </Button>
+                      }
                       <Button onClick={() => this.closeCard(this.state.questions.indexOf(this.state.detailsQuestion) + 1)} color="secondary">
                         Remove
                       </Button>
-                      <Button autoFocus onClick={() => this.setState({ detailsModal: false })} color="primary">
+                      <Button onClick={() => this.setState({ detailsModal: false })} color="primary">
                         Close
                       </Button>
                     </DialogActions>
@@ -374,25 +390,27 @@ class Generate extends React.Component {
         <hr style={{ width: "80%" }} />
 
         <div style={{ width: "50%", margin: "0 auto" }}>
-          <Form>
-            <Form.Row style={{ justifyContent: "center" }}>
-              <Form.Group>
-                <Form.Control onChange={this.handleNameChange} value={this.state.name} />
-              </Form.Group>
+          <TextField
+            style={{ width: 150 }}
+            label="Filename"
+            margin="normal"
+            onChange={this.handleNameChange}
+            value={this.state.name}
+          />
+          <TextField
+            style={{ marginLeft: 7, width: 70 }}
+            label="Type"
+            margin="normal"
+            onChange={this.handleFormatChange}
+            value={this.state.format}
+            select
+          >
+            <MenuItem value=".json">.json</MenuItem>
+            <MenuItem value=".txt">.txt</MenuItem>
+            <MenuItem value=".yaml">.yaml</MenuItem>
+          </TextField>
 
-              <Form.Group>
-                <Form.Control
-                  onChange={this.handleFormatChange}
-                  value={this.state.format}
-                  as="select"
-                >
-                  <option>.txt</option>
-                  <option>.json</option>
-                  <option>.yaml</option>
-                </Form.Control>
-              </Form.Group>
-            </Form.Row>
-          </Form>
+          <br />
 
           <Button style={{ margin: '1em' }} color="primary" variant="contained" onClick={this.downloadFile}>
             Download
