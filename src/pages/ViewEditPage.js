@@ -4,14 +4,13 @@ import "firebase/firestore";
 import { Redirect } from "react-router-dom";
 import Menu from '../components/menu';
 import Forms from '../components/forms';
+import CustomSnackbar from "../components/customSnackbar";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import EnhancedTable from '../components/table';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import Snackbar from '@material-ui/core/Snackbar';
-import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 
 class ViewEdit extends React.Component {
@@ -49,10 +48,6 @@ class ViewEdit extends React.Component {
 
   componentWillUnmount() {
     firebase.firestore().terminate();
-  }
-
-  openSnackbar(success, message) {
-    this.setState({ message: message, snackbarSuccess: success, snackbarOpen: true });
   }
 
   openEditForm(q) {
@@ -98,6 +93,14 @@ class ViewEdit extends React.Component {
   closeExamForm() {
     this.setState({ isCreatingExam: false });
     this.setState({ examQuestions: null });
+  }
+
+  openSnackbar(success, message) {
+    this.setState({ snackOpen: true, snackSuccess: success, snackMessage: message });
+  }
+
+  closeSnackbar() {
+    this.setState({ snackOpen: false });
   }
 
   render() {
@@ -153,18 +156,11 @@ class ViewEdit extends React.Component {
                 </DialogContent>
               </Dialog>
             </div>
-            <Snackbar
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              open={this.state.snackbarOpen}
-              autoHideDuration={6000}
-              onClose={() => this.setState({ snackbarOpen: false })}
-              message={<span id="message-id">{this.state.message}</span>}
-              action={
-                this.state.snackbarSuccess ? <CheckIcon /> : <CloseIcon />
-              }
+            <CustomSnackbar 
+              message={this.state.snackMessage} 
+              success={this.state.snackSuccess} 
+              open={this.state.snackOpen}
+              closeSnack={this.state.closeSnackbar}
             />
           </div>
         }
