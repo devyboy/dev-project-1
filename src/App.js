@@ -8,19 +8,21 @@ import UploadPage from './pages/UploadPage';
 import GeneratePage from './pages/GeneratePage';
 import FourOhFour from "./pages/FourOhFour";
 import LoginPage from "./pages/LoginPage";
+import { yeet } from "./config.js";
 import './App.css';
 import './bootstrap.min.css';
 
 // Firebase Credentials
+
 var config = {
-    apiKey: "AIzaSyA-PcLom0MmPjP-rc9WL2dxs8HsD9QFdag",
-    authDomain: "ayylmao-5b8f8.firebaseapp.com",
-    databaseURL: "https://ayylmao-5b8f8.firebaseio.com",
-    projectId: "ayylmao-5b8f8",
-    storageBucket: "ayylmao-5b8f8.appspot.com",
-    messagingSenderId: "1060743996645",
-    appId: "1:1060743996645:web:7d96b40912d25ffb84e00c"
-};
+    apiKey: yeet.apiKey,
+    authDomain: yeet.authDomain,
+    databaseURL: yeet.databaseURL,
+    projectId: yeet.projectId,
+    storageBucket: yeet.storageBucket,
+    messagingSenderId: yeet.messagingSenderId,
+    appId: yeet.appId
+  };
 
 firebase.initializeApp(config);
 
