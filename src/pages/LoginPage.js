@@ -1,5 +1,6 @@
 import React from 'react'
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 import { Redirect } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 

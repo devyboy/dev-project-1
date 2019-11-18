@@ -1,5 +1,6 @@
 import React from "react";
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import HomePage from './pages/HomePage';
 import ViewEditPage from './pages/ViewEditPage';
