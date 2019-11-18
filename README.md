@@ -20,8 +20,7 @@ var firebaseConfig = {
   };
 ```
 4. Copy that config snippet with all your API keys, then go to the `/src` folder of the project and paste it into a file called `config.js`.
-5. Type `export { firebaseConfig };` at the bottom of the file. 
-Now at this point it still won't work because it's imported as `yeet` in `App.js`, so just change that to `firebaseConfig` and boom you're all set up.
+5. Type `export { firebaseConfig };` at the bottom of the file and boom you're done.
 
 # Name ideas
 Not sure what to name it yet, theres a file called `names.txt` in which some name ideas were tossed into. Might as well put them here too. 
