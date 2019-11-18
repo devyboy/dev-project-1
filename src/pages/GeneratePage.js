@@ -341,7 +341,7 @@ class Generate extends React.Component {
                           </Typography>
                         </li>
                         <li>
-                          <Typography gutterBottom>
+                          <Typography gutterBottom component="span">
                             <strong>Choices: </strong>
                             {this.state.detailsQuestion.choices.length !== 0 ?
                               <SortableChoices items={this.state.detailsQuestion.choices} onSortEnd={this.onSortEndChoices} />
@@ -351,7 +351,7 @@ class Generate extends React.Component {
                           </Typography>
                         </li>
                         <li>
-                          <Typography gutterBottom>
+                          <Typography gutterBottom component="span">
                             <strong>SLO's: </strong>
                             {this.state.detailsQuestion.SLO &&
                               <ul>

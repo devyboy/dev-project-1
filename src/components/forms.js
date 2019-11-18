@@ -21,16 +21,16 @@ class Forms extends React.Component {
     this.state = {
       SLOarray: props.editingQuestion ? props.editingQuestion[1].SLO : [],
       choices: props.editingQuestion ? props.editingQuestion[1].choices : [],
-      question: props.editingQuestion && props.editingQuestion[1].question,
-      unit: props.editingQuestion && props.editingQuestion[1].unit,
-      topic: props.editingQuestion && props.editingQuestion[1].topic,
-      answer: props.editingQuestion && props.editingQuestion[1].answer,
-      cog: props.editingQuestion && props.editingQuestion[1].cog,
-      diff: props.editingQuestion && props.editingQuestion[1].diff,
-      isMult: props.editingQuestion && (props.editingQuestion[1].type === "Multiple Choice"),
-      type: props.editingQuestion && props.editingQuestion[1].type,
-      course: props.editingQuestion && props.editingQuestion[1].course,
-      pre: props.editingQuestion && props.editingQuestion[1].pre,
+      question: props.editingQuestion ? props.editingQuestion[1].question : "",
+      unit: props.editingQuestion ? props.editingQuestion[1].unit : "",
+      topic: props.editingQuestion ? props.editingQuestion[1].topic : "",
+      answer: props.editingQuestion ? props.editingQuestion[1].answer : "",
+      cog: props.editingQuestion ? props.editingQuestion[1].cog : "",
+      diff: props.editingQuestion ? props.editingQuestion[1].diff : "",
+      isMult: props.editingQuestion ? (props.editingQuestion[1].type === "Multiple Choice") : "",
+      type: props.editingQuestion ? props.editingQuestion[1].type : "",
+      course: props.editingQuestion ? props.editingQuestion[1].course : "",
+      pre: props.editingQuestion ? props.editingQuestion[1].pre : "",
     }
 
     this.submitQuestion = this.submitQuestion.bind(this);
