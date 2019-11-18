@@ -8,6 +8,9 @@ class LoginPage extends React.Component {
 
   login() {
     let provider = new firebase.auth.GoogleAuthProvider();
+    // firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
+    //   firebase.auth().signInWithPopup(provider);
+    // });
     firebase.auth().signInWithPopup(provider);
   }
 
