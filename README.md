@@ -26,6 +26,7 @@ Now at this point it still won't work because it's imported as `yeet` in `App.js
 # Name ideas
 Not sure what to name it yet, theres a file called `names.txt` in which some name ideas were tossed into. Might as well put them here too. 
 
+```
 Normal:	
     PAPER: Project for the Authenticated Partitioning of Automated Exams and Responses
     CODE: Compilation Of Dedicated Exams
@@ -44,3 +45,4 @@ Greek:
     SIGMA: System to Implement, Generate, and Manage Assessments
     OMEGA: Optimized Management of Exam Generating Applications
     THETA: Tool that Handles Exam Tweaking and Administration
+```
