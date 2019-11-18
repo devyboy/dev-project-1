@@ -4,7 +4,7 @@ import "firebase/firestore";
 import { Redirect } from "react-router-dom";
 import Menu from '../components/menu';
 import Button from '@material-ui/core/Button';
-import Snackbar from '@material-ui/core/Snackbar';
+import CustomSnackbar from "../components/customSnackbar";
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import PublishIcon from '@material-ui/icons/Publish';
@@ -22,7 +22,8 @@ class UploadPage extends React.Component {
     this.handleFileChosen = this.handleFileChosen.bind(this);
     this.handleJSONRead = this.handleJSONRead.bind(this);
     this.handleYAMLRead = this.handleYAMLRead.bind(this);
-    this.showSnackbar = this.showSnackbar.bind(this);
+    this.openSnackbar = this.openSnackbar.bind(this);
+    this.closeSnackbar = this.closeSnackbar.bind(this);
     this.approveQuestions = this.approveQuestions.bind(this);
   }
 
@@ -96,16 +97,20 @@ class UploadPage extends React.Component {
       choices: q.choices,
       SLO: q.SLO,
       pre: q.pre,
-    }).then(this.showSnackbar(true, "Question(s) saved"))
+    }).then(this.openSnackbar(true, "Question(s) saved"))
       .catch(err => {
-        this.showSnackbar(false, err);
+        this.openSnackbar(false, err);
       })
       .then(() => this.props.history.push("/view-edit"))
 
   }
 
-  showSnackbar(success, message) {
-    this.setState({ open: true, success: success, message: message });
+  openSnackbar(success, message) {
+    this.setState({ snackOpen: true, snackSuccess: success, snackMessage: message });
+  }
+
+  closeSnackbar() {
+    this.setState({ snackOpen: false });
   }
 
   render() {
@@ -169,18 +174,11 @@ class UploadPage extends React.Component {
               </div>
             }
 
-            <Snackbar
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              open={this.state.open}
-              autoHideDuration={6000}
-              onClose={() => this.setState({ open: false })}
-              message={<span id="message-id">{this.state.message}</span>}
-              action={
-                this.state.success ? <CheckIcon /> : <CloseIcon />
-              }
+            <CustomSnackbar
+              open={this.state.snackOpen}
+              success={this.state.snackSuccess}
+              message={this.state.snackMessage}
+              closeSnack={this.closeSnackbar}
             />
           </div>
         }
