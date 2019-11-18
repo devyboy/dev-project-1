@@ -20,6 +20,7 @@ class ViewEdit extends React.Component {
     this.state = {
       questions: null,
       selectedQuestions: null,
+      isEditing: false,
     };
     this.openExamForm = this.openExamForm.bind(this);
     this.openSnackbar = this.openSnackbar.bind(this);

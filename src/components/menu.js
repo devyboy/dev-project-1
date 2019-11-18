@@ -36,7 +36,9 @@ class Drawer extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            drawer: false,
+        };
         this.handleOpen = this.handleOpen.bind(this);
         this.signOut = this.signOut.bind(this);
     }
