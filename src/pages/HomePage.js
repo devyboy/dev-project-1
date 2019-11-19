@@ -3,8 +3,8 @@ import { Redirect } from "react-router-dom";
 import Menu from '../components/menu';
 import Forms from '../components/forms';
 import CustomSnackbar from '../components/customSnackbar';
+import OfflineNotify from "../components/offlineNotify";
 import '../App.css';
-
 class HomePage extends React.Component {
   constructor(props) {
     super(props);
@@ -12,6 +12,17 @@ class HomePage extends React.Component {
 
     this.openSnackbar = this.openSnackbar.bind(this);
     this.closeSnackbar = this.closeSnackbar.bind(this);
+    this.closeOfflineNotify = this.closeOfflineNotify.bind(this);
+  }
+
+  componentDidMount() {
+    if (!navigator.onLine && !this.state.notified) {
+      this.setState({ offlineNotify: true, notified: true });
+    }
+  }
+  
+  closeOfflineNotify() {
+    this.setState({ offlineNotify: false });
   }
 
   openSnackbar(success, message) {
@@ -44,6 +55,7 @@ class HomePage extends React.Component {
               closeSnack={this.closeSnackbar}
               open={this.state.snackOpen}
             />
+            <OfflineNotify open={this.state.offlineNotify} closeNotify={this.closeOfflineNotify} />
           </div>
         }
       </div>

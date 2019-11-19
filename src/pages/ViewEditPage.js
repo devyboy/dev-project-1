@@ -12,6 +12,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import CloseIcon from '@material-ui/icons/Close';
+import OfflineNotify from "../components/offlineNotify";
+
 
 class ViewEdit extends React.Component {
   constructor(props) {
@@ -25,6 +27,7 @@ class ViewEdit extends React.Component {
     this.openSnackbar = this.openSnackbar.bind(this);
     this.openEditForm = this.openEditForm.bind(this);
     this.closeEditForm = this.closeEditForm.bind(this);
+    this.closeOfflineNotify = this.closeOfflineNotify.bind(this);
     this.deleteQuestions = this.deleteQuestions.bind(this);
   }
 
@@ -42,8 +45,18 @@ class ViewEdit extends React.Component {
     })
   }
 
+  componentDidUpdate() {
+    if (!navigator.onLine && !this.state.notified) {
+      this.setState({ offlineNotify: true, notified: true });
+    }
+  }
+
   componentDidMount() {
     this.fetchQuestions();
+  }
+
+  closeOfflineNotify() {
+    this.setState({ offlineNotify: false });
   }
 
   componentWillUnmount() {
@@ -162,6 +175,7 @@ class ViewEdit extends React.Component {
               open={this.state.snackOpen}
               closeSnack={this.state.closeSnackbar}
             />
+            <OfflineNotify open={this.state.offlineNotify} closeNotify={this.closeOfflineNotify} />
           </div>
         }
       </div>
