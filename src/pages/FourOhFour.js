@@ -13,7 +13,7 @@ function FourOhFour(props) {
                 <Redirect to={"/login"} />
                 :
                 <div>
-                    <Menu />
+                    <Menu path={"/Oops"} />
                     <h1>{props.location.pathname} not found</h1>
                 </div>
             }

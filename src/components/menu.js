@@ -33,7 +33,6 @@ let styles = {
 }
 
 class Drawer extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -67,7 +66,7 @@ class Drawer extends React.Component {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" >
-                            UDel PAPER
+                            {"UDel PAPER" + this.props.path}
                         </Typography>
                         <Button color="inherit" style={styles.login} onClick={this.signOut} >Logout</Button>
                     </Toolbar>

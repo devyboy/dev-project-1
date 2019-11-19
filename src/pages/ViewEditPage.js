@@ -132,7 +132,7 @@ class ViewEdit extends React.Component {
                 state: { questions: this.state.selectedQuestions }
               })
             }
-            <Menu />
+            <Menu path={"/ViewEdit"}/>
             <div>
               {this.state.questions ?
                 <div>

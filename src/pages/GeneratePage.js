@@ -280,12 +280,9 @@ class Generate extends React.Component {
           <Redirect to={"/login"} />
           :
           <div>
-            <Menu />
+            <Menu path={"/Generate"} />
             {this.state.questions &&
               <div>
-                <h2>Generate Exam</h2>
-                <hr style={{ width: "80%" }} />
-
                 <Button variant="contained" color="primary" onClick={this.randomizeQuestions} style={{ margin: "1em", display: "block", marginLeft: "auto" }}>
                   Randomize
                   <ShuffleIcon />
