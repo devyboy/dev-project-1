@@ -10,7 +10,6 @@ class HomePage extends React.Component {
     this.state = {};
 
     this.openSnackbar = this.openSnackbar.bind(this);
-    this.closeSnackbar = this.closeSnackbar.bind(this);
   }
 
   openSnackbar(success, message) {

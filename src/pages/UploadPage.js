@@ -23,7 +23,6 @@ class UploadPage extends React.Component {
     this.handleJSONRead = this.handleJSONRead.bind(this);
     this.handleYAMLRead = this.handleYAMLRead.bind(this);
     this.openSnackbar = this.openSnackbar.bind(this);
-    this.closeSnackbar = this.closeSnackbar.bind(this);
     this.approveQuestions = this.approveQuestions.bind(this);
   }
 
