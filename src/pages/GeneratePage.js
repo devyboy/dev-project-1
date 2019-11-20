@@ -5,6 +5,7 @@ import Menu from '../components/menu';
 import Card from '@material-ui/core/Card';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from "@material-ui/core/MenuItem";
+import CustomSnackbar from "../components/customSnackbar";
 import { Redirect } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -170,7 +171,13 @@ class Generate extends React.Component {
     if (newQues.length === 0) {
       this.props.history.push("/view-edit");
     }
-    this.setState({ detailsModal: false, questions: newQues });
+    this.setState({ 
+      detailsModal: false, 
+      questions: newQues,
+      snackOpen: true,
+      snackSuccess: true,
+      snackMessage: "Question removed"
+      });
   }
 
   randomizeQuestions() {
@@ -413,6 +420,12 @@ class Generate extends React.Component {
             Download
           </Button>
 
+          <CustomSnackbar 
+            open={this.state.snackOpen} 
+            success={this.state.snackSuccess} 
+            message={this.state.snackMessage} 
+            closeSnack={() => this.setState({ snackOpen: false })}
+          />
         </div>
       </div>
     );
