@@ -18,10 +18,6 @@ class HomePage extends React.Component {
     console.log(this.state);
   }
 
-  closeSnackbar() {
-    this.setState({ snackOpen: false });
-  }
-
   render() {
     if (this.props.user === false) {
       return (null);
@@ -38,7 +34,7 @@ class HomePage extends React.Component {
             <CustomSnackbar
               message={this.state.snackMessage}
               success={this.state.snackSuccess}
-              closeSnack={this.closeSnackbar}
+              closeSnack={() => this.setState({ snackOpen: false })}
               open={this.state.snackOpen}
             />
           </div>

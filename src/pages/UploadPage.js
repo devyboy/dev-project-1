@@ -109,10 +109,6 @@ class UploadPage extends React.Component {
     this.setState({ snackOpen: true, snackSuccess: success, snackMessage: message });
   }
 
-  closeSnackbar() {
-    this.setState({ snackOpen: false });
-  }
-
   render() {
     if (this.props.user === false) {
       return (null);
@@ -175,7 +171,7 @@ class UploadPage extends React.Component {
               open={this.state.snackOpen}
               success={this.state.snackSuccess}
               message={this.state.snackMessage}
-              closeSnack={this.closeSnackbar}
+              closeSnack={() => this.setState({ snackOpen: false })}
             />
           </div>
         }

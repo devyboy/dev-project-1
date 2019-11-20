@@ -112,10 +112,6 @@ class ViewEdit extends React.Component {
     this.setState({ snackOpen: true, snackSuccess: success, snackMessage: message });
   }
 
-  closeSnackbar() {
-    this.setState({ snackOpen: false });
-  }
-
   render() {
     if (this.props.user === false) {
       return (null);
@@ -169,12 +165,14 @@ class ViewEdit extends React.Component {
                 </DialogContent>
               </Dialog>
             </div>
+
             <CustomSnackbar 
               message={this.state.snackMessage} 
               success={this.state.snackSuccess} 
               open={this.state.snackOpen}
-              closeSnack={this.state.closeSnackbar}
+              closeSnack={() => this.setState({ snackOpen: false })}
             />
+
             <OfflineNotify open={this.state.offlineNotify} closeNotify={this.closeOfflineNotify} />
           </div>
         }
