@@ -3,8 +3,27 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import { Redirect } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-//import CircularProgress from "@material-ui/core/CircularProgress";
-import Menu from '../components/menu';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+
+
+let styles = {
+  menu: {
+      marginBottom: "2em",
+      flexGrow: "1"
+  },
+  icon: {
+      marginRight: ".5em",
+  },
+  link: {
+      textDecoration: "none",
+      color: "black",
+  },
+  login: {
+      marginLeft: "auto"
+  }
+}
 
 class LoginPage extends React.Component {
 
@@ -22,11 +41,18 @@ class LoginPage extends React.Component {
     }
     if (this.props.user === null) {
       return (
-        <div>
-          <Menu />
-          <p>You need to login to proceed</p>
-          <Button onClick={this.login}>Login</Button>
-        </div>
+        <div style={styles.menu}>
+        <AppBar position="static">
+            <Toolbar>
+                <Typography variant="h6" >
+                    UDel PAPER
+                </Typography>
+            </Toolbar>
+        </AppBar>
+        <p>You need to login to proceed</p>
+        <Button variant="contained" size="large" onClick={this.login}>Login</Button>
+    </div>
+
       );
     }
     else {
