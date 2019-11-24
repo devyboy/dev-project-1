@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from "@material-ui/core/MenuItem";
 import CustomSnackbar from "../components/customSnackbar";
 import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import ShuffleIcon from "@material-ui/icons/Shuffle";
@@ -91,6 +92,7 @@ class Generate extends React.Component {
     this.downloadFile = this.downloadFile.bind(this);
     this.randomizeQuestions = this.randomizeQuestions.bind(this);
     this.randomizeChoices = this.randomizeChoices.bind(this);
+    this.handleSpacingChange = this.handleSpacingChange.bind(this);
     this.closeCard = this.closeCard.bind(this);
   }
 
@@ -113,6 +115,12 @@ class Generate extends React.Component {
     else {
       this.setState({ questions: this.props.location.state.questions });
     }
+  }
+
+  handleSpacingChange(question, event) {
+    let newState = this.state.questions;
+    newState[newState.indexOf(question)].spacing = event.target.value;
+    this.setState({ questions: newState });
   }
 
   handleFormatChange(event) {
@@ -171,13 +179,13 @@ class Generate extends React.Component {
     if (newQues.length === 0) {
       this.props.history.push("/view-edit");
     }
-    this.setState({ 
-      detailsModal: false, 
+    this.setState({
+      detailsModal: false,
       questions: newQues,
       snackOpen: true,
       snackSuccess: true,
       snackMessage: "Question removed"
-      });
+    });
   }
 
   randomizeQuestions() {
@@ -281,6 +289,7 @@ class Generate extends React.Component {
     if (this.props.user === false) {
       return (null);
     }
+
     return (
       <div className="App">
         {!this.props.user ?
@@ -288,6 +297,7 @@ class Generate extends React.Component {
           :
           <div>
             <Menu path={" / Generate"} />
+
             {this.state.questions &&
               <div>
                 <Button variant="contained" color="primary" onClick={this.randomizeQuestions} style={{ margin: "1em", display: "block", marginLeft: "auto" }}>
@@ -386,47 +396,75 @@ class Generate extends React.Component {
                   </Dialog>
                 }
 
+                <hr style={{ width: "80%" }} />
+
+                <br />
+
+                <div>
+                  {this.state.questions.map((q, key) => {
+                    if (q.type === "Free Response" || q.type === "Programming") {
+                      return (
+                        <div key={key}>
+                          <TextField
+                            label={"Question " + (this.state.questions.indexOf(q) + 1) + " spacing"}
+                            margin="normal"
+                            type="number"
+                            onBlur={(event) => this.handleSpacingChange(q, event)}
+                          />
+                        </div>
+                      );
+                    }
+                    return null;
+                  })}
+                </div>
+
+                <hr style={{ width: "80%" }} />
+
+                <div style={{ width: "50%", margin: "0 auto" }}>
+                  <TextField
+                    style={{ width: 150 }}
+                    label="Filename"
+                    margin="normal"
+                    onChange={this.handleNameChange}
+                    value={this.state.name}
+                  />
+                  <TextField
+                    style={{ marginLeft: 7, width: 70 }}
+                    label="Type"
+                    margin="normal"
+                    onChange={this.handleFormatChange}
+                    value={this.state.format}
+                    select
+                  >
+                    <MenuItem value=".json">.json</MenuItem>
+                    <MenuItem value=".txt">.txt</MenuItem>
+                    <MenuItem value=".yaml">.yaml</MenuItem>
+                  </TextField>
+                  
+                  <br />
+
+                  <Button style={{ margin: '1em' }} color="primary" variant="contained" onClick={() => console.log(this.state.questions)}>
+                    Download
+                  </Button>
+
+                  <Link to={{ pathname: "/exam",  state: { questions: this.state.questions }}}>
+                    <Button style={{ margin: '1em' }} color="primary" variant="contained" >
+                      Generate
+                    </Button>
+                  </Link>
+                  
+                </div>
+
+                <CustomSnackbar
+                  open={this.state.snackOpen}
+                  success={this.state.snackSuccess}
+                  message={this.state.snackMessage}
+                  closeSnack={() => this.setState({ snackOpen: false })}
+                />
               </div>
             }
           </div>
         }
-
-        <hr style={{ width: "80%" }} />
-
-        <div style={{ width: "50%", margin: "0 auto" }}>
-          <TextField
-            style={{ width: 150 }}
-            label="Filename"
-            margin="normal"
-            onChange={this.handleNameChange}
-            value={this.state.name}
-          />
-          <TextField
-            style={{ marginLeft: 7, width: 70 }}
-            label="Type"
-            margin="normal"
-            onChange={this.handleFormatChange}
-            value={this.state.format}
-            select
-          >
-            <MenuItem value=".json">.json</MenuItem>
-            <MenuItem value=".txt">.txt</MenuItem>
-            <MenuItem value=".yaml">.yaml</MenuItem>
-          </TextField>
-
-          <br />
-
-          <Button style={{ margin: '1em' }} color="primary" variant="contained" onClick={this.downloadFile}>
-            Download
-          </Button>
-
-          <CustomSnackbar 
-            open={this.state.snackOpen} 
-            success={this.state.snackSuccess} 
-            message={this.state.snackMessage} 
-            closeSnack={() => this.setState({ snackOpen: false })}
-          />
-        </div>
       </div>
     );
   }

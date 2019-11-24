@@ -8,6 +8,7 @@ import UploadPage from './pages/UploadPage';
 import GeneratePage from './pages/GeneratePage';
 import FourOhFour from "./pages/FourOhFour";
 import LoginPage from "./pages/LoginPage";
+import ExamPage from "./pages/ExamPage";
 import { firebaseConfig } from "./config.js";
 import './App.css';
 import './bootstrap.min.css';
@@ -48,6 +49,7 @@ class App extends React.Component {
                     <Route exact path="/view-edit" render={(props) => <ViewEditPage {...props} user={this.state.userObject} />} />
                     <Route exact path="/upload" render={(props) => <UploadPage {...props} user={this.state.userObject} />} />
                     <Route exact path="/generate" render={(props) => <GeneratePage {...props} user={this.state.userObject} />} />
+                    <Route exact path="/exam" render={(props) => <ExamPage {...props} user={this.state.userObject} />} />
                     <Route exact path="/login" render={(props) => <LoginPage {...props} user={this.state.userObject} />} />
                     <Route render={(props) => <FourOhFour {...props} user={this.state.userObject} />} />
                 </Switch>
