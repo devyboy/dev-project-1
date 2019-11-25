@@ -1,0 +1,23 @@
+#exam {
+  /* Font styling */
+  font-family: "Serif"; 
+  font-size: 17pt; 
+}  
+
+#question {
+  /* These rules prevent questions getting cut off between pages */
+  page-break-inside: avoid;  
+  break-inside: avoid
+}
+
+@page {
+  /* Page margins */
+  margin: 1in;
+}
+
+@media print {
+  /* Hide the print modal when printing */
+  .MuiDialog-root {
+    display: none;
+  }
+}

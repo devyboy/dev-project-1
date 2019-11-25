@@ -353,9 +353,9 @@ class Generate extends React.Component {
                 <br />
 
                 <p style={{ width: '50%', margin: "0 auto" }}>
-                  The following questions are free response or programming. Each of these has around an inch
-                  of blank space underneath for the response. If you wish to add any more space, please enter
-                  the amount in inches you would like to add. For reference, 8 is an entire page.
+                  The following questions are free response or programming. If you wish to add a custom amount
+                  of white space below each one, please enter the amount in inches. If left blank,
+                  the default is 1 inch.
                 </p>
                 {this.state.questions.map((q, key) => {
                   if (q.type === "Free Response" || q.type === "Programming") {
