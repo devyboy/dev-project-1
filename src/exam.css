@@ -20,4 +20,8 @@
   .MuiDialog-root {
     display: none;
   }
+  /* Hide the floating action button */
+  .MuiFab-root {
+    display: none;
+  }
 }
