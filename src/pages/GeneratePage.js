@@ -1,25 +1,28 @@
 import React from 'react';
-import YAML from 'yaml';
-import arrayMove from 'array-move';
-import Menu from '../components/menu';
-import Card from '@material-ui/core/Card';
-import TextField from '@material-ui/core/TextField';
-import MenuItem from "@material-ui/core/MenuItem";
-import CustomSnackbar from "../components/customSnackbar";
 import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
+import arrayMove from 'array-move';
+import Menu from '../components/menu';
+import CustomSnackbar from "../components/customSnackbar";
+import {
+  sortableContainer,
+  sortableElement,
+  sortableHandle
+} from 'react-sortable-hoc';
 import ShuffleIcon from "@material-ui/icons/Shuffle";
-import Typography from '@material-ui/core/Typography';
-import CardHeader from "@material-ui/core/CardHeader";
-import DialogTitle from '@material-ui/core/DialogTitle';
-import CardContent from "@material-ui/core/CardContent";
 import DragHandleIcon from '@material-ui/icons/DragHandle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import { sortableContainer, sortableElement, sortableHandle } from 'react-sortable-hoc';
-
+import {
+  Button,
+  Dialog,
+  Typography,
+  CardHeader,
+  DialogTitle,
+  CardContent,
+  TextField,
+  DialogContent,
+  DialogActions,
+  Card
+} from '@material-ui/core';
 
 const styles = {
   Challenging: {
@@ -83,13 +86,8 @@ const styles = {
 class Generate extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      format: ".txt",
-    }
+    this.state = {};
 
-    this.handleFormatChange = this.handleFormatChange.bind(this);
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.downloadFile = this.downloadFile.bind(this);
     this.randomizeQuestions = this.randomizeQuestions.bind(this);
     this.randomizeChoices = this.randomizeChoices.bind(this);
     this.handleSpacingChange = this.handleSpacingChange.bind(this);
@@ -121,52 +119,6 @@ class Generate extends React.Component {
     let newState = this.state.questions;
     newState[newState.indexOf(question)].spacing = event.target.value;
     this.setState({ questions: newState });
-  }
-
-  handleFormatChange(event) {
-    this.setState({ format: event.target.value });
-  }
-
-  downloadFile() {
-    var fileDownload = require('js-file-download');
-    switch (this.state.format) {
-      case ".json":
-        fileDownload(JSON.stringify(this.state.questions), this.state.filename + this.state.format);
-        break;
-      case ".yaml":
-        fileDownload(YAML.stringify(this.state.questions), this.state.filename + this.state.format);
-        break;
-      case ".txt":
-        fileDownload(this.convertToText(this.state.questions), this.state.filename + this.state.format);
-        break;
-      default:
-        fileDownload(this.convertToText(this.state.questions), this.state.filename + this.state.format);
-        break;
-    }
-  }
-
-  convertToText(questions) {
-    let str = ""
-    let i = 1;
-    questions.forEach((q) => {
-      str += (i + ". " + q.question);
-      if (q.choices.length > 0) {
-        str += ("\n   A. " + q.choices[0]);
-        str += ("\n   B. " + q.choices[1]);
-        str += ("\n   C. " + q.choices[2]);
-        str += ("\n   D. " + q.choices[3] + "\n\n");
-      }
-      else {
-        str += "\n\n";
-      }
-
-      i++;
-    });
-    return str;
-  }
-
-  handleNameChange(event) {
-    this.setState({ filename: event.target.value });
   }
 
   expandCard(index) {
@@ -400,59 +352,35 @@ class Generate extends React.Component {
 
                 <br />
 
-                <div>
-                  {this.state.questions.map((q, key) => {
-                    if (q.type === "Free Response" || q.type === "Programming") {
-                      return (
-                        <div key={key}>
-                          <TextField
-                            label={"Question " + (this.state.questions.indexOf(q) + 1) + " spacing"}
-                            margin="normal"
-                            type="number"
-                            onBlur={(event) => this.handleSpacingChange(q, event)}
-                          />
-                        </div>
-                      );
-                    }
-                    return null;
-                  })}
-                </div>
+                <p style={{ width: '50%', margin: "0 auto" }}>
+                  The following questions are free response or programming. Each of these has around an inch
+                  of blank space underneath for the response. If you wish to add any more space, please enter
+                  the amount in inches you would like to add. For reference, 8 is an entire page.
+                </p>
+                {this.state.questions.map((q, key) => {
+                  if (q.type === "Free Response" || q.type === "Programming") {
+                    return (
+                      <div key={key}>
+                        <TextField
+                          label={"Question " + (this.state.questions.indexOf(q) + 1) + " spacing"}
+                          margin="normal"
+                          type="number"
+                          onBlur={(event) => this.handleSpacingChange(q, event)}
+                        />
+                      </div>
+                    );
+                  }
+                  return null;
+                })}
 
                 <hr style={{ width: "80%" }} />
 
                 <div style={{ width: "50%", margin: "0 auto" }}>
-                  <TextField
-                    style={{ width: 150 }}
-                    label="Filename"
-                    margin="normal"
-                    onChange={this.handleNameChange}
-                    value={this.state.name}
-                  />
-                  <TextField
-                    style={{ marginLeft: 7, width: 70 }}
-                    label="Type"
-                    margin="normal"
-                    onChange={this.handleFormatChange}
-                    value={this.state.format}
-                    select
-                  >
-                    <MenuItem value=".json">.json</MenuItem>
-                    <MenuItem value=".txt">.txt</MenuItem>
-                    <MenuItem value=".yaml">.yaml</MenuItem>
-                  </TextField>
-                  
-                  <br />
-
-                  <Button style={{ margin: '1em' }} color="primary" variant="contained" onClick={() => console.log(this.state.questions)}>
-                    Download
-                  </Button>
-
-                  <Link to={{ pathname: "/exam",  state: { questions: this.state.questions }}}>
+                  <Link to={{ pathname: "/exam", state: { questions: this.state.questions } }}>
                     <Button style={{ margin: '1em' }} color="primary" variant="contained" >
-                      Generate
+                      Generate Exam
                     </Button>
                   </Link>
-                  
                 </div>
 
                 <CustomSnackbar
