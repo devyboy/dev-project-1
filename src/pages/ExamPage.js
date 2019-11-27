@@ -115,7 +115,7 @@ class ExamPage extends React.Component {
                                                 <p>D. {q.choices[3]}</p>
                                             </ul>
                                             :
-                                            <div style={{ height: `${(q.spacing ? q.spacing : 0) + 1}in` }}></div>
+                                            <div style={{ height: `${(q.spacing ? q.spacing * .5 : 0) + 1}in` }}></div>
                                         }
                                     </div>
                                 );
