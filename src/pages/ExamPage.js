@@ -2,6 +2,8 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import Fab from "@material-ui/core/Fab";
 import DownloadIcon from "@material-ui/icons/GetApp";
+import ProfessorIcon from "@material-ui/icons/AssignmentInd";
+import CustomSnackbar from "../components/customSnackbar";
 import YAML from 'yaml';
 import "../exam.css";
 import {
@@ -24,6 +26,7 @@ class ExamPage extends React.Component {
 
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleFormatChange = this.handleFormatChange.bind(this);
+        this.changeFormat = this.changeFormat.bind(this);
         this.downloadFile = this.downloadFile.bind(this);
     }
 
@@ -53,6 +56,16 @@ class ExamPage extends React.Component {
             i++;
         });
         return str;
+    }
+
+    changeFormat() {
+        let answerBool = !this.state.answers;
+        this.setState({
+            answers: answerBool,
+            snackOpen: true,
+            snackSuccess: true,
+            snackMessage: answerBool ? "Viewing answer key" : "Viewing student copy"
+        });
     }
 
     downloadFile() {
@@ -102,24 +115,41 @@ class ExamPage extends React.Component {
                         <Redirect to={"/login"} />
                         :
                         <div>
-                            {this.props.location.state.questions.map((q, key) => {
-                                let number = this.props.location.state.questions.indexOf(q) + 1
-                                return (
-                                    <div key={key} id={"question"}>
-                                        <p>{number + ". " + q.question}</p>
-                                        {q.choices.length > 0 ?
-                                            <ul>
-                                                <p>A. {q.choices[0]}</p>
-                                                <p>B. {q.choices[1]}</p>
-                                                <p>C. {q.choices[2]}</p>
-                                                <p>D. {q.choices[3]}</p>
-                                            </ul>
-                                            :
-                                            <div style={{ height: `${(q.spacing ? q.spacing * .5 : 0) + 1}in` }}></div>
-                                        }
-                                    </div>
-                                );
-                            })}
+
+                            {this.state.answers ?
+                                <div>
+                                    <h1>PROFESSOR COPY - ANSWER KEY</h1>
+                                    <br />
+                                    {this.props.location.state.questions.map((q, key) => {
+                                        let number = this.props.location.state.questions.indexOf(q) + 1
+                                        return (
+                                            <div key={key} id={"question"}>
+                                                <p>{number + ". " + q.question}</p>
+                                                <ul>{q.answer}</ul>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                                :
+                                this.props.location.state.questions.map((q, key) => {
+                                    let number = this.props.location.state.questions.indexOf(q) + 1
+                                    return (
+                                        <div key={key} id={"question"}>
+                                            <p>{number + ". " + q.question}</p>
+                                            {q.choices.length > 0 ?
+                                                <ul>
+                                                    <p>A. {q.choices[0]}</p>
+                                                    <p>B. {q.choices[1]}</p>
+                                                    <p>C. {q.choices[2]}</p>
+                                                    <p>D. {q.choices[3]}</p>
+                                                </ul>
+                                                :
+                                                <div style={{ height: `${(q.spacing ? q.spacing * .5 : 0) + 1}in` }}></div>
+                                            }
+                                        </div>
+                                    );
+                                })
+                            }
                         </div>
                     }
                 </div>
@@ -171,6 +201,17 @@ class ExamPage extends React.Component {
                 <Fab onClick={() => this.setState({ open: true })} color="primary" aria-label="add" style={{ position: "fixed", bottom: 30, right: 50 }}>
                     <DownloadIcon />
                 </Fab>
+                <Fab onClick={this.changeFormat} color="primary" aria-label="add" style={{ position: "fixed", bottom: 100, right: 50 }}>
+                    <ProfessorIcon />
+                </Fab>
+                <CustomSnackbar
+                    vertical={"top"}
+                    horizontal={"right"}
+                    open={this.state.snackOpen}
+                    success={this.state.snackSuccess}
+                    message={this.state.snackMessage}
+                    closeSnack={() => this.setState({ snackOpen: false })}
+                />
             </div>
         );
     }

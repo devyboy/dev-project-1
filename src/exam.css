@@ -20,8 +20,14 @@
   .MuiDialog-root {
     display: none;
   }
-  /* Hide the floating action button */
-  .MuiFab-root {
-    display: none;
+  /* Hide the snackbar too */
+  .MuiSnackbar-root {
+    display: none
+  }
+  .MuiSnackbarContent-message {
+    display: none
+  }
+  .MuiSnackbarContent-action {
+    display: none
   }
 }
