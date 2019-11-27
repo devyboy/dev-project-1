@@ -27,7 +27,7 @@ class HomePage extends React.Component {
           <Redirect to={"/login"} />
           :
           <div>
-            <Menu path={" / Create"}/>
+            <Menu path={"Create"}/>
             <Forms openSnackbar={this.openSnackbar} />
             <br />
             <CustomSnackbar

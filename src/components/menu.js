@@ -29,6 +29,9 @@ let styles = {
     },
     login: {
         marginLeft: "auto"
+    },
+    path: {
+        color: "white"
     }
 }
 
@@ -48,7 +51,7 @@ class Drawer extends React.Component {
 
     signOut() {
         firebase.auth().signOut();
-        this.setState({ userObject: null })
+        this.setState({ userObject: null });
     }
 
     render() {
@@ -66,7 +69,7 @@ class Drawer extends React.Component {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" >
-                            {"UDel PAPER" + this.props.path}
+                            <a href={"/"} style={styles.path}>UDel PAPER</a> /&nbsp;{this.props.path}
                         </Typography>
                         <Button color="inherit" style={styles.login} onClick={this.signOut} >Logout</Button>
                     </Toolbar>

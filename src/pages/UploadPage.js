@@ -118,7 +118,7 @@ class UploadPage extends React.Component {
           <Redirect to={"/login"} />
           :
           <div>
-            <Menu path={" / Upload"} />
+            <Menu path={"Upload"} />
             {this.state.questions.length !== 0 ?
               <div>
                 <h4>Approve the following questions for upload:</h4>
