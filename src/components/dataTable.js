@@ -16,7 +16,7 @@ class DataTable extends React.Component {
       <MaterialTable
         title={"Question Table"}
         columns={[
-          { title: 'Edit', field: 'edit', filtering: false, sorting: false,
+          { title: '', field: 'edit', filtering: false, sorting: false,
             render: rowData => <Button onClick={() => this.props.handleEditQuestions(rowData)}><EditIcon/></Button>},
           { title: 'Course', field: 'course' },
           { title: 'Unit', field: 'unit' },
