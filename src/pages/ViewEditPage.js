@@ -6,7 +6,7 @@ import Menu from '../components/menu';
 import Forms from '../components/forms';
 import CustomSnackbar from "../components/customSnackbar";
 import CircularProgress from '@material-ui/core/CircularProgress';
-import EnhancedTable from '../components/table';
+import DataTable from '../components/dataTable';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -22,6 +22,7 @@ class ViewEdit extends React.Component {
       questions: null,
       selectedQuestions: null,
       isEditing: false,
+      offlineNotify: false,
     };
     this.openExamForm = this.openExamForm.bind(this);
     this.openSnackbar = this.openSnackbar.bind(this);
@@ -63,14 +64,19 @@ class ViewEdit extends React.Component {
     firebase.firestore().terminate();
   }
 
-  openEditForm(q) {
-    this.setState({ isEditing: true });
-    this.setState({ editingQuestion: q });
+  openEditForm(selectedQ) {
+    let question;
+    this.state.questions.forEach((q) => {
+      if (q[0] === selectedQ.id) {
+        question = q[1];
+      }
+    });
+
+    this.setState({ isEditing: true, editingQuestion: question, editingID: selectedQ.id });
   }
 
   closeEditForm(refresh) {
     this.setState({ isEditing: false });
-    this.setState({ editingQuestion: null });
 
     if (refresh) {
       this.setState({ questions: null });
@@ -79,33 +85,26 @@ class ViewEdit extends React.Component {
   }
 
   openExamForm(selected) {
-    let selectedQuestions = this.state.questions.filter(q => selected.includes(q[0])).map(q => q[1]);
-    this.setState({ selectedQuestions: selectedQuestions });
-
+    let opp = [];
+    this.state.questions.filter((q) => {
+      return (selected.forEach((qq) => {
+        if (qq.id === q[0]) {
+          opp.push(q[1]);
+        }
+      }));
+    });
+    this.props.history.push({
+      pathname: "/generate",
+      state: { questions: opp }
+    });
   }
 
-  deleteQuestions(selected) {
-    let selectedQuestions = this.state.questions.filter(q => selected.includes(q[0])).map(q => q[1]);
-    let deleteQuestionsIDs = [];
-
-    selectedQuestions.forEach((selectedQuest) => {
-      this.state.questions.forEach((quest) => {
-        if (selectedQuest === quest[1]) {
-          deleteQuestionsIDs.push(quest[0]);
-        }
-      });
-    });
-
-    deleteQuestionsIDs.forEach((ID) => {
-      firebase.firestore().collection("questions").doc(ID).delete().then(() => this.fetchQuestions());
+  deleteQuestions(questions) {
+    questions.forEach((q) => {
+      firebase.firestore().collection("questions").doc(q.id).delete().then(() => this.fetchQuestions());
     });
 
     this.openSnackbar(true, "Question(s) deleted");
-  }
-
-  closeExamForm() {
-    this.setState({ isCreatingExam: false });
-    this.setState({ examQuestions: null });
   }
 
   openSnackbar(success, message) {
@@ -122,18 +121,12 @@ class ViewEdit extends React.Component {
           <Redirect to={"/login"} />
           :
           <div>
-            {this.state.selectedQuestions !== null &&
-              this.props.history.push({
-                pathname: "/generate",
-                state: { questions: this.state.selectedQuestions }
-              })
-            }
-            <Menu path={" / ViewEdit"}/>
+            <Menu path={"ViewEdit"} />
             <div>
               {this.state.questions ?
                 <div>
-                  <EnhancedTable
-                    rows={this.state.questions}
+                  <DataTable
+                    questions={this.state.questions}
                     handleEditQuestions={this.openEditForm}
                     handleGenerateExam={this.openExamForm}
                     handleDeleteQuestions={this.deleteQuestions}
@@ -159,16 +152,16 @@ class ViewEdit extends React.Component {
                     openSnackbar={this.openSnackbar}
                     isEditing={true}
                     editingQuestion={this.state.editingQuestion}
+                    editingID={this.state.editingID}
                     closeFn={() => this.closeEditForm(true)}
                   />
-                  <br /><br />
                 </DialogContent>
               </Dialog>
             </div>
 
-            <CustomSnackbar 
-              message={this.state.snackMessage} 
-              success={this.state.snackSuccess} 
+            <CustomSnackbar
+              message={this.state.snackMessage}
+              success={this.state.snackSuccess}
               open={this.state.snackOpen}
               closeSnack={() => this.setState({ snackOpen: false })}
             />

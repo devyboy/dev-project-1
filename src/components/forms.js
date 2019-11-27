@@ -19,18 +19,18 @@ class Forms extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      SLOarray: props.editingQuestion ? props.editingQuestion[1].SLO : [],
-      choices: props.editingQuestion ? props.editingQuestion[1].choices : [],
-      question: props.editingQuestion ? props.editingQuestion[1].question : "",
-      unit: props.editingQuestion ? props.editingQuestion[1].unit : "",
-      topic: props.editingQuestion ? props.editingQuestion[1].topic : "",
-      answer: props.editingQuestion ? props.editingQuestion[1].answer : "",
-      cog: props.editingQuestion ? props.editingQuestion[1].cog : "",
-      diff: props.editingQuestion ? props.editingQuestion[1].diff : "",
-      isMult: props.editingQuestion ? (props.editingQuestion[1].type === "Multiple Choice") : "",
-      type: props.editingQuestion ? props.editingQuestion[1].type : "",
-      course: props.editingQuestion ? props.editingQuestion[1].course : "",
-      pre: props.editingQuestion ? props.editingQuestion[1].pre : "",
+      SLOarray: props.editingQuestion ? props.editingQuestion.SLO : [],
+      choices: props.editingQuestion ? props.editingQuestion.choices : [],
+      question: props.editingQuestion ? props.editingQuestion.question : "",
+      unit: props.editingQuestion ? props.editingQuestion.unit : "",
+      topic: props.editingQuestion ? props.editingQuestion.topic : "",
+      answer: props.editingQuestion ? props.editingQuestion.answer : "",
+      cog: props.editingQuestion ? props.editingQuestion.cog : "",
+      diff: props.editingQuestion ? props.editingQuestion.diff : "",
+      isMult: props.editingQuestion ? (props.editingQuestion.type === "Multiple Choice") : "",
+      type: props.editingQuestion ? props.editingQuestion.type : "",
+      course: props.editingQuestion ? props.editingQuestion.course : "",
+      pre: props.editingQuestion ? props.editingQuestion.pre : "",
     }
 
     this.submitQuestion = this.submitQuestion.bind(this);
@@ -254,23 +254,24 @@ class Forms extends React.Component {
       })
   }
 
-  updateQuestion(state) {
+  updateQuestion(newState) {
     let questionsRef = firebase.firestore().collection('questions');
-    if (!state.isMult) {
-      state.choices = [];
+    if (!newState.isMult) {
+      newState.choices = [];
     }
-    questionsRef.doc(this.props.editingQuestion[0]).update({
-      question: state.question,
-      unit: state.unit,
-      course: state.course,
-      topic: state.topic,
-      answer: state.answer,
-      cog: state.cog,
-      pre: state.pre,
-      diff: state.diff,
-      type: state.type,
-      choices: state.choices,
-      SLO: state.SLOarray,
+
+    questionsRef.doc(this.props.editingID).update({
+      question: newState.question,
+      unit: newState.unit,
+      course: newState.course,
+      topic: newState.topic,
+      answer: newState.answer,
+      cog: newState.cog,
+      pre: newState.pre,
+      diff: newState.diff,
+      type: newState.type,
+      choices: newState.choices,
+      SLO: newState.SLOarray,
     })
       .then(this.resetState(true, "Question updated"))
       .catch(err => {
