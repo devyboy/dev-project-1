@@ -7,8 +7,8 @@ const CustomSnackbar = (props) => {
   return (
     <Snackbar
       anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
+        vertical: props.vertical || "bottom",
+        horizontal: props.horizontal || "right",
       }}
       open={props.open}
       autoHideDuration={6000}
