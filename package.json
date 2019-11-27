@@ -9,6 +9,7 @@
     "firebase": "^6.6.2",
     "for-editor": "^0.3.4",
     "js-file-download": "^0.4.8",
+    "material-table": "^1.54.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-router-dom": "^5.1.2",
