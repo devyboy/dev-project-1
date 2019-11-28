@@ -1,8 +1,11 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import Fab from "@material-ui/core/Fab";
 import DownloadIcon from "@material-ui/icons/GetApp";
+import PrintIcon from "@material-ui/icons/Print";
 import ProfessorIcon from "@material-ui/icons/AssignmentInd";
+import SpeedDial from '@material-ui/lab/SpeedDial';
+import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
+import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import CustomSnackbar from "../components/customSnackbar";
 import YAML from 'yaml';
 import "../exam.css";
@@ -153,67 +156,76 @@ class ExamPage extends React.Component {
                         </div>
                     }
                 </div>
-                <Dialog onClose={() => this.setState({ open: false })} open={this.state.open}>
-                    <DialogTitle id="simple-dialog-title">Export Exam</DialogTitle>
-                    <DialogContent>
-                        If you wish to print the exam with pre-selected formatting such as 1 inch margins
-                        and 17pt font size, click the print button.
-                        If you wish to further customize the exam or
-                        download it in other file formats, please do so below.
+                <div id="noprint">
+                    <Dialog onClose={() => this.setState({ open: false })} open={this.state.open}>
+                        <DialogTitle id="simple-dialog-title">Export Exam</DialogTitle>
+                        <DialogContent>
+                            <TextField
+                                style={{ width: 150 }}
+                                label="Filename"
+                                margin="normal"
+                                onChange={this.handleNameChange}
+                                value={this.state.name}
+                            />
+                            <TextField
+                                style={{ marginLeft: 7, width: 70 }}
+                                label="Type"
+                                margin="normal"
+                                onChange={this.handleFormatChange}
+                                value={this.state.format}
+                                select
+                            >
+                                <MenuItem value=".html">.html</MenuItem>
+                                <MenuItem value=".txt">.txt</MenuItem>
+                                <MenuItem value=".json">.json</MenuItem>
+                                <MenuItem value=".yaml">.yaml</MenuItem>
+                            </TextField>
 
-                        <br />
+                            <br />
 
-                        <Button style={{ margin: '1em' }} color="primary" variant="contained" onClick={() => window.print()}>
-                            Print
+                            <Button style={{ margin: '1em' }} color="primary" variant="contained" onClick={this.downloadFile}>
+                                Download
                         </Button>
 
-                        <br />
-
-                        <TextField
-                            style={{ width: 150 }}
-                            label="Filename"
-                            margin="normal"
-                            onChange={this.handleNameChange}
-                            value={this.state.name}
+                        </DialogContent>
+                    </Dialog>
+                    <SpeedDial
+                        ariaLabel="SpeedDial openIcon example"
+                        style={{ position: "fixed", bottom: 30, right: 50 }}
+                        icon={<SpeedDialIcon />}
+                        onClose={() => this.setState({ speedOpen: false })}
+                        onOpen={() => this.setState({ speedOpen: true })}
+                        open={this.state.speedOpen}
+                        direction={"up"}
+                    >
+                        <SpeedDialAction
+                            icon={<PrintIcon />}
+                            tooltipTitle="Print Exam"
+                            onClick={() => window.print()}
                         />
-                        <TextField
-                            style={{ marginLeft: 7, width: 70 }}
-                            label="Type"
-                            margin="normal"
-                            onChange={this.handleFormatChange}
-                            value={this.state.format}
-                            select
-                        >
-                            <MenuItem value=".html">.html</MenuItem>
-                            <MenuItem value=".txt">.txt</MenuItem>
-                            <MenuItem value=".json">.json</MenuItem>
-                            <MenuItem value=".yaml">.yaml</MenuItem>
-                        </TextField>
-
-                        <br />
-
-                        <Button style={{ margin: '1em' }} color="primary" variant="contained" onClick={this.downloadFile}>
-                            Download
-                        </Button>
-
-                    </DialogContent>
-                </Dialog>
-                <Fab onClick={() => this.setState({ open: true })} color="primary" aria-label="add" style={{ position: "fixed", bottom: 30, right: 50 }}>
-                    <DownloadIcon />
-                </Fab>
-                <Fab onClick={this.changeFormat} color="primary" aria-label="add" style={{ position: "fixed", bottom: 100, right: 50 }}>
-                    <ProfessorIcon />
-                </Fab>
-                <CustomSnackbar
-                    vertical={"top"}
-                    horizontal={"right"}
-                    open={this.state.snackOpen}
-                    success={this.state.snackSuccess}
-                    message={this.state.snackMessage}
-                    closeSnack={() => this.setState({ snackOpen: false })}
-                />
+                        <SpeedDialAction
+                            icon={<DownloadIcon />}
+                            tooltipTitle="Download Exam"
+                            onClick={() => this.setState({ open: true })}
+                        />
+                        <SpeedDialAction
+                            icon={<ProfessorIcon />}
+                            tooltipTitle="Change Format"
+                            onClick={this.changeFormat}
+                        />
+                    </SpeedDial>
+                    <CustomSnackbar
+                        vertical={"top"}
+                        horizontal={"right"}
+                        open={this.state.snackOpen}
+                        success={this.state.snackSuccess}
+                        message={this.state.snackMessage}
+                        closeSnack={() => this.setState({ snackOpen: false })}
+                    />
+                </div>
             </div>
         );
+
     }
 }
 
