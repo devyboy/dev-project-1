@@ -2,14 +2,12 @@
   /* Font styling */
   font-family: "Serif"; 
   font-size: 17pt; 
-  background-color: white;
 }  
 
 #question {
   /* These rules prevent questions getting cut off between pages */
   page-break-inside: avoid;  
   break-inside: avoid;
-  backgroun-color: white;
 }
 
 @page {
