@@ -92,10 +92,10 @@ class Drawer extends React.Component {
                             View Questions
                         </MenuItem>
                     </Link>
-                    <Link to={"/upload"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
+                    <Link to={"/import"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
                         <MenuItem>
                             <UploadIcon style={styles.icon} />
-                            Upload Questions
+                            Import Questions
                         </MenuItem>
                     </Link>
                     {/* <Link to={"/generate"} onClick={() => this.setState({ drawer: false })} style={styles.link}>

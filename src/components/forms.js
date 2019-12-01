@@ -248,7 +248,10 @@ class Forms extends React.Component {
       choices: this.state.choices,
       SLO: this.state.SLOarray
     })
-      .then(this.resetState(true, "Question saved"))
+      .then(() => {
+        this.resetState(true, "Question saved");
+        window.scrollTo(0,0);
+      })
       .catch(err => {
         this.resetState(false, err);
       })

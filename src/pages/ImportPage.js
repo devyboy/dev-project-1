@@ -12,7 +12,7 @@ import YAML from 'yaml';
 
 let reader;
 
-class UploadPage extends React.Component {
+class ImportPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -179,4 +179,4 @@ class UploadPage extends React.Component {
   }
 }
 
-export default UploadPage;
+export default ImportPage;
