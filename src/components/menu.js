@@ -16,98 +16,98 @@ import UploadIcon from '@material-ui/icons/Publish';
 
 
 let styles = {
-    menu: {
-        marginBottom: "2em",
-        flexGrow: "1"
-    },
-    icon: {
-        marginRight: ".5em",
-    },
-    link: {
-        textDecoration: "none",
-        color: "black",
-    },
-    login: {
-        marginLeft: "auto"
-    },
-    path: {
-        color: "white"
-    }
+  menu: {
+    marginBottom: "2em",
+    flexGrow: "1"
+  },
+  icon: {
+    marginRight: ".5em",
+  },
+  link: {
+    textDecoration: "none",
+    color: "black",
+  },
+  login: {
+    marginLeft: "auto"
+  },
+  path: {
+    color: "white"
+  }
 }
 
 class Drawer extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            drawer: false,
-        };
-        this.handleOpen = this.handleOpen.bind(this);
-        this.signOut = this.signOut.bind(this);
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      drawer: false,
+    };
+    this.handleOpen = this.handleOpen.bind(this);
+    this.signOut = this.signOut.bind(this);
+  }
 
-    handleOpen(event) {
-        this.setState({ drawer: true, anchorEl: event.currentTarget });
-    }
+  handleOpen(event) {
+    this.setState({ drawer: true, anchorEl: event.currentTarget });
+  }
 
-    signOut() {
-        firebase.auth().signOut();
-        this.setState({ userObject: null });
-    }
+  signOut() {
+    firebase.auth().signOut();
+    this.setState({ userObject: null });
+  }
 
-    render() {
-        return (
-            <div style={styles.menu}>
-                <AppBar position="static">
-                    <Toolbar>
-                        <IconButton
-                            style={{ marginRight: ".5em" }}
-                            edge="start"
-                            color="inherit"
-                            aria-label="menu"
-                            onClick={this.handleOpen}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" >
-                            <a href={"/"} style={styles.path}>UDel PAPER</a> /&nbsp;{this.props.path}
-                        </Typography>
-                        <Button color="inherit" style={styles.login} onClick={this.signOut} >Logout</Button>
-                    </Toolbar>
-                </AppBar>
-                <Menu
-                    anchorEl={this.state.anchorEl}
-                    keepMounted
-                    open={this.state.drawer}
-                    onClose={() => this.setState({ drawer: false })}
-                >
-                    <Link to={"/create"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
-                        <MenuItem>
-                            <PlusIcon style={styles.icon} />
-                            Create Questions
-                        </MenuItem>
-                    </Link>
-                    <Link to={"/view-edit"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
-                        <MenuItem>
-                            <PencilIcon style={styles.icon} />
-                            View Questions
-                        </MenuItem>
-                    </Link>
-                    <Link to={"/import"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
-                        <MenuItem>
-                            <UploadIcon style={styles.icon} />
-                            Import Questions
-                        </MenuItem>
-                    </Link>
-                    {/* <Link to={"/generate"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
-                        <MenuItem>
-                            <ExamIcon style={styles.icon} />
-                            Generate Exam
-                        </MenuItem>
-                    </Link> */}
-                </Menu>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div style={styles.menu}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              style={{ marginRight: ".5em" }}
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={this.handleOpen}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" >
+              <a href={"/"} style={styles.path}>UDel PAPER</a> /&nbsp;{this.props.path}
+            </Typography>
+            <Button color="inherit" style={styles.login} onClick={this.signOut} >Logout</Button>
+          </Toolbar>
+        </AppBar>
+        <Menu
+          anchorEl={this.state.anchorEl}
+          keepMounted
+          open={this.state.drawer}
+          onClose={() => this.setState({ drawer: false })}
+        >
+          <Link to={"/create"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
+            <MenuItem>
+              <PlusIcon style={styles.icon} />
+              Create Questions
+            </MenuItem>
+          </Link>
+          <Link to={"/view-edit"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
+            <MenuItem>
+              <PencilIcon style={styles.icon} />
+              View Questions
+            </MenuItem>
+          </Link>
+          <Link to={"/import"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
+            <MenuItem>
+              <UploadIcon style={styles.icon} />
+              Import Questions
+            </MenuItem>
+          </Link>
+          {/* <Link to={"/generate"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
+            <MenuItem>
+              <ExamIcon style={styles.icon} />
+              Generate Exam
+            </MenuItem>
+          </Link> */}
+        </Menu>
+      </div>
+    );
+  }
 }
 
 export default Drawer;
