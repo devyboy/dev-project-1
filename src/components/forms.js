@@ -413,12 +413,10 @@ class Forms extends React.Component {
             h1: true,
             h2: true,
             h3: true,
-            img: true,
             code: true,
+            link: true,
             preview: true,
             expand: true,
-            undo: true,
-            redo: true,
             subfield: true
           }}
           style={{ height: '300px', width: '100%', borderColor: this.state.questionErr ? "red" : "#ddd" }}
@@ -442,10 +440,9 @@ class Forms extends React.Component {
               h2: true,
               h3: true,
               code: true,
+              link: true,
               preview: true,
               expand: true,
-              undo: true,
-              redo: true,
               subfield: true
             }}
             style={{ height: '300px', width: '100%', borderColor: this.state.answerErr ? "red" : "#ddd" }}

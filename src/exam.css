@@ -4,6 +4,14 @@
   font-size: 17pt; 
 }  
 
+#exam p {
+  display: inline;
+}
+
+#exam ul p{
+  display: block;
+}
+
 #question {
   /* These rules prevent questions getting cut off between pages */
   page-break-inside: avoid;  
