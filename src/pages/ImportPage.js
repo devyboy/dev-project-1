@@ -118,7 +118,7 @@ class ImportPage extends React.Component {
           <Redirect to={"/login"} />
           :
           <div>
-            <Menu path={"Upload"} />
+            <Menu path={"Import"} />
             {this.state.questions.length !== 0 ?
               <div>
                 <h4>Approve the following questions for upload:</h4>
