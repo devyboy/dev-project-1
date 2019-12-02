@@ -195,8 +195,8 @@ class ExamPage extends React.Component {
             ariaLabel="SpeedDial openIcon example"
             style={{ position: "fixed", bottom: 30, right: 50 }}
             icon={<SpeedDialIcon />}
-            onClose={(e, r) => r === ("toggle" || r === "blur") && this.setState({ speedOpen: false })}
-            onOpen={(e, r) => r === "toggle" && this.setState({ speedOpen: true })}
+            onClose={() => this.setState({ speedOpen: false })}
+            onOpen={() => this.setState({ speedOpen: true })}
             open={this.state.speedOpen}
             direction={"up"}
           >
