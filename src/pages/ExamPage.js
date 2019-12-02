@@ -129,9 +129,7 @@ class ExamPage extends React.Component {
                     let number = this.props.location.state.questions.indexOf(q) + 1
                     return (
                       <div key={key} id={"question"}>
-                        <div dangerouslySetInnerHTML={{ __html: md.render(q.question) }}>
-                          {number + ". "}
-                        </div>
+                        <div dangerouslySetInnerHTML={{ __html: number + ". " + md.render(q.question) }}></div>
                         <ul>{q.answer}</ul>
                       </div>
                     );
@@ -142,7 +140,7 @@ class ExamPage extends React.Component {
                   let number = this.props.location.state.questions.indexOf(q) + 1;
                   return (
                     <div key={key} id={"question"}>
-                      <div dangerouslySetInnerHTML={{ __html: number + ". " + md.render(q.question) }}></div>
+                      <div dangerouslySetInnerHTML={{ __html: md.render(number + ". " + q.question) }}></div>
                       {q.choices.length > 0 ?
                         <ul>
                           <p>A. {q.choices[0]}</p>
@@ -197,8 +195,8 @@ class ExamPage extends React.Component {
             ariaLabel="SpeedDial openIcon example"
             style={{ position: "fixed", bottom: 30, right: 50 }}
             icon={<SpeedDialIcon />}
-            onClose={() => this.setState({ speedOpen: false })}
-            onOpen={() => this.setState({ speedOpen: true })}
+            onClose={(e, r) => r === ("toggle" || r === "blur") && this.setState({ speedOpen: false })}
+            onOpen={(e, r) => r === "toggle" && this.setState({ speedOpen: true })}
             open={this.state.speedOpen}
             direction={"up"}
           >
