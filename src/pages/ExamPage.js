@@ -32,6 +32,8 @@ class ExamPage extends React.Component {
     this.handleFormatChange = this.handleFormatChange.bind(this);
     this.changeFormat = this.changeFormat.bind(this);
     this.downloadFile = this.downloadFile.bind(this);
+
+    window.scrollTo(0, 0);
   }
 
   handleNameChange(event) {
@@ -108,7 +110,6 @@ class ExamPage extends React.Component {
   }
 
   render() {
-    window.scrollTo(0, 0);
     if (this.props.user === false) {
       return (null);
     }
