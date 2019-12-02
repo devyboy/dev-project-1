@@ -3,6 +3,31 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import { Redirect } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import UDLogo from "../UDMonogram.jpg";
+
+
+let styles = {
+  container: {
+    position: "absolute",
+    top: "35%",
+    left: "50%",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)"
+  },
+  button: {
+    margin: "auto",
+    display: "block",
+    marginTop: "2em",
+    fontSize: "1.2em"
+  },
+  logo: {
+    maxWidth: "200px", 
+    display: "block", 
+    marginLeft: "auto", 
+    marginRight: "auto",
+    marginBottom: "2em"
+  }
+}
 
 class LoginPage extends React.Component {
 
@@ -16,13 +41,23 @@ class LoginPage extends React.Component {
 
   render() {
     if (this.props.user === false) {
-      return(null);
+      return (null);
     }
     if (this.props.user === null) {
       return (
-        <div>
-          <p>You need to login to proceed</p>
-          <Button onClick={this.login}>Login</Button>
+        <div
+          style={styles.container}
+        >
+          <img src={UDLogo} alt="logo" style={styles.logo}/>
+          <h2>To proceed, please login below</h2>
+          <Button
+            style={styles.button}
+            color="primary"
+            variant="contained"
+            onClick={this.login}
+          >
+            Login
+          </Button>
         </div>
       );
     }
