@@ -29,9 +29,9 @@ let styles = {
   }
 }
 
-class LoginPage extends React.Component {
+const LoginPage = (props) => {
 
-  login() {
+  const login = () => {
     let provider = new firebase.auth.GoogleAuthProvider();
     // firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
     //   firebase.auth().signInWithPopup(provider);
@@ -39,11 +39,10 @@ class LoginPage extends React.Component {
     firebase.auth().signInWithPopup(provider);
   }
 
-  render() {
-    if (this.props.user === false) {
+    if (props.user === false) {
       return (null);
     }
-    if (this.props.user === null) {
+    if (props.user === null) {
       return (
         <div
           style={styles.container}
@@ -54,7 +53,7 @@ class LoginPage extends React.Component {
             style={styles.button}
             color="primary"
             variant="contained"
-            onClick={this.login}
+            onClick={() => login()}
           >
             Login
           </Button>
@@ -66,7 +65,6 @@ class LoginPage extends React.Component {
         <Redirect to={{ pathname: "/" }} />
       );
     }
-  }
 }
 
 export default LoginPage;

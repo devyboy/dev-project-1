@@ -250,7 +250,7 @@ class Forms extends React.Component {
     })
       .then(() => {
         this.resetState(true, "Question saved");
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
       })
       .catch(err => {
         this.resetState(false, err);

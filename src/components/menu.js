@@ -13,6 +13,7 @@ import PlusIcon from '@material-ui/icons/Add';
 import PencilIcon from '@material-ui/icons/Edit';
 import Button from "@material-ui/core/Button";
 import UploadIcon from '@material-ui/icons/Publish';
+import SettingsIcon from "@material-ui/icons/Settings";
 
 
 let styles = {
@@ -98,12 +99,12 @@ class Drawer extends React.Component {
               Import Questions
             </MenuItem>
           </Link>
-          {/* <Link to={"/generate"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
+          <Link to={"/settings"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
             <MenuItem>
-              <ExamIcon style={styles.icon} />
-              Generate Exam
+              <SettingsIcon style={styles.icon} />
+              Settings
             </MenuItem>
-          </Link> */}
+          </Link>
         </Menu>
       </div>
     );
