@@ -253,7 +253,7 @@ class Forms extends React.Component {
         window.scrollTo(0, 0);
       })
       .catch(err => {
-        this.resetState(false, err);
+        this.resetState(false, err.message);
       })
   }
 
@@ -278,7 +278,7 @@ class Forms extends React.Component {
     })
       .then(this.resetState(true, "Question updated"))
       .catch(err => {
-        this.resetState(false, err);
+        this.resetState(false, err.message);
       });
   }
 

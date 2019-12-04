@@ -96,9 +96,10 @@ class ImportPage extends React.Component {
       choices: q.choices,
       SLO: q.SLO,
       pre: q.pre,
-    }).then(this.openSnackbar(true, "Question(s) saved"))
+    })
+      .then(this.openSnackbar(true, "Question(s) saved"))
       .catch(err => {
-        this.openSnackbar(false, err);
+        this.openSnackbar(false, err.message);
       })
       .then(() => this.props.history.push("/view-edit"))
 

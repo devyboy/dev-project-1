@@ -42,7 +42,7 @@ class ViewEdit extends React.Component {
       });
       this.setState({ questions: questionArray });
     }).catch(err => {
-      console.log(err);
+      this.openSnackbar(false, err.message);
     });
   }
 
