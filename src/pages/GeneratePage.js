@@ -330,6 +330,15 @@ class Generate extends React.Component {
                             }
                           </Typography>
                         </li>
+                        {(this.state.detailsQuestion.type === "Free Response" || this.state.detailsQuestion.type === "Programming")
+                          &&
+                          <TextField
+                          label={"Spacing"}
+                          margin="normal"
+                          type="number"
+                          onBlur={(event) => this.handleSpacingChange(this.state.detailsQuestion, event)}
+                        />
+                        }
                       </ul>
                     </DialogContent>
                     <DialogActions >
@@ -347,31 +356,6 @@ class Generate extends React.Component {
                     </DialogActions>
                   </Dialog>
                 }
-
-                <hr style={{ width: "80%" }} />
-
-                <br />
-
-                <p style={{ width: '50%', margin: "0 auto" }}>
-                  The following questions are free response or programming. If you wish to add a custom amount
-                  of white space below each one, please enter the amount in inches. If left blank,
-                  the default is 1 inch.
-                </p>
-                {this.state.questions.map((q, key) => {
-                  if (q.type === "Free Response" || q.type === "Programming") {
-                    return (
-                      <div key={key}>
-                        <TextField
-                          label={"Question " + (this.state.questions.indexOf(q) + 1) + " spacing"}
-                          margin="normal"
-                          type="number"
-                          onBlur={(event) => this.handleSpacingChange(q, event)}
-                        />
-                      </div>
-                    );
-                  }
-                  return null;
-                })}
 
                 <hr style={{ width: "80%" }} />
 
