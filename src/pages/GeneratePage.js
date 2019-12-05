@@ -80,6 +80,10 @@ const styles = {
   },
   dragHandle: {
     cursor: "move"
+  }, 
+  button: { 
+    margin: "1em", 
+    display: "inline-block", 
   }
 }
 
@@ -90,6 +94,7 @@ class Generate extends React.Component {
 
     this.randomizeQuestions = this.randomizeQuestions.bind(this);
     this.randomizeChoices = this.randomizeChoices.bind(this);
+    this.randomizeAll = this.randomizeAll.bind(this);
     this.handleSpacingChange = this.handleSpacingChange.bind(this);
     this.closeCard = this.closeCard.bind(this);
   }
@@ -165,6 +170,22 @@ class Generate extends React.Component {
     dab.choices = array;
 
     this.setState({ detailsQuestion: dab });
+  }
+
+  randomizeAll() {
+    this.randomizeQuestions();
+    
+    this.state.questions.forEach((q) => {
+      let array = q.choices;
+
+      for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+      }
+      q.choices = array;
+    })
   }
 
   render() {
@@ -252,8 +273,12 @@ class Generate extends React.Component {
 
             {this.state.questions &&
               <div>
-                <Button variant="contained" color="primary" onClick={this.randomizeQuestions} style={{ margin: "1em", display: "block", marginLeft: "auto" }}>
-                  Randomize
+                <Button variant="contained" color="primary" onClick={this.randomizeQuestions} style={styles.button}>
+                  Randomize Questions
+                  <ShuffleIcon />
+                </Button>
+                <Button variant="contained" color="primary" onClick={this.randomizeAll} style={styles.button}>
+                  Randomize Questions + Choices
                   <ShuffleIcon />
                 </Button>
 
