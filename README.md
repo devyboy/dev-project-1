@@ -1,5 +1,5 @@
 # Overview
-Codenamed *dev-project-1* is a web application for professors and TA's at the University of Delaware's CS department to create exams in a more efficient and programmatic way. This project is currently still in the alpha phase of development so many features are still in the works. The final version will only be in use by the university but the plan is to release the platform itself as an open source thing hopefully if they let us(?)
+Codenamed *dev-project-1* is a web application for professors and TA's at the University of Delaware's CS department to create exams in a more efficient and programmatic way. This project is currently still in the alpha phase of development so many features are still in the works. The final version will only be in use by the university but the plan is to release the platform itself as open source in the future.
 
 # Installation
 To install just: `git clone https://github.com/devyboy/dev-project-1 && npm install`
@@ -23,7 +23,6 @@ var firebaseConfig = {
 5. Type `export { firebaseConfig };` at the bottom of the file and boom you're done.
 
 # Name ideas
-Not sure what to name it yet, theres a file called `names.txt` in which some name ideas were tossed into. Might as well put them here too. 
 
 ```
 Normal:	
