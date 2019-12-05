@@ -7,7 +7,9 @@ import Forms from '../components/forms';
 import CustomSnackbar from '../components/customSnackbar';
 import Import from '../components/import';
 import '../App.css';
-class HomePage extends React.Component {
+
+
+class CreatePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -69,4 +71,4 @@ class HomePage extends React.Component {
   }
 }
 
-export default HomePage;
+export default CreatePage;

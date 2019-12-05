@@ -2,7 +2,7 @@ import React from "react";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import HomePage from './pages/HomePage';
+import CreatePage from './pages/CreatePage';
 import ViewEditPage from './pages/ViewEditPage';
 import GeneratePage from './pages/GeneratePage';
 import FourOhFour from "./pages/FourOhFour";
@@ -45,8 +45,8 @@ class App extends React.Component {
       <Router>
         <Switch>
           <Route exact path="/login" render={(props) => <LoginPage {...props} user={this.state.userObject} />} />
-          <Route exact path="/" render={(props) => <HomePage {...props} user={this.state.userObject} />} />
-          <Route exact path="/create" render={(props) => <HomePage {...props} user={this.state.userObject} />} />
+          <Route exact path="/" render={(props) => <CreatePage {...props} user={this.state.userObject} />} />
+          <Route exact path="/create" render={(props) => <CreatePage {...props} user={this.state.userObject} />} />
           <Route exact path="/view-edit" render={(props) => <ViewEditPage {...props} user={this.state.userObject} />} />
           <Route exact path="/generate" render={(props) => <GeneratePage {...props} user={this.state.userObject} />} />
           <Route exact path="/exam" render={(props) => <ExamPage {...props} user={this.state.userObject} />} />
