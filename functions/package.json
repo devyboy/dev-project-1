@@ -1,0 +1,12 @@
+{
+  "name": "user-authorization-functions",
+  "description": "Disable user account if not authorized",
+  "dependencies": {
+    "firebase-functions": "^2.2.1",
+    "firebase-admin": "8.8.0"
+  },
+  "engines": {
+    "node": "8"
+  },
+  "private": true
+}
