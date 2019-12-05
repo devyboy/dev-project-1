@@ -12,7 +12,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import PlusIcon from '@material-ui/icons/Add';
 import PencilIcon from '@material-ui/icons/Edit';
 import Button from "@material-ui/core/Button";
-import UploadIcon from '@material-ui/icons/Publish';
 import SettingsIcon from "@material-ui/icons/Settings";
 
 
@@ -91,12 +90,6 @@ class Drawer extends React.Component {
             <MenuItem>
               <PencilIcon style={styles.icon} />
               View Questions
-            </MenuItem>
-          </Link>
-          <Link to={"/import"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
-            <MenuItem>
-              <UploadIcon style={styles.icon} />
-              Import Questions
             </MenuItem>
           </Link>
           <Link to={"/settings"} onClick={() => this.setState({ drawer: false })} style={styles.link}>

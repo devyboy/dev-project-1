@@ -121,7 +121,7 @@ class ViewEdit extends React.Component {
           <Redirect to={"/login"} />
           :
           <div>
-            <Menu path={"ViewEdit"} />
+            <Menu path={"View+Edit"} />
             <div>
               {this.state.questions ?
                 <div>
