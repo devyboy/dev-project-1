@@ -40,7 +40,7 @@ const LoginPage = (props) => {
         .then((authObj) => {
           if (!usersArr.includes(authObj.user.email)) {
             firebase.auth().signOut();
-            alert("You are unauthorized to access this application. Please contact an administrator.");
+            return(alert("You are unauthorized to access this application. Please contact an administrator."));
           }
         })
         .catch((err) => {
@@ -64,7 +64,7 @@ const LoginPage = (props) => {
     return (
       <div
         style={styles.container}
-      >
+      > 
         <img src={UDLogo} alt="logo" style={styles.logo} />
         <h2>To proceed, please login below</h2>
         <Button
