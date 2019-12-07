@@ -269,7 +269,7 @@ class Generate extends React.Component {
           <Redirect to={"/login"} />
           :
           <div>
-            <Menu path={"Generate"} />
+            <Menu path={["View-Edit", "Generate"]} />
 
             {this.state.questions &&
               <div>

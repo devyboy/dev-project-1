@@ -39,7 +39,7 @@ class CreatePage extends React.Component {
           <Redirect to={"/login"} />
           :
           <div>
-            <Menu path={"Create"}/>
+            <Menu path={["Create"]}/>
             <Tabs 
               value={this.state.value} 
               onChange={this.handleChange} 

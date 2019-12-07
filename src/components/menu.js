@@ -69,7 +69,14 @@ class Drawer extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" >
-              <a href={"/"} style={styles.path}>UDel PAPER</a> /&nbsp;{this.props.path}
+              <a href={"/"} style={styles.path}>UDel PAPER</a> /&nbsp;{this.props.path.map(path => {
+                return(
+                    <span>
+                      <a href={path.toLowerCase()} style={styles.path}>{path}</a>
+                      &nbsp;/&nbsp;
+                    </span>
+                );
+              })}
             </Typography>
             <Button color="inherit" style={styles.login} onClick={this.signOut} >Logout</Button>
           </Toolbar>

@@ -12,7 +12,7 @@ const SettingsPage = (props) => {
       {!props.user ?
         <Redirect to={"/login"} />
         :
-        <Menu path="Settings" />
+        <Menu path={["Settings"]} />
       }
     </div>
   );
