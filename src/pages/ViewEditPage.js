@@ -1,7 +1,6 @@
 import React from 'react';
 import firebase from 'firebase/app';
 import "firebase/firestore";
-import { Redirect } from "react-router-dom";
 import Menu from '../components/menu';
 import Forms from '../components/forms';
 import CustomSnackbar from "../components/customSnackbar";
@@ -112,63 +111,54 @@ class ViewEdit extends React.Component {
   }
 
   render() {
-    if (this.props.user === false) {
-      return (null);
-    }
     return (
       <div className="App">
-        {!this.props.user ?
-          <Redirect to={"/login"} />
-          :
-          <div>
-            <Menu path={["View-Edit"]} />
+        <Menu path={["View-Edit"]} />
+        <div>
+          {this.state.questions ?
             <div>
-              {this.state.questions ?
-                <div>
-                  <DataTable
-                    questions={this.state.questions}
-                    handleEditQuestions={this.openEditForm}
-                    handleGenerateExam={this.openExamForm}
-                    handleDeleteQuestions={this.deleteQuestions}
-                  />
-                </div>
-                :
-                <CircularProgress />
-              }
-              <Dialog
-                open={this.state.isEditing}
-                onClose={() => this.closeEditForm(false)}
-                aria-labelledby="form-dialog-title"
-                maxWidth="lg"
-                fullWidth
-              >
-                <DialogActions disableSpacing>
-                  <Button onClick={() => this.closeEditForm(false)} color="primary">
-                    <CloseIcon />
-                  </Button>
-                </DialogActions>
-                <DialogContent>
-                  <Forms
-                    openSnackbar={this.openSnackbar}
-                    isEditing={true}
-                    editingQuestion={this.state.editingQuestion}
-                    editingID={this.state.editingID}
-                    closeFn={() => this.closeEditForm(true)}
-                  />
-                </DialogContent>
-              </Dialog>
+              <DataTable
+                questions={this.state.questions}
+                handleEditQuestions={this.openEditForm}
+                handleGenerateExam={this.openExamForm}
+                handleDeleteQuestions={this.deleteQuestions}
+              />
             </div>
+            :
+            <CircularProgress />
+          }
+          <Dialog
+            open={this.state.isEditing}
+            onClose={() => this.closeEditForm(false)}
+            aria-labelledby="form-dialog-title"
+            maxWidth="lg"
+            fullWidth
+          >
+            <DialogActions disableSpacing>
+              <Button onClick={() => this.closeEditForm(false)} color="primary">
+                <CloseIcon />
+              </Button>
+            </DialogActions>
+            <DialogContent>
+              <Forms
+                openSnackbar={this.openSnackbar}
+                isEditing={true}
+                editingQuestion={this.state.editingQuestion}
+                editingID={this.state.editingID}
+                closeFn={() => this.closeEditForm(true)}
+              />
+            </DialogContent>
+          </Dialog>
+        </div>
 
-            <CustomSnackbar
-              message={this.state.snackMessage}
-              success={this.state.snackSuccess}
-              open={this.state.snackOpen}
-              closeSnack={() => this.setState({ snackOpen: false })}
-            />
+        <CustomSnackbar
+          message={this.state.snackMessage}
+          success={this.state.snackSuccess}
+          open={this.state.snackOpen}
+          closeSnack={() => this.setState({ snackOpen: false })}
+        />
 
-            <OfflineNotify open={this.state.offlineNotify} closeNotify={this.closeOfflineNotify} />
-          </div>
-        }
+        <OfflineNotify open={this.state.offlineNotify} closeNotify={this.closeOfflineNotify} />
       </div>
     );
   }

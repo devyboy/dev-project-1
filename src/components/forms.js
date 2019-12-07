@@ -50,6 +50,10 @@ class Forms extends React.Component {
     this.handlePreChange = this.handlePreChange.bind(this);
   }
 
+  componentWillUnmount() {
+    firebase.firestore().terminate();
+  }
+  
   handleQuestionChange(value) {
     this.setState({ question: value });
   }

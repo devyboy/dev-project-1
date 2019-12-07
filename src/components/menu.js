@@ -51,7 +51,7 @@ class Drawer extends React.Component {
 
   signOut() {
     firebase.auth().signOut();
-    this.setState({ userObject: null });
+  
   }
 
   render() {
@@ -69,9 +69,9 @@ class Drawer extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" >
-              <a href={"/"} style={styles.path}>UDel PAPER</a> /&nbsp;{this.props.path.map(path => {
+              <a href={"/"} style={styles.path}>UDel PAPER</a> /&nbsp;{this.props.path.map((path, key) => {
                 return(
-                    <span>
+                    <span key={key}>
                       <a href={path.toLowerCase()} style={styles.path}>{path}</a>
                       &nbsp;/&nbsp;
                     </span>

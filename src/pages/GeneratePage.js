@@ -1,5 +1,4 @@
 import React from 'react';
-import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
 import arrayMove from 'array-move';
 import Menu from '../components/menu';
@@ -80,10 +79,10 @@ const styles = {
   },
   dragHandle: {
     cursor: "move"
-  }, 
-  button: { 
-    margin: "1em", 
-    display: "inline-block", 
+  },
+  button: {
+    margin: "1em",
+    display: "inline-block",
   }
 }
 
@@ -174,7 +173,7 @@ class Generate extends React.Component {
 
   randomizeAll() {
     this.randomizeQuestions();
-    
+
     this.state.questions.forEach((q) => {
       let array = q.choices;
 
@@ -259,147 +258,137 @@ class Generate extends React.Component {
       );
     });
 
-    if (this.props.user === false) {
-      return (null);
-    }
-
     return (
       <div className="App">
-        {!this.props.user ?
-          <Redirect to={"/login"} />
-          :
+        <Menu path={["View-Edit", "Generate"]} />
+
+        {this.state.questions &&
           <div>
-            <Menu path={["View-Edit", "Generate"]} />
-
-            {this.state.questions &&
-              <div>
-                <Button variant="contained" color="primary" onClick={this.randomizeQuestions} style={styles.button}>
-                  Randomize Questions
+            <Button variant="contained" color="primary" onClick={this.randomizeQuestions} style={styles.button}>
+              Randomize Questions
                   <ShuffleIcon />
-                </Button>
-                <Button variant="contained" color="primary" onClick={this.randomizeAll} style={styles.button}>
-                  Randomize Questions + Choices
+            </Button>
+            <Button variant="contained" color="primary" onClick={this.randomizeAll} style={styles.button}>
+              Randomize Questions + Choices
                   <ShuffleIcon />
-                </Button>
+            </Button>
 
-                <SortableList items={this.state.questions} onSortEnd={this.onSortEndCards} axis="xy" useDragHandle />
+            <SortableList items={this.state.questions} onSortEnd={this.onSortEndCards} axis="xy" useDragHandle />
 
-                {this.state.detailsQuestion &&
-                  <Dialog onClose={() => this.setState({ detailsModal: false })} open={this.state.detailsModal}>
-                    <DialogTitle onClose={() => this.setState({ detailsModal: false })}>
-                      {"Question " + (this.state.questions.indexOf(this.state.detailsQuestion) + 1) + " details"}
-                    </DialogTitle>
-                    <DialogContent dividers >
-                      <ul>
-                        <li>
-                          <Typography gutterBottom>
-                            <strong>Question: </strong> {this.state.detailsQuestion.question}
-                          </Typography>
-                        </li>
-                        <li>
-                          <Typography gutterBottom>
-                            <strong>Answer: </strong> {this.state.detailsQuestion.answer}
-                          </Typography>
-                        </li>
-                        <li>
-                          <Typography gutterBottom>
-                            <strong>Course: </strong> {this.state.detailsQuestion.pre + " " + this.state.detailsQuestion.course}
-                          </Typography>
-                        </li>
-                        <li>
-                          <Typography gutterBottom>
-                            <strong>Topic: </strong> {this.state.detailsQuestion.topic}
-                          </Typography>
-                        </li>
-                        <li>
-                          <Typography gutterBottom>
-                            <strong>Unit: </strong> {this.state.detailsQuestion.unit}
-                          </Typography>
-                        </li>
-                        <li>
-                          <Typography gutterBottom>
-                            <strong>Type: </strong> {this.state.detailsQuestion.type}
-                          </Typography>
-                        </li>
-                        <li>
-                          <Typography gutterBottom>
-                            <strong>Difficulty: </strong> {this.state.detailsQuestion.diff}
-                          </Typography>
-                        </li>
-                        <li>
-                          <Typography gutterBottom>
-                            <strong>Cognitive Level: </strong> {this.state.detailsQuestion.cog}
-                          </Typography>
-                        </li>
-                        <li>
-                          <Typography gutterBottom component="span">
-                            <strong>Choices: </strong>
-                            {this.state.detailsQuestion.choices.length !== 0 ?
-                              <SortableChoices items={this.state.detailsQuestion.choices} onSortEnd={this.onSortEndChoices} />
-                              :
-                              "N/A"
-                            }
-                          </Typography>
-                        </li>
-                        <li>
-                          <Typography gutterBottom component="span">
-                            <strong>SLO's: </strong>
-                            {this.state.detailsQuestion.SLO &&
-                              <ul>
-                                {this.state.detailsQuestion.SLO.map((slo, key) => {
-                                  return (
-                                    <li key={key}>{slo}</li>
-                                  );
-                                })}
-                              </ul>
-                            }
-                          </Typography>
-                        </li>
-                        {(this.state.detailsQuestion.type === "Free Response" || this.state.detailsQuestion.type === "Programming")
-                          &&
-                          <TextField
-                          label={"Spacing"}
-                          margin="normal"
-                          type="number"
-                          onBlur={(event) => this.handleSpacingChange(this.state.detailsQuestion, event)}
-                        />
+            {this.state.detailsQuestion &&
+              <Dialog onClose={() => this.setState({ detailsModal: false })} open={this.state.detailsModal}>
+                <DialogTitle onClose={() => this.setState({ detailsModal: false })}>
+                  {"Question " + (this.state.questions.indexOf(this.state.detailsQuestion) + 1) + " details"}
+                </DialogTitle>
+                <DialogContent dividers >
+                  <ul>
+                    <li>
+                      <Typography gutterBottom>
+                        <strong>Question: </strong> {this.state.detailsQuestion.question}
+                      </Typography>
+                    </li>
+                    <li>
+                      <Typography gutterBottom>
+                        <strong>Answer: </strong> {this.state.detailsQuestion.answer}
+                      </Typography>
+                    </li>
+                    <li>
+                      <Typography gutterBottom>
+                        <strong>Course: </strong> {this.state.detailsQuestion.pre + " " + this.state.detailsQuestion.course}
+                      </Typography>
+                    </li>
+                    <li>
+                      <Typography gutterBottom>
+                        <strong>Topic: </strong> {this.state.detailsQuestion.topic}
+                      </Typography>
+                    </li>
+                    <li>
+                      <Typography gutterBottom>
+                        <strong>Unit: </strong> {this.state.detailsQuestion.unit}
+                      </Typography>
+                    </li>
+                    <li>
+                      <Typography gutterBottom>
+                        <strong>Type: </strong> {this.state.detailsQuestion.type}
+                      </Typography>
+                    </li>
+                    <li>
+                      <Typography gutterBottom>
+                        <strong>Difficulty: </strong> {this.state.detailsQuestion.diff}
+                      </Typography>
+                    </li>
+                    <li>
+                      <Typography gutterBottom>
+                        <strong>Cognitive Level: </strong> {this.state.detailsQuestion.cog}
+                      </Typography>
+                    </li>
+                    <li>
+                      <Typography gutterBottom component="span">
+                        <strong>Choices: </strong>
+                        {this.state.detailsQuestion.choices.length !== 0 ?
+                          <SortableChoices items={this.state.detailsQuestion.choices} onSortEnd={this.onSortEndChoices} />
+                          :
+                          "N/A"
                         }
-                      </ul>
-                    </DialogContent>
-                    <DialogActions >
-                      {this.state.detailsQuestion.choices.length !== 0 &&
-                        <Button style={{ marginRight: "auto" }} onClick={this.randomizeChoices} color="primary">
-                          Shuffle Choices
+                      </Typography>
+                    </li>
+                    <li>
+                      <Typography gutterBottom component="span">
+                        <strong>SLO's: </strong>
+                        {this.state.detailsQuestion.SLO &&
+                          <ul>
+                            {this.state.detailsQuestion.SLO.map((slo, key) => {
+                              return (
+                                <li key={key}>{slo}</li>
+                              );
+                            })}
+                          </ul>
+                        }
+                      </Typography>
+                    </li>
+                    {(this.state.detailsQuestion.type === "Free Response" || this.state.detailsQuestion.type === "Programming")
+                      &&
+                      <TextField
+                        label={"Spacing"}
+                        margin="normal"
+                        type="number"
+                        onBlur={(event) => this.handleSpacingChange(this.state.detailsQuestion, event)}
+                      />
+                    }
+                  </ul>
+                </DialogContent>
+                <DialogActions >
+                  {this.state.detailsQuestion.choices.length !== 0 &&
+                    <Button style={{ marginRight: "auto" }} onClick={this.randomizeChoices} color="primary">
+                      Shuffle Choices
                         </Button>
-                      }
-                      <Button onClick={() => this.closeCard(this.state.questions.indexOf(this.state.detailsQuestion) + 1)} color="secondary">
-                        Remove
+                  }
+                  <Button onClick={() => this.closeCard(this.state.questions.indexOf(this.state.detailsQuestion) + 1)} color="secondary">
+                    Remove
                       </Button>
-                      <Button onClick={() => this.setState({ detailsModal: false })} color="primary">
-                        Close
+                  <Button onClick={() => this.setState({ detailsModal: false })} color="primary">
+                    Close
                       </Button>
-                    </DialogActions>
-                  </Dialog>
-                }
-
-                <hr style={{ width: "80%" }} />
-
-                <div style={{ width: "50%", margin: "0 auto" }}>
-                  <Link to={{ pathname: "/exam", state: { questions: this.state.questions } }}>
-                    <Button style={{ margin: '1em' }} color="primary" variant="contained" >
-                      Generate Exam
-                    </Button>
-                  </Link>
-                </div>
-
-                <CustomSnackbar
-                  open={this.state.snackOpen}
-                  success={this.state.snackSuccess}
-                  message={this.state.snackMessage}
-                  closeSnack={() => this.setState({ snackOpen: false })}
-                />
-              </div>
+                </DialogActions>
+              </Dialog>
             }
+
+            <hr style={{ width: "80%" }} />
+
+            <div style={{ width: "50%", margin: "0 auto" }}>
+              <Link to={{ pathname: "/exam", state: { questions: this.state.questions } }}>
+                <Button style={{ margin: '1em' }} color="primary" variant="contained" >
+                  Generate Exam
+                    </Button>
+              </Link>
+            </div>
+
+            <CustomSnackbar
+              open={this.state.snackOpen}
+              success={this.state.snackSuccess}
+              message={this.state.snackMessage}
+              closeSnack={() => this.setState({ snackOpen: false })}
+            />
           </div>
         }
       </div>

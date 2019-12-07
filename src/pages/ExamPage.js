@@ -1,5 +1,4 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
 import DownloadIcon from "@material-ui/icons/GetApp";
 import PrintIcon from "@material-ui/icons/Print";
 import ProfessorIcon from "@material-ui/icons/AssignmentInd";
@@ -110,54 +109,45 @@ class ExamPage extends React.Component {
   }
 
   render() {
-    if (this.props.user === false) {
-      return (null);
-    }
     let md = require('markdown-it')();
     return (
       <div>
         <div id="exam">
-          {!this.props.user ?
-            <Redirect to={"/login"} />
-            :
+          {this.state.answers ?
             <div>
-
-              {this.state.answers ?
-                <div>
-                  <h1>PROFESSOR COPY - ANSWER KEY</h1>
-                  <br />
-                  {this.props.location.state.questions.map((q, key) => {
-                    let number = this.props.location.state.questions.indexOf(q) + 1
-                    return (
-                      <div key={key} id={"question"}>
-                        <div dangerouslySetInnerHTML={{ __html: number + ". " + md.render(q.question) }}></div>
-                        <ul>{q.answer}</ul>
-                      </div>
-                    );
-                  })}
-                </div>
-                :
-                this.props.location.state.questions.map((q, key) => {
-                  let number = this.props.location.state.questions.indexOf(q) + 1;
-                  return (
-                    <div key={key} id={"question"}>
-                      <div dangerouslySetInnerHTML={{ __html: md.render(number + ". " + q.question) }}></div>
-                      {q.choices.length > 0 ?
-                        <ul>
-                          <p>A. {q.choices[0]}</p>
-                          <p>B. {q.choices[1]}</p>
-                          <p>C. {q.choices[2]}</p>
-                          <p>D. {q.choices[3]}</p>
-                        </ul>
-                        :
-                        <div style={{ height: `${(q.spacing ? q.spacing * .75 : 0) + 1}in` }}></div>
-                      }
-                    </div>
-                  );
-                })
-              }
+              <h1>PROFESSOR COPY - ANSWER KEY</h1>
+              <br />
+              {this.props.location.state.questions.map((q, key) => {
+                let number = this.props.location.state.questions.indexOf(q) + 1
+                return (
+                  <div key={key} id={"question"}>
+                    <div dangerouslySetInnerHTML={{ __html: number + ". " + md.render(q.question) }}></div>
+                    <ul>{q.answer}</ul>
+                  </div>
+                );
+              })}
             </div>
+            :
+            this.props.location.state.questions.map((q, key) => {
+              let number = this.props.location.state.questions.indexOf(q) + 1;
+              return (
+                <div key={key} id={"question"}>
+                  <div dangerouslySetInnerHTML={{ __html: md.render(number + ". " + q.question) }}></div>
+                  {q.choices.length > 0 ?
+                    <ul>
+                      <p>A. {q.choices[0]}</p>
+                      <p>B. {q.choices[1]}</p>
+                      <p>C. {q.choices[2]}</p>
+                      <p>D. {q.choices[3]}</p>
+                    </ul>
+                    :
+                    <div style={{ height: `${(q.spacing ? q.spacing * .75 : 0) + 1}in` }}></div>
+                  }
+                </div>
+              );
+            })
           }
+
         </div>
         <div id="noprint">
           <Dialog onClose={() => this.setState({ open: false })} open={this.state.open}>
@@ -188,7 +178,7 @@ class ExamPage extends React.Component {
 
               <Button style={{ margin: '1em' }} color="primary" variant="contained" onClick={this.downloadFile}>
                 Download
-                        </Button>
+              </Button>
 
             </DialogContent>
           </Dialog>
@@ -228,7 +218,6 @@ class ExamPage extends React.Component {
         </div>
       </div>
     );
-
   }
 }
 

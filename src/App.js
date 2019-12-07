@@ -42,18 +42,21 @@ class App extends React.Component {
 
   render() {
     return (
-      <Router>
-        <Switch>
-          <Route exact path="/login" render={(props) => <LoginPage {...props} user={this.state.userObject} />} />
-          <Route exact path="/" render={(props) => <CreatePage {...props} user={this.state.userObject} />} />
-          <Route exact path="/create" render={(props) => <CreatePage {...props} user={this.state.userObject} />} />
-          <Route exact path="/view-edit" render={(props) => <ViewEditPage {...props} user={this.state.userObject} />} />
-          <Route exact path="/generate" render={(props) => <GeneratePage {...props} user={this.state.userObject} />} />
-          <Route exact path="/exam" render={(props) => <ExamPage {...props} user={this.state.userObject} />} />
-          <Route exact path="/settings" render={(props) => <SettingsPage {...props} user={this.state.userObject} />} />
-          <Route render={(props) => <FourOhFour {...props} user={this.state.userObject} />} />
-        </Switch>
-      </Router>
+      !this.state.userObject
+        ?
+        <LoginPage user={this.state.userObject} />
+        :
+        <Router>
+          <Switch>
+            <Route exact path="/" render={(props) => <CreatePage {...props} user={this.state.userObject} />} />
+            <Route exact path="/create" render={(props) => <CreatePage {...props} user={this.state.userObject} />} />
+            <Route exact path="/view-edit" render={(props) => <ViewEditPage {...props} user={this.state.userObject} />} />
+            <Route exact path="/generate" render={(props) => <GeneratePage {...props} user={this.state.userObject} />} />
+            <Route exact path="/exam" render={(props) => <ExamPage {...props} user={this.state.userObject} />} />
+            <Route exact path="/settings" render={(props) => <SettingsPage {...props} user={this.state.userObject} />} />
+            <Route render={(props) => <FourOhFour {...props} user={this.state.userObject} />} />
+          </Switch>
+        </Router >
     );
   }
 }
