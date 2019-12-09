@@ -8,6 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import DataTable from '../components/dataTable';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import CloseIcon from '@material-ui/icons/Close';
@@ -19,7 +20,8 @@ class ViewEdit extends React.Component {
     super(props);
     this.state = {
       questions: null,
-      selectedQuestions: null,
+      selectedQuestions: [],
+      deleteConfirm: false,
       isEditing: false,
       offlineNotify: false,
     };
@@ -28,6 +30,7 @@ class ViewEdit extends React.Component {
     this.openEditForm = this.openEditForm.bind(this);
     this.closeEditForm = this.closeEditForm.bind(this);
     this.closeOfflineNotify = this.closeOfflineNotify.bind(this);
+    this.deleteConfirm = this.deleteConfirm.bind(this);
     this.deleteQuestions = this.deleteQuestions.bind(this);
   }
 
@@ -98,11 +101,15 @@ class ViewEdit extends React.Component {
     });
   }
 
-  deleteQuestions(questions) {
-    questions.forEach((q) => {
+  deleteConfirm(questions) {
+    this.setState({ deleteConfirm: true, selectedQuestions: questions });
+  }
+
+  deleteQuestions() {
+    this.state.selectedQuestions.forEach((q) => {
       firebase.firestore().collection("questions").doc(q.id).delete().then(() => this.fetchQuestions());
     });
-
+    this.setState({ deleteConfirm: false });
     this.openSnackbar(true, "Question(s) deleted");
   }
 
@@ -121,7 +128,7 @@ class ViewEdit extends React.Component {
                 questions={this.state.questions}
                 handleEditQuestions={this.openEditForm}
                 handleGenerateExam={this.openExamForm}
-                handleDeleteQuestions={this.deleteQuestions}
+                handleDeleteQuestions={this.deleteConfirm}
               />
             </div>
             :
@@ -148,6 +155,28 @@ class ViewEdit extends React.Component {
                 closeFn={() => this.closeEditForm(true)}
               />
             </DialogContent>
+          </Dialog>
+
+          <Dialog
+            open={this.state.deleteConfirm}
+            onClose={() => this.setState({ deleteConfirm: false })}
+            aria-labelledby="form-dialog-title"
+            maxWidth="lg"
+          >
+            <DialogTitle>
+              Delete Questions
+            </DialogTitle>
+            <DialogContent>
+              Are you sure you want to delete {this.state.selectedQuestions.length} questions?
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.deleteQuestions} color="primary">
+                Yes
+              </Button>
+              <Button onClick={() => this.setState({ deleteConfirm: false })} color="secondary">
+                No
+              </Button>
+            </DialogActions>
           </Dialog>
         </div>
 

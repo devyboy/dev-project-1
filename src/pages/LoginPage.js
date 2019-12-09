@@ -91,7 +91,9 @@ class LoginPage extends React.Component {
       );
     }
     else {
-      return(() => window.location.href = "/");
+      return(
+        () => window.location.href = "/"
+      );
     }
   }
 }
