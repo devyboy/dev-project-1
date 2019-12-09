@@ -1,3 +1,11 @@
 .App {
   text-align: center;
 }
+
+.App::-webkit-scrollbar {
+  display: none;
+}
+
+.App {
+  -ms-overflow-style: none;
+}

@@ -1,13 +1,15 @@
 import React from "react";
-import DownloadIcon from "@material-ui/icons/GetApp";
-import PrintIcon from "@material-ui/icons/Print";
-import ProfessorIcon from "@material-ui/icons/AssignmentInd";
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import CustomSnackbar from "../components/customSnackbar";
+import DownloadIcon from "@material-ui/icons/GetApp";
+import PrintIcon from "@material-ui/icons/Print";
+import ProfessorIcon from "@material-ui/icons/AssignmentInd";
+import BackIcon from "@material-ui/icons/ArrowBack";
 import YAML from 'yaml';
 import "../exam.css";
+
 import {
   DialogContent,
   Dialog,
@@ -205,6 +207,11 @@ class ExamPage extends React.Component {
               icon={<ProfessorIcon />}
               tooltipTitle="Change Format"
               onClick={this.changeFormat}
+            />
+            <SpeedDialAction
+              icon={<BackIcon />}
+              tooltipTitle="Go Back"
+              onClick={() => window.history.back()}
             />
           </SpeedDial>
           <CustomSnackbar

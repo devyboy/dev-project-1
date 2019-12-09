@@ -21,7 +21,6 @@ let styles = {
     fontSize: "1.2em"
   },
   logo: {
-    maxWidth: "200px",
     display: "block",
     marginLeft: "auto",
     marginRight: "auto",
