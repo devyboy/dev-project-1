@@ -36,6 +36,9 @@ const styles = {
     color: "green",
     fontSize: "13px",
   },
+  container: {
+    marginBottom: "3em"
+  },
   card: {
     padding: ".75em",
     width: "400px",
@@ -263,7 +266,7 @@ class Generate extends React.Component {
         <Menu path={["View-Edit", "Generate"]} />
 
         {this.state.questions &&
-          <div>
+          <div style={styles.container}>
             <Button variant="contained" color="primary" onClick={this.randomizeQuestions} style={styles.button}>
               Randomize Questions
                   <ShuffleIcon />
@@ -348,12 +351,15 @@ class Generate extends React.Component {
                     </li>
                     {(this.state.detailsQuestion.type === "Free Response" || this.state.detailsQuestion.type === "Programming")
                       &&
-                      <TextField
-                        label={"Spacing"}
-                        margin="normal"
-                        type="number"
-                        onBlur={(event) => this.handleSpacingChange(this.state.detailsQuestion, event)}
-                      />
+                      <li>
+                        <TextField
+                          label={"Spacing"}
+                          margin="normal"
+                          type="number"
+                          style={{ marginTop: 0 }}
+                          onBlur={(event) => this.handleSpacingChange(this.state.detailsQuestion, event)}
+                        />
+                      </li>
                     }
                   </ul>
                 </DialogContent>
@@ -372,8 +378,6 @@ class Generate extends React.Component {
                 </DialogActions>
               </Dialog>
             }
-
-            <hr style={{ width: "80%" }} />
 
             <div style={{ width: "50%", margin: "0 auto" }}>
               <Link to={{ pathname: "/exam", state: { questions: this.state.questions } }}>

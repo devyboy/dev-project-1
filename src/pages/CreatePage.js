@@ -5,7 +5,7 @@ import Menu from '../components/menu';
 import Forms from '../components/forms';
 import CustomSnackbar from '../components/customSnackbar';
 import Import from '../components/import';
-import '../App.css';
+import '../css/App.css';
 
 
 class CreatePage extends React.Component {

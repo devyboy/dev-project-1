@@ -62,7 +62,7 @@ class DataTable extends React.Component {
             tooltip: 'Delete Selected',
             icon: 'delete',
             onClick: (evt, data) => this.props.handleDeleteQuestions(data)
-          }
+          },
         ]}
         options={{
           sorting: true,

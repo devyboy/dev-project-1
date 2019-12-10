@@ -12,6 +12,11 @@ import Chip from '@material-ui/core/Chip';
 const styles = {
   multChoice: {
     width: "300px"
+  },
+  container: { 
+    width: "65%", 
+    margin: '0 auto',
+    marginBottom: "3em" 
   }
 }
 
@@ -288,7 +293,7 @@ class Forms extends React.Component {
 
   render() {
     return (
-      <div style={{ width: "65%", margin: '0 auto', marginTop: this.props.isEditing ? "0em" : "2.5em" }}>
+      <div style={styles.container}>
         <form noValidate autoComplete="off">
           <div>
             <TextField

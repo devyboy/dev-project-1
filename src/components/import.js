@@ -6,6 +6,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import PublishIcon from '@material-ui/icons/Publish';
 import YAML from 'yaml';
+import "../css/import.css";
 
 let reader;
 let styles = {
@@ -149,14 +150,95 @@ class Import extends React.Component {
               </label>
             </div>
 
-            <div style={{ display: 'inline-block', marginLeft: "3em" }}>
-              <p>Example JSON File</p>
-              <Button variant="outlined" component="a" href="./test.json">
-                View Example JSON
-              </Button>
-            </div>
+            <div id="stackedit__html" style={{ marginTop: "3em" }}>
+              <h2>API Reference</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>question</td>
+                    <td>String</td>
+                    <td>The actual text content of the question</td>
+                    <td>"What is 2+2?"</td>
+                  </tr>
+                  <tr>
+                    <td>answer</td>
+                    <td>String</td>
+                    <td>The answer of the question</td>
+                    <td>"4"</td>
+                  </tr>
+                  <tr>
+                    <td>topic</td>
+                    <td>String</td>
+                    <td>The overarching topic or subject the question is related to</td>
+                    <td>"Addition"</td>
+                  </tr>
+                  <tr>
+                    <td>unit</td>
+                    <td>String</td>
+                    <td>The chapter and/or section the question is related to</td>
+                    <td>"Chapter 6"</td>
+                  </tr>
+                  <tr>
+                    <td>SLO</td>
+                    <td>String[*]</td>
+                    <td>Student Learning Objectives: short phrases detailing what the question aims to teach the student</td>
+                    <td>["Demonstrates understanding of addition", "Can add two numbers together", "Knows how numbers work"]</td>
+                  </tr>
+                  <tr>
+                    <td>type</td>
+                    <td>String</td>
+                    <td>The type of question: Multiple Choice, Programming, or Free Response</td>
+                    <td>"Multiple Choice"</td>
+                  </tr>
+                  <tr>
+                    <td>diff</td>
+                    <td>String</td>
+                    <td>The difficulty of the question: Easy, Medium, or Challenging</td>
+                    <td>"Medium"</td>
+                  </tr>
+                  <tr>
+                    <td>pre</td>
+                    <td>String</td>
+                    <td>The course prefix without the number</td>
+                    <td>"CISC"</td>
+                  </tr>
+                  <tr>
+                    <td>course</td>
+                    <td>String</td>
+                    <td>The course number</td>
+                    <td>"108"</td>
+                  </tr>
+                  <tr>
+                    <td>cog</td>
+                    <td>String</td>
+                    <td>The cognitive level of the question, see <a href="http://www.celt.iastate.edu/teaching/effective-teaching-practices/revised-blooms-taxonomy/">Bloom's Taxonomy</a></td>
+                    <td>"Applying"</td>
+                  </tr>
+                  <tr>
+                    <td>choices</td>
+                    <td>String[4]</td>
+                    <td>The answer choices if the question type is multiple choice. Currently only supports 4 choices</td>
+                    <td>["10", "12", "4", "999"]</td>
+                  </tr>
+                </tbody>
+              </table>
 
-          </div>
+              <div style={{ display: 'inline-block', margin: "3em" }}>
+                <Button variant="outlined" component="a" href="./test.json">
+                  View Example JSON file
+                </Button>
+              </div>
+
+            </div>
+          </div >
         }
       </div>
     )

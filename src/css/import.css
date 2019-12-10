@@ -1,0 +1,30 @@
+#stackedit__html {
+  margin-bottom: 180px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 30px;
+  padding-right: 30px;
+  max-width: 800px
+}
+
+#stackedit__html tr td:last-child {
+  font-family: monospace
+}
+
+#stackedit__html table {
+  text-align: left;
+  background-color: transparent;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #dcdcdc;
+}
+
+#stackedit__html td, #stackedit__html th {
+  border-right: 1px solid #dcdcdc;
+  padding: 8px 12px;
+  border-top: 1px solid #dcdcdc;
+}
+
+#stackedit__html td:last-child, #stackedit__html th:last-child {
+  border-right:0;
+}

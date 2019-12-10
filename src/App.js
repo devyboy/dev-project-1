@@ -10,8 +10,8 @@ import LoginPage from "./pages/LoginPage";
 import ExamPage from "./pages/ExamPage";
 import SettingsPage from "./pages/SettingsPage";
 import { firebaseConfig } from "./config.js";
-import './App.css';
-import './bootstrap.min.css';
+import './css/App.css';
+import './css/bootstrap.min.css';
 
 // Firebase Credentials
 

@@ -8,7 +8,7 @@ import PrintIcon from "@material-ui/icons/Print";
 import ProfessorIcon from "@material-ui/icons/AssignmentInd";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import YAML from 'yaml';
-import "../exam.css";
+import "../css/exam.css";
 
 import {
   DialogContent,
