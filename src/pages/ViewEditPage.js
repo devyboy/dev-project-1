@@ -4,13 +4,15 @@ import "firebase/firestore";
 import Menu from '../components/menu';
 import Forms from '../components/forms';
 import CustomSnackbar from "../components/customSnackbar";
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { 
+  CircularProgress,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  DialogContent
+} from '@material-ui/core';
 import DataTable from '../components/dataTable';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
 import CloseIcon from '@material-ui/icons/Close';
 import OfflineNotify from "../components/offlineNotify";
 

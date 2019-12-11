@@ -1,7 +1,5 @@
 import React from "react";
-import SpeedDial from '@material-ui/lab/SpeedDial';
-import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
-import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
+import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@material-ui/lab';
 import CustomSnackbar from "../components/customSnackbar";
 import DownloadIcon from "@material-ui/icons/GetApp";
 import PrintIcon from "@material-ui/icons/Print";

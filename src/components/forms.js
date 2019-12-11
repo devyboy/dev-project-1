@@ -1,12 +1,14 @@
 import React from 'react';
 import firebase from "firebase/app";
 import "firebase/firestore";
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
-import Button from '@material-ui/core/Button';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import  { 
+  TextField,
+  MenuItem,
+  Button,
+  InputAdornment,
+  Chip
+} from '@material-ui/core';
 import Editor from 'for-editor'
-import Chip from '@material-ui/core/Chip';
 
 
 const styles = {

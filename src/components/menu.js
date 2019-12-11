@@ -2,16 +2,18 @@ import React from 'react';
 import firebase from "firebase/app";
 import "firebase/auth";
 import { Link } from 'react-router-dom';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
+import { 
+  Menu,
+  MenuItem,
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Button
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import PlusIcon from '@material-ui/icons/Add';
 import PencilIcon from '@material-ui/icons/Edit';
-import Button from "@material-ui/core/Button";
 import SettingsIcon from "@material-ui/icons/Settings";
 
 

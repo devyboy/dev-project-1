@@ -1,8 +1,8 @@
 import React from 'react';
 import Menu from "../components/menu";
-import { Switch, 
+import { 
+  Switch, 
   FormControl, 
-  FormLabel, 
   FormGroup, 
   FormControlLabel,
   Button
@@ -54,7 +54,6 @@ class SettingsPage extends React.Component {
         <Menu path={["Settings"]} />
 
         <FormControl component="fieldset">
-          <FormLabel component="legend">Settings</FormLabel>
           <FormGroup>
             <FormControlLabel
               control={<Switch
