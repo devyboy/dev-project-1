@@ -15,10 +15,6 @@ html {
   color: white;
 }
 
-.MuiSvgIcon-root {
-  color: white;
-}
-
 .MuiInput-underline:before {
   border-bottom: 1px solid white;
 }
@@ -61,10 +57,6 @@ html {
   color: white;
 }
 
-#mtable .MuiToolbar-root {
-  background-color: #464a52;
-}
-
 .MuiCard-root {
   background-color: #464a52;
   color: white;
@@ -80,5 +72,29 @@ html {
 }
 
 .MuiDialog-paper .MuiInputBase-input {
+  color: white;
+}
+
+.MuiInput-input {
+  color: white;
+}
+
+#mtable .MuiButton-root {
+  color: white;
+}
+
+#mtable .MuiCheckbox-colorSecondary.Mui-checked {
+  color: #e83e8c;
+}
+
+#mtable div[class*=" MTableToolbar-highlight-"] {
+  background-color: #e83e8c;
+}
+
+.MuiSelect-icon {
+  color: white;
+}
+
+.MuiCheckbox-root {
   color: white;
 }

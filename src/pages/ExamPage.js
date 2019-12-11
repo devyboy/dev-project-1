@@ -4,7 +4,7 @@ import CustomSnackbar from "../components/customSnackbar";
 import DownloadIcon from "@material-ui/icons/GetApp";
 import PrintIcon from "@material-ui/icons/Print";
 import ProfessorIcon from "@material-ui/icons/AssignmentInd";
-import BackIcon from "@material-ui/icons/ArrowBack";
+//import BackIcon from "@material-ui/icons/ArrowBack";
 import YAML from 'yaml';
 import "../css/exam.css";
 
