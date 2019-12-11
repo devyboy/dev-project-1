@@ -143,7 +143,7 @@ class Import extends React.Component {
               />
 
               <label htmlFor="outlined-button-file">
-                <Button variant="outlined" component="span">
+                <Button variant="contained" color="primary">
                   Upload
                   <PublishIcon />
                 </Button>
@@ -232,7 +232,7 @@ class Import extends React.Component {
               </table>
 
               <div style={{ display: 'inline-block', margin: "3em" }}>
-                <Button variant="outlined" component="a" href="./test.json">
+                <Button variant="contained" color="primary" component="a" href="./test.json">
                   View Example JSON file
                 </Button>
               </div>
