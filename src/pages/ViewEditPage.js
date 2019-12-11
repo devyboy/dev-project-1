@@ -123,7 +123,7 @@ class ViewEdit extends React.Component {
         <Menu path={["View-Edit"]} />
         <div>
           {this.state.questions ?
-            <div>
+            <div id="mtable">
               <DataTable
                 questions={this.state.questions}
                 handleEditQuestions={this.openEditForm}

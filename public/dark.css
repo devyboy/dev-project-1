@@ -1,0 +1,84 @@
+html {
+  background-color: #36393f;
+}
+
+.App {
+  background-color: #36393f;
+  color: white;
+}
+
+.MuiTab-wrapper {
+  color: white;
+}
+
+.MuiFormLabel-root {
+  color: white;
+}
+
+.MuiSvgIcon-root {
+  color: white;
+}
+
+.MuiInput-underline:before {
+  border-bottom: 1px solid white;
+}
+
+.MuiList-root {
+  background-color: #464a52;
+}
+
+.MuiList-root li {
+  color: white;
+}
+
+#mtable .MuiPaper-root{
+  background-color: #36393f;
+  color: white;
+}
+
+#mtable .MuiTableCell-head {
+  background-color: #36393f;
+  color: white;
+}
+
+#mtable .MuiSelect-root {
+  color: white;
+}
+
+#mtable .MuiTypography-root {
+  color: white;
+}
+
+#mtable .MuiIcon-root {
+  color: white;
+}
+
+#mtable .MuiTableCell-body {
+  color: white;
+}
+
+#mtable .MuiInputBase-input {
+  color: white;
+}
+
+#mtable .MuiToolbar-root {
+  background-color: #464a52;
+}
+
+.MuiCard-root {
+  background-color: #464a52;
+  color: white;
+}
+
+.MuiDialog-paper {
+  background-color: #464a52;
+  color: white;
+}
+
+.MuiDialog-paper .MuiSelect-root {
+  color: white;
+}
+
+.MuiDialog-paper .MuiInputBase-input {
+  color: white;
+}
