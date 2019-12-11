@@ -1,0 +1,11 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /questions/{question} {
+      allow read, write: if exists(/databases/$(database)/documents/users/$(request.auth.token.email));
+    }
+    match /users/{user} {
+      allow read: if true;
+    }
+  }
+}

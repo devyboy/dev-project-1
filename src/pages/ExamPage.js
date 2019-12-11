@@ -206,11 +206,11 @@ class ExamPage extends React.Component {
               tooltipTitle="Change Format"
               onClick={this.changeFormat}
             />
-            <SpeedDialAction
+            {/* <SpeedDialAction
               icon={<BackIcon />}
               tooltipTitle="Go Back"
               onClick={() => window.history.back()}
-            />
+            /> */}
           </SpeedDial>
           <CustomSnackbar
             vertical={"top"}
