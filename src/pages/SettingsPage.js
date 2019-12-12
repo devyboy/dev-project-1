@@ -26,22 +26,8 @@ class SettingsPage extends React.Component {
   }
 
   darkMode(dark) {
-    if (dark) {
-      if (!document.getElementById("dark")) {
-        let sheet = document.createElement('link');
-        sheet.id = "dark";
-        sheet.rel = 'stylesheet';
-        sheet.href = "./dark.css";
-        sheet.type = 'text/css';
-        document.head.appendChild(sheet);
-      }   
-    }
-    else {
-      let sheet = document.getElementById("dark")
-      if (sheet) {
-        sheet.remove();
-      }
-    }
+    document.cookie = `dark=${dark}`;
+    this.props.update();
   }
 
   applySettings() {

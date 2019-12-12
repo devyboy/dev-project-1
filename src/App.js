@@ -38,9 +38,32 @@ class App extends React.Component {
     firebase.auth().onAuthStateChanged((user) => {
       this.setState({ userObject: user });
     });
+
+    this.update = this.update.bind(this);
+  }
+
+  update() {
+    this.forceUpdate();
   }
 
   render() {
+    let dark = document.cookie.slice(5, document.cookie.length);
+    if (dark === "true") {
+      if (!document.getElementById("dark")) {
+        let sheet = document.createElement('link');
+        sheet.id = "dark";
+        sheet.rel = 'stylesheet';
+        sheet.href = "./dark.css";
+        sheet.type = 'text/css';
+        document.head.appendChild(sheet);
+      }   
+    }
+    else {
+      let sheet = document.getElementById("dark")
+      if (sheet) {
+        sheet.remove();
+      }
+    }
     return (
       !this.state.userObject
         ?
@@ -53,7 +76,7 @@ class App extends React.Component {
             <Route exact path="/view-edit" render={(props) => <ViewEditPage {...props} user={this.state.userObject} />} />
             <Route exact path="/generate" render={(props) => <GeneratePage {...props} user={this.state.userObject} />} />
             <Route exact path="/exam" render={(props) => <ExamPage {...props} user={this.state.userObject} />} />
-            <Route exact path="/settings" render={(props) => <SettingsPage {...props} user={this.state.userObject} />} />
+            <Route exact path="/settings" render={(props) => <SettingsPage {...props} user={this.state.userObject} update={this.update} />} />
             <Route render={(props) => <FourOhFour {...props} user={this.state.userObject} />} />
           </Switch>
         </Router >

@@ -21,6 +21,7 @@ let styles = {
     fontSize: "1.2em"
   },
   logo: {
+    height: '150px',
     display: "block",
     marginLeft: "auto",
     marginRight: "auto",
@@ -78,7 +79,7 @@ class LoginPage extends React.Component {
           style={styles.container}
         >
           <img src={UDLogo} alt="logo" style={styles.logo} />
-          <h2>To proceed, please login below</h2>
+          <h2 id="greet">To proceed, please login below</h2>
           <Button
             style={styles.button}
             color="primary"
