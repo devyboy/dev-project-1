@@ -46,7 +46,7 @@ class App extends React.Component {
     this.forceUpdate();
   }
 
-  render() {
+  darkMode() {
     let dark = document.cookie.slice(5, document.cookie.length);
     if (dark === "true") {
       if (!document.getElementById("dark")) {
@@ -64,6 +64,11 @@ class App extends React.Component {
         sheet.remove();
       }
     }
+  }
+
+  render() {
+    this.darkMode();
+
     return (
       !this.state.userObject
         ?
