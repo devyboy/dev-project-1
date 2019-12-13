@@ -125,7 +125,7 @@ class Forms extends React.Component {
 
   addSLO(event) {
     if (event.keyCode === 13 || event.type === "blur") { // If they press the Enter key (which is number 13), add to SLO list
-      if (!this.state.SLOarray.includes(event.target.value)) {
+      if (!this.state.SLOarray.includes(event.target.value) && event.target.value !== "") {
         this.setState({ SLOarray: this.state.SLOarray.concat(event.target.value), SLO: "" });
       }
     }
