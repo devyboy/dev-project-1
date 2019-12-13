@@ -1,7 +1,7 @@
 import React from 'react';
 import firebase from "firebase/app";
 import "firebase/firestore";
-import  { 
+import {
   TextField,
   MenuItem,
   Button,
@@ -15,10 +15,10 @@ const styles = {
   multChoice: {
     width: "300px"
   },
-  container: { 
-    width: "65%", 
+  container: {
+    width: "65%",
     margin: '0 auto',
-    marginBottom: "3em" 
+    marginBottom: "3em"
   }
 }
 
@@ -60,7 +60,7 @@ class Forms extends React.Component {
   componentWillUnmount() {
     firebase.firestore().terminate();
   }
-  
+
   handleQuestionChange(value) {
     this.setState({ question: value });
   }
@@ -126,17 +126,22 @@ class Forms extends React.Component {
   addSLO(event) {
     if (event.keyCode === 13 || event.type === "blur") { // If they press the Enter key (which is number 13), add to SLO list
       if (!this.state.SLOarray.includes(event.target.value) && event.target.value !== "") {
-        this.setState({ SLOarray: this.state.SLOarray.concat(event.target.value), SLO: "" });
+        event.persist();
+        this.setState(state => ({
+          SLOarray: state.SLOarray.concat(event.target.value),
+          SLO: ""
+        }
+        ))
       }
     }
   }
 
   deleteSLO(label) {
-    this.setState({
-      SLOarray: this.state.SLOarray.filter((slo) =>
+    this.setState(state => ({
+      SLOarray: state.SLOarray.filter((slo) =>
         slo !== label
       )
-    });
+    }));
   }
 
   resetState(success, message) {

@@ -54,7 +54,6 @@ class App extends React.Component {
         sheet.id = "dark";
         sheet.rel = 'stylesheet';
         sheet.href = "./dark.css";
-        sheet.type = 'text/css';
         document.head.appendChild(sheet);
       }   
     }

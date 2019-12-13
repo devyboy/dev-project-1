@@ -99,6 +99,11 @@ class Generate extends React.Component {
     this.randomizeAll = this.randomizeAll.bind(this);
     this.handleSpacingChange = this.handleSpacingChange.bind(this);
     this.closeCard = this.closeCard.bind(this);
+    this.closeDetails = this.closeDetails.bind(this);
+  }
+
+  closeDetails() {
+    this.setState({ detailsModal: false });
   }
 
   onSortEndCards = ({ oldIndex, newIndex }) => {
@@ -134,8 +139,7 @@ class Generate extends React.Component {
 
   closeCard(index) {
     let newQues = this.state.questions
-    newQues.splice(index - 1, 1);
-    if (newQues.length === 0) {
+    if (newQues.splice(index - 1, 1).length === 0) {
       this.props.history.push("/view-edit");
     }
     this.setState({
@@ -279,8 +283,8 @@ class Generate extends React.Component {
             <SortableList items={this.state.questions} onSortEnd={this.onSortEndCards} axis="xy" useDragHandle />
 
             {this.state.detailsQuestion &&
-              <Dialog onClose={() => this.setState({ detailsModal: false })} open={this.state.detailsModal}>
-                <DialogTitle onClose={() => this.setState({ detailsModal: false })}>
+              <Dialog onClose={this.closeDetails} open={this.state.detailsModal}>
+                <DialogTitle onClose={this.closeDetails}>
                   {"Question " + (this.state.questions.indexOf(this.state.detailsQuestion) + 1) + " details"}
                 </DialogTitle>
                 <DialogContent dividers >
@@ -372,7 +376,7 @@ class Generate extends React.Component {
                   <Button onClick={() => this.closeCard(this.state.questions.indexOf(this.state.detailsQuestion) + 1)} color="secondary">
                     Remove
                       </Button>
-                  <Button onClick={() => this.setState({ detailsModal: false })} color="primary">
+                  <Button onClick={this.closeDetails} color="primary">
                     Close
                       </Button>
                 </DialogActions>

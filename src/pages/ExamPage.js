@@ -64,13 +64,12 @@ class ExamPage extends React.Component {
   }
 
   changeFormat() {
-    let answerBool = !this.state.answers;
-    this.setState({
-      answers: answerBool,
+    this.setState(state => ({
+      answers: !state.answers,
       snackOpen: true,
       snackSuccess: true,
-      snackMessage: answerBool ? "Viewing answer key" : "Viewing student copy"
-    });
+      snackMessage: !state.answers ? "Viewing answer key" : "Viewing student copy"
+    }));
   }
 
   downloadFile() {

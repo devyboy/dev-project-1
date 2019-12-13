@@ -44,11 +44,16 @@ class Drawer extends React.Component {
       drawer: false,
     };
     this.handleOpen = this.handleOpen.bind(this);
+    this.closeDrawer = this.closeDrawer.bind(this);
     this.signOut = this.signOut.bind(this);
   }
 
   handleOpen(event) {
     this.setState({ drawer: true, anchorEl: event.currentTarget });
+  }
+
+  closeDrawer() {
+    this.setState({ drawer: false })
   }
 
   signOut() {
@@ -87,21 +92,21 @@ class Drawer extends React.Component {
           anchorEl={this.state.anchorEl}
           keepMounted
           open={this.state.drawer}
-          onClose={() => this.setState({ drawer: false })}
+          onClose={this.closeDrawer}
         >
-          <Link to={"/create"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
+          <Link to={"/create"} onClick={this.closeDrawer} style={styles.link}>
             <MenuItem>
               <PlusIcon style={styles.icon} />
               Create Questions
             </MenuItem>
           </Link>
-          <Link to={"/view-edit"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
+          <Link to={"/view-edit"} onClick={this.closeDrawer} style={styles.link}>
             <MenuItem>
               <PencilIcon style={styles.icon} />
               View Questions
             </MenuItem>
           </Link>
-          <Link to={"/settings"} onClick={() => this.setState({ drawer: false })} style={styles.link}>
+          <Link to={"/settings"} onClick={this.closeDrawer} style={styles.link}>
             <MenuItem>
               <SettingsIcon style={styles.icon} />
               Settings

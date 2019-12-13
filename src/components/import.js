@@ -57,8 +57,9 @@ class Import extends React.Component {
       this.showSnackbar(false, e.message);
     }
     for (let i in jayson) {
-      let yeet = this.state.questions;
-      this.setState({ questions: yeet.concat(jayson[i]) });
+      this.setState(state => ({
+        questions: state.questions.concat(jayson[i])
+      }));
     }
   }
 
@@ -72,8 +73,9 @@ class Import extends React.Component {
       this.showSnackbar(false, e.message);
     }
     for (let i in yaml) {
-      let yeet = this.state.questions;
-      this.setState({ questions: yeet.concat(yaml[i]) });
+      this.setState(state => ({ 
+        questions: state.questions.concat(yaml[i]) 
+      }));
     }
   }
 
