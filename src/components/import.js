@@ -143,7 +143,7 @@ class Import extends React.Component {
               />
 
               <label htmlFor="outlined-button-file">
-                <Button variant="contained" color="primary">
+                <Button component="div" variant="contained" color="primary">
                   Upload
                   <PublishIcon />
                 </Button>

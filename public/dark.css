@@ -87,10 +87,6 @@ html {
   color: #e83e8c !important;
 }
 
-#mtable div[class*=" MTableToolbar-highlight-"] {
-  background-color: #e83e8c;
-}
-
 .MuiSelect-icon {
   color: white !important;
 }
@@ -101,4 +97,34 @@ html {
 
 .MuiInputBase-input {
   color: white !important;
+}
+
+#mtable .MuiToolbar-root {
+  background-color: #464a52;
+}
+
+.MuiInput-underline:after {
+  border-bottom: 2px solid #e83e8c !important;
+}
+
+.MuiDialogActions-root .MuiSvgIcon-root {
+  color: white;
+}
+
+.MuiCardHeader-title p {
+  color: rgb(168, 168, 168) !important;
+}
+
+.MuiButton-textPrimary {
+  background-color: #3f51b5 !important;
+  color: white !important;
+}
+
+.MuiButton-textSecondary {
+  background-color: #f50057 !important;
+  color: white !important;
+}
+
+a:hover {
+  color: white;
 }
