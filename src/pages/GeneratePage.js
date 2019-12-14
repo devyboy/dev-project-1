@@ -138,17 +138,16 @@ class Generate extends React.Component {
   }
 
   closeCard(index) {
-    let newQues = this.state.questions
-    if (newQues.splice(index - 1, 1).length === 0) {
-      this.props.history.push("/view-edit");
-    }
-    this.setState({
+    let temp = this.state.questions;
+    temp.splice(index - 1, 1);
+    
+    this.setState(state => ({
       detailsModal: false,
-      questions: newQues,
+      questions: temp,
       snackOpen: true,
       snackSuccess: true,
       snackMessage: "Question removed"
-    });
+    }));
   }
 
   randomizeQuestions() {
@@ -373,9 +372,13 @@ class Generate extends React.Component {
                       Shuffle Choices
                         </Button>
                   }
-                  <Button onClick={() => this.closeCard(this.state.questions.indexOf(this.state.detailsQuestion) + 1)} color="secondary">
-                    Remove
-                      </Button>
+
+                  {this.state.questions.length !== 1 &&
+                    <Button onClick={() => this.closeCard(this.state.questions.indexOf(this.state.detailsQuestion) + 1)} color="secondary">
+                      Remove
+                    </Button>
+                  }
+
                   <Button onClick={this.closeDetails} color="primary">
                     Close
                       </Button>
