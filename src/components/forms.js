@@ -6,14 +6,19 @@ import {
   MenuItem,
   Button,
   InputAdornment,
-  Chip
+  Chip,
+  RadioGroup,
+  Radio,
+  FormLabel,
+  FormControl,
+  FormControlLabel
 } from '@material-ui/core';
 import Editor from 'for-editor'
 
 
 const styles = {
   multChoice: {
-    width: "300px"
+    width: "350px"
   },
   container: {
     width: "65%",
@@ -55,6 +60,7 @@ class Forms extends React.Component {
     this.addSLO = this.addSLO.bind(this);
     this.deleteSLO = this.deleteSLO.bind(this);
     this.handlePreChange = this.handlePreChange.bind(this);
+    this.handleCorrectChange = this.handleCorrectChange.bind(this);
   }
 
   componentWillUnmount() {
@@ -100,6 +106,10 @@ class Forms extends React.Component {
 
   handleCourseChange(event) {
     this.setState({ course: event.target.value });
+  }
+
+  handleCorrectChange(event) {
+    this.setState({ answer: this.state.choices[event.target.value]})
   }
 
   handleChoicesChange(letter, event) {
@@ -407,7 +417,7 @@ class Forms extends React.Component {
           </div>
         </form>
 
-        {this.state.SLOarray ? this.state.SLOarray.map((slo, key) => {
+        {this.state.SLOarray && this.state.SLOarray.map((slo, key) => {
           return (
             <Chip
               style={{ margin: '5px' }}
@@ -416,10 +426,7 @@ class Forms extends React.Component {
               label={slo}
             />
           );
-        })
-          :
-          null
-        }
+        })}
 
         <h5 style={{ textAlign: "left", marginTop: "2em" }}>Question:</h5>
         <Editor
@@ -445,80 +452,90 @@ class Forms extends React.Component {
 
         <br />
 
-        <h5 style={{ textAlign: "left", marginTop: "1em" }}>Answer:</h5>
-
-        <div style={{ width: '100%' }}>
-          <Editor
-            placeholder="Enter answer here..."
-            onChange={this.handleAnswerChange}
-            value={this.state.answer}
-            toolbar={{
-              h1: true,
-              h2: true,
-              h3: true,
-              code: true,
-              link: true,
-              preview: true,
-              expand: true,
-              subfield: true
-            }}
-            style={{ height: '300px', width: '100%', borderColor: this.state.answerErr ? "red" : "#ddd" }}
-            language="en"
-            subfield
-            lineNum
-            preview
-          />
-        </div>
         {this.state.isMult ?
-          <div style={{ width: "300px" }}>
+          <div style={{ width: "100%" }}>
             <h5 style={{ textAlign: "left", marginTop: "2em" }}>Answer Choices:</h5>
+            <div style={{display: 'inline-block'}}>
+              <div>
+                <TextField
+                  style={styles.multChoice}
+                  onChange={(e) => this.handleChoicesChange("A", e)}
+                  value={this.state.choices[0]}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">A.</InputAdornment>,
+                  }}
+                />
+              </div>
 
-            <div style={{ marginRight: "auto" }}>
-              <TextField
-                style={styles.multChoice}
-                onChange={(e) => this.handleChoicesChange("A", e)}
-                value={this.state.choices[0]}
-                InputProps={{
-                  startAdornment: <InputAdornment position="start">A.</InputAdornment>
-                }}
-              />
+              <div>
+                <TextField
+                  style={styles.multChoice}
+                  onChange={(e) => this.handleChoicesChange("B", e)}
+                  value={this.state.choices[1]}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">B.</InputAdornment>,
+                  }}
+                />
+              </div>
+
+              <div>
+                <TextField
+                  style={styles.multChoice}
+                  onChange={(e) => this.handleChoicesChange("C", e)}
+                  value={this.state.choices[2]}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">C.</InputAdornment>,
+                  }}
+                />
+              </div>
+
+              <div>
+                <TextField
+                  style={styles.multChoice}
+                  onChange={(e) => this.handleChoicesChange("D", e)}
+                  value={this.state.choices[3]}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">D.</InputAdornment>,
+                  }}
+                />
+              </div>
             </div>
-
-            <div>
-              <TextField
-                style={styles.multChoice}
-                onChange={(e) => this.handleChoicesChange("B", e)}
-                value={this.state.choices[1]}
-                InputProps={{
-                  startAdornment: <InputAdornment position="start">B.</InputAdornment>
-                }}
-              />
-            </div>
-
-            <div>
-              <TextField
-                style={styles.multChoice}
-                onChange={(e) => this.handleChoicesChange("C", e)}
-                value={this.state.choices[2]}
-                InputProps={{
-                  startAdornment: <InputAdornment position="start">C.</InputAdornment>
-                }}
-              />
-            </div>
-
-            <div>
-              <TextField
-                style={styles.multChoice}
-                onChange={(e) => this.handleChoicesChange("D", e)}
-                value={this.state.choices[3]}
-                InputProps={{
-                  startAdornment: <InputAdornment position="start">D.</InputAdornment>
-                }}
-              />
+            <div id="correct" style={{ display: 'inline-block', marginLeft: "2em", verticalAlign: 'top' }}>
+              <FormControl component="fieldset">
+                <FormLabel component="legend">Correct Answer</FormLabel>
+                <RadioGroup defaultValue="0" aria-label="correct" name="radios" onChange={this.handleCorrectChange}>
+                  <FormControlLabel value="0" control={<Radio />} label="A" />
+                  <FormControlLabel value="1" control={<Radio />} label="B" />
+                  <FormControlLabel value="2" control={<Radio />} label="C" />
+                  <FormControlLabel value="3" control={<Radio />} label="D" />
+                </RadioGroup>
+              </FormControl>
             </div>
           </div>
           :
-          null
+          <div style={{ width: '100%' }}>
+            <h5 style={{ textAlign: "left", marginTop: "1em" }}>Answer:</h5>
+            <Editor
+              placeholder="Enter answer here..."
+              onChange={this.handleAnswerChange}
+              value={this.state.answer}
+              toolbar={{
+                h1: true,
+                h2: true,
+                h3: true,
+                code: true,
+                link: true,
+                preview: true,
+                expand: true,
+                subfield: true
+              }}
+              style={{ height: '300px', width: '100%', borderColor: this.state.answerErr ? "red" : "#ddd" }}
+              language="en"
+              subfield
+              lineNum
+              preview
+            />
+          </div>
         }
 
         <Button

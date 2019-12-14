@@ -9,3 +9,7 @@
 .App {
   -ms-overflow-style: none;
 }
+
+.MuiFormControlLabel-root {
+  margin: 0
+}

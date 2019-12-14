@@ -128,3 +128,11 @@ html {
 a:hover {
   color: white;
 }
+
+.MuiTypography-colorTextSecondary {
+  color: white !important;
+}
+
+#correct .MuiSvgIcon-root {
+  color: white;
+}
