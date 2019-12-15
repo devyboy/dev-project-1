@@ -16,19 +16,11 @@ class DataTable extends React.Component {
       <MaterialTable
         title={"Question Table"}
         columns={[
-          { title: '', field: 'edit', filtering: false, sorting: false,
-            render: rowData => <Button onClick={() => this.props.handleEditQuestions(rowData)}><EditIcon/></Button>},
-          { title: 'Course', field: 'course' },
-          { title: 'Unit', field: 'unit' },
-          { title: 'Topic', field: 'topic' },
           {
-            title: 'Difficulty', field: 'diff',
-            lookup: {
-              Easy: "Easy",
-              Medium: "Medium",
-              Challenging: "Challenging"
-            }
+            title: '', field: 'edit', filtering: false, sorting: false,
+            render: rowData => <Button onClick={() => this.props.handleEditQuestions(rowData)}><EditIcon /></Button>
           },
+          { title: 'Content', field: 'question' },
           {
             title: 'Question Type', field: 'type',
             lookup: {
@@ -37,7 +29,17 @@ class DataTable extends React.Component {
               "Programming": "Programming"
             }
           },
-          { title: 'Content', field: 'question' },
+          { title: 'Course', field: 'course' },
+          { title: 'Topic', field: 'topic' },
+          { title: 'Unit', field: 'unit' },
+          {
+            title: 'Difficulty', field: 'diff',
+            lookup: {
+              Easy: "Easy",
+              Medium: "Medium",
+              Challenging: "Challenging"
+            }
+          }
         ]}
         data={
           this.props.questions.map((q) => {

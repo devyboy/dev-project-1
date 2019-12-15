@@ -140,7 +140,7 @@ class Generate extends React.Component {
   closeCard(index) {
     let temp = this.state.questions;
     temp.splice(index - 1, 1);
-    
+
     this.setState(state => ({
       detailsModal: false,
       questions: temp,

@@ -43,6 +43,7 @@ class Forms extends React.Component {
       type: props.editingQuestion ? props.editingQuestion.type : "",
       course: props.editingQuestion ? props.editingQuestion.course : "",
       pre: props.editingQuestion ? props.editingQuestion.pre : "",
+      correct: props.editingQuestion ? props.editingQuestion.choices.indexOf(props.editingQuestion.answer).toString() : "0"
     }
 
     this.submitQuestion = this.submitQuestion.bind(this);
@@ -109,7 +110,7 @@ class Forms extends React.Component {
   }
 
   handleCorrectChange(event) {
-    this.setState({ answer: this.state.choices[event.target.value]})
+    this.setState({ answer: this.state.choices[event.target.value], correct: event.target.value});
   }
 
   handleChoicesChange(letter, event) {
@@ -168,6 +169,7 @@ class Forms extends React.Component {
       type: undefined,
       course: "",
       pre: undefined,
+      correct: "0"
     });
 
     this.props.openSnackbar(success, message);
@@ -285,6 +287,7 @@ class Forms extends React.Component {
 
   updateQuestion(newState) {
     let questionsRef = firebase.firestore().collection('questions');
+    
     if (!newState.isMult) {
       newState.choices = [];
     }
@@ -503,7 +506,7 @@ class Forms extends React.Component {
             <div id="correct" style={{ display: 'inline-block', marginLeft: "2em", verticalAlign: 'top' }}>
               <FormControl component="fieldset">
                 <FormLabel component="legend">Correct Answer</FormLabel>
-                <RadioGroup defaultValue="0" aria-label="correct" name="radios" onChange={this.handleCorrectChange}>
+                <RadioGroup defaultValue="0" aria-label="correct" name="radios" onChange={this.handleCorrectChange} value={this.state.correct}>
                   <FormControlLabel value="0" control={<Radio />} label="A" />
                   <FormControlLabel value="1" control={<Radio />} label="B" />
                   <FormControlLabel value="2" control={<Radio />} label="C" />
