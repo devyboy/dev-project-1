@@ -83,7 +83,6 @@ class ViewEdit extends React.Component {
     this.setState({ isEditing: false });
 
     if (refresh) {
-      this.setState({ questions: null });
       this.fetchQuestions();
     }
   }

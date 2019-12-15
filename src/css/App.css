@@ -13,3 +13,7 @@
 .MuiFormControlLabel-root {
   margin: 0
 }
+
+#correct .MuiFormControl-marginNormal {
+  margin-top: 0;
+}

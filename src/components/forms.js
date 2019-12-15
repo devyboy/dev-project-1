@@ -7,11 +7,6 @@ import {
   Button,
   InputAdornment,
   Chip,
-  RadioGroup,
-  Radio,
-  FormLabel,
-  FormControl,
-  FormControlLabel
 } from '@material-ui/core';
 import Editor from 'for-editor'
 
@@ -43,7 +38,7 @@ class Forms extends React.Component {
       type: props.editingQuestion ? props.editingQuestion.type : "",
       course: props.editingQuestion ? props.editingQuestion.course : "",
       pre: props.editingQuestion ? props.editingQuestion.pre : "",
-      correct: props.editingQuestion ? props.editingQuestion.choices.indexOf(props.editingQuestion.answer).toString() : "0"
+      correct: props.editingQuestion ? props.editingQuestion.choices.indexOf(props.editingQuestion.answer).toString() : ""
     }
 
     this.submitQuestion = this.submitQuestion.bind(this);
@@ -110,7 +105,7 @@ class Forms extends React.Component {
   }
 
   handleCorrectChange(event) {
-    this.setState({ answer: this.state.choices[event.target.value], correct: event.target.value});
+    this.setState({ answer: this.state.choices[event.target.value], correct: event.target.value });
   }
 
   handleChoicesChange(letter, event) {
@@ -287,7 +282,7 @@ class Forms extends React.Component {
 
   updateQuestion(newState) {
     let questionsRef = firebase.firestore().collection('questions');
-    
+
     if (!newState.isMult) {
       newState.choices = [];
     }
@@ -305,9 +300,9 @@ class Forms extends React.Component {
       choices: newState.choices,
       SLO: newState.SLOarray,
     })
-      .then(this.resetState(true, "Question updated"))
+      .then(this.props.openSnackbar(true, "Question updated"))
       .catch(err => {
-        this.resetState(false, err.message);
+        this.props.openSnackbar(false, err.message);
       });
   }
 
@@ -458,7 +453,7 @@ class Forms extends React.Component {
         {this.state.isMult ?
           <div style={{ width: "100%" }}>
             <h5 style={{ textAlign: "left", marginTop: "2em" }}>Answer Choices:</h5>
-            <div style={{display: 'inline-block'}}>
+            <div style={{ display: 'inline-block' }}>
               <div>
                 <TextField
                   style={styles.multChoice}
@@ -504,15 +499,20 @@ class Forms extends React.Component {
               </div>
             </div>
             <div id="correct" style={{ display: 'inline-block', marginLeft: "2em", verticalAlign: 'top' }}>
-              <FormControl component="fieldset">
-                <FormLabel component="legend">Correct Answer</FormLabel>
-                <RadioGroup defaultValue="0" aria-label="correct" name="radios" onChange={this.handleCorrectChange} value={this.state.correct}>
-                  <FormControlLabel value="0" control={<Radio />} label="A" />
-                  <FormControlLabel value="1" control={<Radio />} label="B" />
-                  <FormControlLabel value="2" control={<Radio />} label="C" />
-                  <FormControlLabel value="3" control={<Radio />} label="D" />
-                </RadioGroup>
-              </FormControl>
+              <TextField
+                style={{ width: 150, marginLeft: "1em", display: this.state.choices.length !== 4 && "none" }}
+                label="Correct Answer"
+                margin="normal"
+                onChange={this.handleCorrectChange}
+                value={this.state.correct}
+                disabled={this.state.choices.length !== 4}
+                select
+              >
+                <MenuItem value="0">A</MenuItem>
+                <MenuItem value="1">B</MenuItem>
+                <MenuItem value="2">C</MenuItem>
+                <MenuItem value="3">D</MenuItem>
+              </TextField>
             </div>
           </div>
           :
