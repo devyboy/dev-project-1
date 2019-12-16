@@ -1,17 +1,20 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
+import { firebaseConfig } from "./config.js";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import CreatePage from './pages/CreatePage';
-import ViewEditPage from './pages/ViewEditPage';
-import GeneratePage from './pages/GeneratePage';
-import FourOhFour from "./pages/FourOhFour";
 import LoginPage from "./pages/LoginPage";
-import ExamPage from "./pages/ExamPage";
-import SettingsPage from "./pages/SettingsPage";
-import { firebaseConfig } from "./config.js";
 import './css/App.css';
 import './css/strapboot.css';
+
+// Lazy load the pages for better performance
+
+const CreatePage = lazy(() => import('./pages/CreatePage'));
+const ViewEditPage = lazy(() => import('./pages/ViewEditPage'));
+const GeneratePage = lazy(() => import('./pages/GeneratePage'));
+const ExamPage = lazy(() => import('./pages/ExamPage'));
+const SettingsPage = lazy(() => import('./pages/SettingsPage'));
+const FourOhFour = lazy(() => import('./pages/FourOhFour'));
 
 // Firebase Credentials
 
@@ -55,7 +58,7 @@ class App extends React.Component {
         sheet.rel = 'stylesheet';
         sheet.href = "./dark.css";
         document.head.appendChild(sheet);
-      }   
+      }
     }
     else {
       let sheet = document.getElementById("dark")
@@ -74,15 +77,19 @@ class App extends React.Component {
         <LoginPage user={this.state.userObject} />
         :
         <Router>
-          <Switch>
-            <Route exact path="/" render={(props) => <CreatePage {...props} user={this.state.userObject} />} />
-            <Route exact path="/create" render={(props) => <CreatePage {...props} user={this.state.userObject} />} />
-            <Route exact path="/view-edit" render={(props) => <ViewEditPage {...props} user={this.state.userObject} />} />
-            <Route exact path="/generate" render={(props) => <GeneratePage {...props} user={this.state.userObject} />} />
-            <Route exact path="/exam" render={(props) => <ExamPage {...props} user={this.state.userObject} />} />
-            <Route exact path="/settings" render={(props) => <SettingsPage {...props} user={this.state.userObject} update={this.update} />} />
-            <Route render={(props) => <FourOhFour {...props} user={this.state.userObject} />} />
-          </Switch>
+          <Suspense
+            fallback={null}
+          >
+            <Switch>
+              <Route exact path="/" render={(props) => <CreatePage {...props} user={this.state.userObject} />} />
+              <Route exact path="/create" render={(props) => <CreatePage {...props} user={this.state.userObject} />} />
+              <Route exact path="/view-edit" render={(props) => <ViewEditPage {...props} user={this.state.userObject} />} />
+              <Route exact path="/generate" render={(props) => <GeneratePage {...props} user={this.state.userObject} />} />
+              <Route exact path="/exam" render={(props) => <ExamPage {...props} user={this.state.userObject} />} />
+              <Route exact path="/settings" render={(props) => <SettingsPage {...props} user={this.state.userObject} update={this.update} />} />
+              <Route render={(props) => <FourOhFour {...props} user={this.state.userObject} />} />
+            </Switch>
+          </Suspense>
         </Router >
     );
   }
