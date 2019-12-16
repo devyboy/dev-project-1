@@ -11,7 +11,7 @@ import ExamPage from "./pages/ExamPage";
 import SettingsPage from "./pages/SettingsPage";
 import { firebaseConfig } from "./config.js";
 import './css/App.css';
-import './css/bootstrap.min.css';
+import './css/strapboot.css';
 
 // Firebase Credentials
 

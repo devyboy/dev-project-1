@@ -120,7 +120,7 @@ class ExamPage extends React.Component {
                 let number = this.props.location.state.questions.indexOf(q) + 1
                 return (
                   <div key={key} id={"question"}>
-                    <div dangerouslySetInnerHTML={{ __html: number + ". " + md.render(q.question) }}></div>
+                    <div dangerouslySetInnerHTML={{ __html: md.render(number + ". " + q.question) }}></div>
                     <ul>{q.answer}</ul>
                   </div>
                 );
