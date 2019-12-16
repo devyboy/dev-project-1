@@ -51,11 +51,11 @@ class DataTable extends React.Component {
               "Free Response": "Free Response",
               "Programming": "Programming"
             },
-            cellStyle: {width: "160px"}
+            cellStyle: {width: "170px"}
           },
           { title: 'Course', field: 'course', cellStyle: {width: "50px"} },
           { title: 'Topic', field: 'topic' },
-          { title: 'Unit', field: 'unit', cellStyle: {width: "150px"} },
+          { title: 'Unit', field: 'unit' },
           {
             title: 'Difficulty', field: 'diff',
             lookup: {
