@@ -76,10 +76,10 @@ class Drawer extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" >
-              <a href={"/"} style={styles.path}>UDel PAPER</a> /&nbsp;{this.props.path.map((path, key) => {
+              <Link to={"/"} style={styles.path}>UDel PAPER</Link> /&nbsp;{this.props.path.map((path, key) => {
                 return(
                     <span key={key}>
-                      <a href={path.toLowerCase()} style={styles.path}>{path}</a>
+                      <Link to={path.toLowerCase()} style={styles.path}>{path}</Link>
                       &nbsp;/&nbsp;
                     </span>
                 );
