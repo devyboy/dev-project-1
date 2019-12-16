@@ -3,7 +3,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import Button from "@material-ui/core/Button";
-import UDLogo from "../UDMonogram.jpg";
+import UDLogo from "../images/UDMonogram.jpg";
 
 
 let styles = {

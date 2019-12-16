@@ -1,20 +1,20 @@
 import React, { Suspense, lazy } from "react";
-import { firebaseConfig } from "./config.js";
+import { firebaseConfig } from "../config.js";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import './css/App.css';
-import './css/strapboot.css';
+import LoginPage from "./LoginPage";
+import '../css/App.css';
+import '../css/strapboot.css';
 
 // Lazy load the pages for better performance
 
-const CreatePage = lazy(() => import('./pages/CreatePage'));
-const ViewEditPage = lazy(() => import('./pages/ViewEditPage'));
-const GeneratePage = lazy(() => import('./pages/GeneratePage'));
-const ExamPage = lazy(() => import('./pages/ExamPage'));
-const SettingsPage = lazy(() => import('./pages/SettingsPage'));
-const FourOhFour = lazy(() => import('./pages/FourOhFour'));
+const CreatePage = lazy(() => import('./CreatePage'));
+const ViewEditPage = lazy(() => import('./ViewEditPage'));
+const GeneratePage = lazy(() => import('./GeneratePage'));
+const ExamPage = lazy(() => import('./ExamPage'));
+const SettingsPage = lazy(() => import('./SettingsPage'));
+const FourOhFour = lazy(() => import('./FourOhFour'));
 
 // Firebase Credentials
 
@@ -56,7 +56,7 @@ class App extends React.Component {
         let sheet = document.createElement('link');
         sheet.id = "dark";
         sheet.rel = 'stylesheet';
-        sheet.href = "./dark.css";
+        sheet.href = "css/dark.css";
         document.head.appendChild(sheet);
       }
     }
