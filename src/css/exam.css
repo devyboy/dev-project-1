@@ -1,33 +1,35 @@
 #exam {
-  /* Font styling */
-  font-family: "Serif"; 
-  font-size: 17pt; 
-}  
-
-#exam p {
-  display: inline;
+  font-family: "Serif";
+  font-size: 17pt
 }
 
-#exam ul p{
-  display: block;
+#exam p {
+  display: inline
+}
+
+#exam ul p {
+  display: block
 }
 
 #question {
-  /* These rules prevent questions getting cut off between pages */
-  page-break-inside: avoid;  
-  break-inside: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid
+}
+
+#question:last-of-type ul {
+  margin-bottom: 0
+}
+
+#question:last-of-type ul:last-child p:last-child {
+  margin-bottom: 0
 }
 
 @page {
-  /* Page margins */
-  margin: 1in;
+  margin:1in
 }
 
 @media print {
-  #noprint {
-    display: none;
-  }
-  .MuiTooltip-popper {
-    display: none;
+  #noprint,.MuiTooltip-popper {
+      display: none
   }
 }

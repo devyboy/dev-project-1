@@ -1,13 +1,10 @@
 .App {
   text-align: center;
+  -ms-overflow-style: none
 }
 
 .App::-webkit-scrollbar {
-  display: none;
-}
-
-.App {
-  -ms-overflow-style: none;
+  display: none
 }
 
 .MuiFormControlLabel-root {
@@ -15,5 +12,5 @@
 }
 
 #correct .MuiFormControl-marginNormal {
-  margin-top: 0;
+  margin-top: 0
 }

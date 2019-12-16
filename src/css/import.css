@@ -16,15 +16,15 @@
   background-color: transparent;
   border-collapse: collapse;
   border-spacing: 0;
-  border: 1px solid #dcdcdc;
+  border: 1px solid #dcdcdc
 }
 
-#stackedit__html td, #stackedit__html th {
+#stackedit__html td,#stackedit__html th {
   border-right: 1px solid #dcdcdc;
   padding: 8px 12px;
-  border-top: 1px solid #dcdcdc;
+  border-top: 1px solid #dcdcdc
 }
 
-#stackedit__html td:last-child, #stackedit__html th:last-child {
-  border-right:0;
+#stackedit__html td:last-child,#stackedit__html th:last-child {
+  border-right: 0
 }

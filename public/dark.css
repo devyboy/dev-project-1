@@ -1,134 +1,83 @@
-html {
-  background-color: #36393f;
-}
-
-#greet {
-  color: white;
+.App,html {
+  background-color: #36393f
 }
 
 .App {
-  background-color: #36393f;
-  color: white !important;
+  color: #fff!important
 }
 
-.MuiTab-wrapper {
-  color: white;
+#greet,.MuiList-root li,.MuiTab-wrapper {
+  color: #fff
 }
 
 .MuiFormLabel-root {
-  color: white !important;
+  color: #fff!important
 }
 
 .MuiInput-underline:before {
-  border-bottom: 1px solid white !important;
+  border-bottom: 1px solid #fff!important
 }
 
 .MuiList-root {
-  background-color: #464a52;
+  background-color: #464a52
 }
 
-.MuiList-root li {
-  color: white;
-}
-
-#mtable .MuiPaper-root{
+#mtable .MuiPaper-root,#mtable .MuiTableCell-head {
   background-color: #36393f;
-  color: white;
+  color: #fff
 }
 
-#mtable .MuiTableCell-head {
-  background-color: #36393f;
-  color: white;
+#mtable .MuiButton-root,#mtable .MuiIcon-root,#mtable .MuiInputBase-input,#mtable .MuiSelect-root,#mtable .MuiTableCell-body,#mtable .MuiTypography-root,.MuiDialog-paper .MuiInputBase-input,.MuiDialog-paper .MuiSelect-root,.MuiDialogActions-root .MuiSvgIcon-root,a:hover {
+  color: #fff
 }
 
-#mtable .MuiSelect-root {
-  color: white;
+.MuiCard-root,.MuiDialog-paper {
+  background-color: #464a52!important;
+  color: #fff!important
 }
 
-#mtable .MuiTypography-root {
-  color: white;
-}
-
-#mtable .MuiIcon-root {
-  color: white;
-}
-
-#mtable .MuiTableCell-body {
-  color: white;
-}
-
-#mtable .MuiInputBase-input {
-  color: white;
-}
-
-.MuiCard-root {
-  background-color: #464a52 !important;
-  color: white !important;
-}
-
-.MuiDialog-paper {
-  background-color: #464a52 !important;
-  color: white !important;
-}
-
-.MuiDialog-paper .MuiSelect-root {
-  color: white;
-}
-
-.MuiDialog-paper .MuiInputBase-input {
-  color: white;
-}
-
-#mtable .MuiButton-root {
-  color: white;
-}
-
-#mtable .MuiCheckbox-colorSecondary.Mui-checked {
-  color: #e83e8c !important;
-}
-
-.MuiSelect-icon {
-  color: white !important;
-}
-
-.MuiCheckbox-root {
-  color: white !important;
-}
-
-.MuiInputBase-input {
-  color: white !important;
+.MuiCheckbox-root,.MuiInputBase-input,.MuiSelect-icon {
+  color: #fff!important
 }
 
 #mtable .MuiToolbar-root {
-  background-color: #464a52;
+  background-color: #464a52
 }
 
 .MuiInput-underline:after {
-  border-bottom: 2px solid #e83e8c !important;
-}
-
-.MuiDialogActions-root .MuiSvgIcon-root {
-  color: white;
+  border-bottom: 2px solid #e83e8c!important
 }
 
 .MuiCardHeader-title p {
-  color: rgb(168, 168, 168) !important;
+  color: #a8a8a8!important
 }
 
 .MuiButton-textPrimary {
-  background-color: #3f51b5 !important;
-  color: white !important;
+  background-color: #3f51b5!important;
+  color: #fff!important
 }
 
 .MuiButton-textSecondary {
-  background-color: #f50057 !important;
-  color: white !important;
-}
-
-a:hover {
-  color: white;
+  background-color: #f50057!important;
+  color: #fff!important
 }
 
 .MuiTypography-colorTextSecondary {
-  color: white !important;
+  color: #fff!important
+}
+
+#mtable .MuiSvgIcon-root {
+  color: #fff
+}
+
+#mtable .MuiCheckbox-colorSecondary {
+  color: #e83e8c
+}
+
+.Mui-checked .MuiSvgIcon-root {
+  color: #e83e8c!important
+}
+
+#mtable .MuiTableSortLabel-root.MuiTableSortLabel-active,#mtable .MuiTableSortLabel-root:hover {
+  color: #818181
 }
