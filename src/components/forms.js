@@ -300,10 +300,8 @@ class Forms extends React.Component {
       choices: newState.choices,
       SLO: newState.SLOarray,
     })
-      .then(this.props.openSnackbar(true, "Question updated"))
-      .catch(err => {
-        this.props.openSnackbar(false, err.message);
-      });
+      .then(() => this.props.callback(true, "Question Updated"))
+      .catch((err) => this.props.callback(false, err.message));
   }
 
   render() {
@@ -544,7 +542,7 @@ class Forms extends React.Component {
         <Button
           variant="contained"
           color="primary"
-          onClick={this.props.isEditing ? () => { this.updateQuestion(this.state); this.props.closeFn(); } : this.submitQuestion}
+          onClick={this.props.isEditing ? () => { this.updateQuestion(this.state) } : this.submitQuestion}
           style={{ marginTop: '2em' }}
         >
           {this.props.isEditing ? 'Update' : 'Submit'}

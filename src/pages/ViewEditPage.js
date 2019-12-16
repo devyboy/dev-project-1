@@ -4,7 +4,7 @@ import "firebase/firestore";
 import Menu from '../components/menu';
 import Forms from '../components/forms';
 import CustomSnackbar from "../components/customSnackbar";
-import { 
+import {
   CircularProgress,
   Button,
   Dialog,
@@ -30,7 +30,7 @@ class ViewEdit extends React.Component {
     this.openExamForm = this.openExamForm.bind(this);
     this.openSnackbar = this.openSnackbar.bind(this);
     this.openEditForm = this.openEditForm.bind(this);
-    this.closeEditForm = this.closeEditForm.bind(this);
+    this.updateCallback = this.updateCallback.bind(this);
     this.closeOfflineNotify = this.closeOfflineNotify.bind(this);
     this.deleteConfirm = this.deleteConfirm.bind(this);
     this.deleteQuestions = this.deleteQuestions.bind(this);
@@ -45,9 +45,11 @@ class ViewEdit extends React.Component {
         questionArray.push([doc.id, doc.data()]);
       });
       this.setState({ questions: questionArray });
-    }).catch(err => {
-      this.openSnackbar(false, err.message);
-    });
+    })
+      .then(() => {
+        this.setState({ isEditing: false });
+      })
+      .catch((err) => this.openSnackbar(false, err.message));
   }
 
   componentDidUpdate() {
@@ -79,12 +81,9 @@ class ViewEdit extends React.Component {
     this.setState({ isEditing: true, editingQuestion: question, editingID: selectedQ.id });
   }
 
-  closeEditForm(refresh) {
-    this.setState({ isEditing: false });
-
-    if (refresh) {
-      this.fetchQuestions();
-    }
+  updateCallback(success, message) {
+    this.fetchQuestions();
+    this.openSnackbar(success, message);
   }
 
   openExamForm(selected) {
@@ -137,13 +136,13 @@ class ViewEdit extends React.Component {
           }
           <Dialog
             open={this.state.isEditing}
-            onClose={() => this.closeEditForm(false)}
+            onClose={() => this.setState({ isEditing: false })}
             aria-labelledby="form-dialog-title"
             maxWidth="lg"
             fullWidth
           >
             <DialogActions disableSpacing>
-              <Button onClick={() => this.closeEditForm(false)} color="primary">
+              <Button onClick={() => this.setState({ isEditing: false })} color="primary">
                 <CloseIcon />
               </Button>
             </DialogActions>
@@ -153,7 +152,7 @@ class ViewEdit extends React.Component {
                 isEditing={true}
                 editingQuestion={this.state.editingQuestion}
                 editingID={this.state.editingID}
-                closeFn={() => this.closeEditForm(true)}
+                callback={this.updateCallback}
               />
             </DialogContent>
           </Dialog>
