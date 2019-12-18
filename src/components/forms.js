@@ -26,6 +26,8 @@ class Forms extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // if the form is being used to edit questions from View-Edit, use the props to supply the question data
+      // otherwise, just make everything blank when creating a new question 
       SLOarray: props.editingQuestion ? props.editingQuestion.SLO : [],
       choices: props.editingQuestion ? props.editingQuestion.choices : [],
       question: props.editingQuestion ? props.editingQuestion.question : "",
@@ -38,6 +40,8 @@ class Forms extends React.Component {
       type: props.editingQuestion ? props.editingQuestion.type : "",
       course: props.editingQuestion ? props.editingQuestion.course : "",
       pre: props.editingQuestion ? props.editingQuestion.pre : "",
+      // this correct field is the index of the answer choices array that holds the correct answer
+      // it corresponds to the 'correct answer' dropdown at the bottom of a multiple choice question
       correct: props.editingQuestion ? props.editingQuestion.choices.indexOf(props.editingQuestion.answer).toString() : ""
     }
 
@@ -59,7 +63,10 @@ class Forms extends React.Component {
     this.handleCorrectChange = this.handleCorrectChange.bind(this);
   }
 
-  componentWillUnmount() {
+  componentWillUnmount() { 
+    // once this component mounts, it starts pulling data from firebase, if you render it then
+    // derender or navigate away, firebase retains this connection even though it's not being used
+    // so this terminates that once the component is not needed anymore
     firebase.firestore().terminate();
   }
 
@@ -97,6 +104,7 @@ class Forms extends React.Component {
   }
 
   handleSLOChange(event) {
+    // this just holds and updates the value of the SLO text box
     this.setState({ SLO: event.target.value });
   }
 
@@ -105,10 +113,14 @@ class Forms extends React.Component {
   }
 
   handleCorrectChange(event) {
+    // once you choose which answer is correct, this sets the answer field to that choice
+    // and also the correct field to the index of that choice, this is just for the dropdown 
     this.setState({ answer: this.state.choices[event.target.value], correct: event.target.value });
   }
 
   handleChoicesChange(letter, event) {
+    // everytime you edit a choice, it sends the letter and the text
+    // switch just updates the correct one in the choices array
     let temp = this.state.choices;
     switch (letter) {
       case "A":
@@ -130,12 +142,14 @@ class Forms extends React.Component {
   }
 
   addSLO(event) {
-    if (event.keyCode === 13 || event.type === "blur") { // If they press the Enter key (which is number 13), add to SLO list
+    // If they press the Enter key (which is key number 13), or leave the text box, add to SLO list
+    if (event.keyCode === 13 || event.type === "blur") { 
+      // no duplicates or empty strings
       if (!this.state.SLOarray.includes(event.target.value) && event.target.value !== "") {
-        event.persist();
+        event.persist(); // if you don't do this, the event will get free'd and you'll lose it forever
         this.setState(state => ({
-          SLOarray: state.SLOarray.concat(event.target.value),
-          SLO: ""
+          SLOarray: state.SLOarray.concat(event.target.value), // append the new SLO to the SLO array field
+          SLO: "" // and reset the text box
         }
         ))
       }
@@ -144,7 +158,7 @@ class Forms extends React.Component {
 
   deleteSLO(label) {
     this.setState(state => ({
-      SLOarray: state.SLOarray.filter((slo) =>
+      SLOarray: state.SLOarray.filter((slo) => // filter out the SLO's that aren't the one you want to delete
         slo !== label
       )
     }));
@@ -171,6 +185,7 @@ class Forms extends React.Component {
   }
 
   validateInputs() { // There's probably a better way to do this...
+    // if any field is empty, set an error flag to false and record which ones are missing in the state
     let flag = true;
     if (!this.state.course) {
       this.setState({ courseErr: true });
@@ -246,24 +261,29 @@ class Forms extends React.Component {
   }
 
   submitQuestion() {
+    // this is the reference to the questions collection in firebase
     let questionsRef = firebase.firestore().collection('questions');
 
-    if (!this.validateInputs()) {
+    if (!this.validateInputs()) { // if an input isnt filled, go to top and throw error
       window.scrollTo(0, 0);
       this.props.openSnackbar(false, "Please fill every input before submitting");
       return;
     }
 
     if (!this.state.isMult) {
-      this.setState({ choices: [] });
+      this.setState({ choices: [] }); // if the question isnt multiple choice, clear the choices
+      // if someone chose multiple choice and filled out the choices but then changed to free response,
+      // the choices would still be in the array and sent to the database which is not what we want
     }
 
     questionsRef.add({
+      // send the question to the database
       question: this.state.question,
       unit: this.state.unit,
       pre: this.state.pre,
       course: this.state.course,
       topic: this.state.topic,
+      // if multiple choice, find the correct answer in choices and send, else just send the answer
       answer: this.state.isMult ? this.state.choices[this.state.correct] : this.state.answer,
       cog: this.state.cog,
       diff: this.state.diff,
@@ -272,22 +292,24 @@ class Forms extends React.Component {
       SLO: this.state.SLOarray
     })
       .then(() => {
+        // once it's done sending, reset the state and show a success message
         this.resetState(true, "Question saved");
         window.scrollTo(0, 0);
       })
       .catch(err => {
+        // if a problem happens, reset and show the error 
         this.resetState(false, err.message);
       })
   }
 
-  updateQuestion(newState) {
+  updateQuestion(newState) { // this is for editing a question in View-Edit
     let questionsRef = firebase.firestore().collection('questions');
 
     if (!newState.isMult) {
       newState.choices = [];
     }
 
-    questionsRef.doc(this.props.editingID).update({
+    questionsRef.doc(this.props.editingID).update({ // update the question using it's unique ID
       question: newState.question,
       unit: newState.unit,
       course: newState.course,
@@ -405,7 +427,7 @@ class Forms extends React.Component {
               label="SLO(s)"
               margin="normal"
               onChange={this.handleSLOChange}
-              onBlur={this.addSLO}
+              onBlur={this.addSLO} 
               onKeyDown={this.addSLO}
               value={this.state.SLO}
               error={this.state.sloErr}
@@ -413,7 +435,7 @@ class Forms extends React.Component {
           </div>
         </form>
 
-        {this.state.SLOarray && this.state.SLOarray.map((slo, key) => {
+        {this.state.SLOarray && this.state.SLOarray.map((slo, key) => { // render the SLO's
           return (
             <Chip
               style={{ margin: '5px' }}
@@ -429,7 +451,7 @@ class Forms extends React.Component {
           placeholder="Enter question here..."
           onChange={this.handleQuestionChange}
           value={this.state.question}
-          toolbar={{
+          toolbar={{ // show icons in toolbar
             h1: true,
             h2: true,
             h3: true,
@@ -441,14 +463,14 @@ class Forms extends React.Component {
           }}
           style={{ height: '300px', width: '100%', borderColor: this.state.questionErr ? "red" : "#ddd" }}
           language="en"
-          subfield
-          lineNum
-          preview
+          subfield // split the editor
+          lineNum // show line numbers
+          preview // show markdown preview to the right
         />
 
         <br />
 
-        {this.state.isMult ?
+        {this.state.isMult ? // if the question is multiple choice, show choices input
           <div style={{ width: "100%" }}>
             <h5 style={{ textAlign: "left", marginTop: "2em" }}>Answer Choices:</h5>
             <div style={{ display: 'inline-block' }}>
@@ -498,6 +520,8 @@ class Forms extends React.Component {
             </div>
             <div id="correct" style={{ display: 'inline-block', marginLeft: "2em", verticalAlign: 'top' }}>
               <TextField
+                // don't show this field until all the answers are filled in, idiot proofing in case they
+                // select an answer that they haven't filled in yet or something
                 style={{ width: 150, marginLeft: "1em", display: this.state.choices.length !== 4 && "none" }}
                 label="Correct Answer"
                 margin="normal"
@@ -513,7 +537,7 @@ class Forms extends React.Component {
               </TextField>
             </div>
           </div>
-          :
+          : // if not multiple choice, show textbox for the answer
           <div style={{ width: '100%' }}>
             <h5 style={{ textAlign: "left", marginTop: "1em" }}>Answer:</h5>
             <Editor
@@ -542,7 +566,8 @@ class Forms extends React.Component {
         <Button
           variant="contained"
           color="primary"
-          onClick={this.props.isEditing ? () => { this.updateQuestion(this.state) } : this.submitQuestion}
+          // change the button's function depending if they're editing or creating
+          onClick={this.props.isEditing ? () => this.updateQuestion(this.state) : this.submitQuestion}
           style={{ marginTop: '2em' }}
         >
           {this.props.isEditing ? 'Update' : 'Submit'}
