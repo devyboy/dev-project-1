@@ -186,33 +186,31 @@ class ExamPage extends React.Component {
             </DialogContent>
           </Dialog>
 
-          <Tooltip title="More actions">
-            <SpeedDial
-              ariaLabel="SpeedDial openIcon example"
-              style={{ position: "fixed", bottom: 130, right: 70 }}
-              icon={<SpeedDialIcon />}
-              onClose={() => this.setState({ speedOpen: false })}
-              onOpen={() => this.setState({ speedOpen: true })}
-              open={this.state.speedOpen}
-              direction={"up"}
-            >
-              <SpeedDialAction
-                icon={<PrintIcon />}
-                tooltipTitle="Print Exam"
-                onClick={() => window.print()}
-              />
-              <SpeedDialAction
-                icon={<DownloadIcon />}
-                tooltipTitle="Download Exam"
-                onClick={() => this.setState({ open: true })}
-              />
-              <SpeedDialAction
-                icon={<ProfessorIcon />}
-                tooltipTitle="Change Format"
-                onClick={this.changeFormat}
-              />
-            </SpeedDial>
-          </Tooltip>
+          <SpeedDial
+            ariaLabel="SpeedDial openIcon example"
+            style={{ position: "fixed", bottom: 130, right: 70 }}
+            icon={<SpeedDialIcon />}
+            onClose={() => this.setState({ speedOpen: false })}
+            onOpen={() => this.setState({ speedOpen: true })}
+            open={this.state.speedOpen}
+            direction={"up"}
+          >
+            <SpeedDialAction
+              icon={<PrintIcon />}
+              tooltipTitle="Print Exam"
+              onClick={() => window.print()}
+            />
+            <SpeedDialAction
+              icon={<DownloadIcon />}
+              tooltipTitle="Download Exam"
+              onClick={() => this.setState({ open: true })}
+            />
+            <SpeedDialAction
+              icon={<ProfessorIcon />}
+              tooltipTitle="Change Format"
+              onClick={this.changeFormat}
+            />
+          </SpeedDial>
 
           <Tooltip title="Go back">
             <Fab
