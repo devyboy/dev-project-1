@@ -234,8 +234,8 @@ class Import extends React.Component {
               </table>
 
               <div style={{ display: 'inline-block', margin: "3em" }}>
-                <Button variant="contained" color="primary" component="a" href="./test.json">
-                  View Example JSON file
+                <Button variant="contained" color="primary" component="a" href="./test.json" download>
+                  Example JSON file
                 </Button>
               </div>
 
