@@ -47,13 +47,26 @@ class App extends React.Component {
     this.update = this.update.bind(this);
   }
 
+  parseCookie() {
+    return document.cookie
+      .split(';')
+      .reduce((res, c) => {
+        const [key, val] = c.trim().split('=').map(decodeURIComponent)
+        try {
+          return Object.assign(res, { [key]: JSON.parse(val) })
+        } catch (e) {
+          return Object.assign(res, { [key]: val })
+        }
+      }, {});
+  }
+
   update() {
     this.forceUpdate(); // called when someone applies settings from the Settings page, updates the entire app
   }
 
-  darkMode() {
-    let dark = document.cookie.slice(5, document.cookie.length); 
-    if (dark === "true") { // check if the cookie has darkmode set to true
+  applyTheme() {
+    let cookie = this.parseCookie()
+    if (cookie.dark) { // check if the cookie has darkmode set to true
       if (!document.getElementById("dark")) { // if there isn't a darkmode stylesheet already existing, make it
         let sheet = document.createElement('link');
         sheet.id = "dark";
@@ -71,7 +84,7 @@ class App extends React.Component {
   }
 
   render() {
-    this.darkMode();
+    this.applyTheme();
 
     return (
       !this.state.userObject
@@ -90,7 +103,7 @@ class App extends React.Component {
               <Route exact path="/generate" render={(props) => <GeneratePage {...props} user={this.state.userObject} />} />
               <Route exact path="/exam" render={(props) => <ExamPage {...props} user={this.state.userObject} />} />
               <Route exact path="/settings" render={(props) => <SettingsPage {...props} user={this.state.userObject} update={this.update} />} />
-              <Route render={(props) => <FourOhFour {...props} user={this.state.userObject} />} /> 
+              <Route render={(props) => <FourOhFour {...props} user={this.state.userObject} />} />
               {/* the last route in the switch is the 404 since nothing else matched */}
             </Switch>
           </Suspense>
