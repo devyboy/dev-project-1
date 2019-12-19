@@ -8,7 +8,8 @@ import PublishIcon from '@material-ui/icons/Publish';
 import YAML from 'yaml';
 import "../css/import.css";
 
-let reader;
+let reader; // declare the file reader globally
+
 let styles = {
   page: {
     marginTop: '3em'
@@ -29,11 +30,11 @@ class Import extends React.Component {
   }
 
   handleFileChosen(file) {
-    this.setState({ questions: [] });
-    let ext = file.name.split('.').pop();
+    this.setState({ questions: [] }); // reset the questions everytime they choose a file
+    let ext = file.name.split('.').pop(); // get the file extension
     reader = new FileReader();
 
-    switch (ext) {
+    switch (ext) { // use the various reading functions depending on the type of file it is
       case "json":
         reader.onloadend = this.handleJSONRead;
         break;
@@ -81,9 +82,8 @@ class Import extends React.Component {
 
   approveQuestions() {
     this.state.questions.forEach((q) => {
-      this.submitQuestion(q);
+      this.submitQuestion(q); // loop through the questions and submit each one to firebase
     });
-    this.setState({ questions: [] });
   }
 
   submitQuestion(q) {
@@ -111,7 +111,7 @@ class Import extends React.Component {
   render() {
     return (
       <div style={styles.page}>
-        {this.state.questions.length !== 0 ?
+        {this.state.questions.length !== 0 ? // show approve message when they upload questions
           <div>
             <h4>Approve the following questions for upload:</h4>
             {this.state.questions.map((q, key) =>

@@ -49,7 +49,8 @@ class Drawer extends React.Component {
   }
 
   handleOpen(event) {
-    this.setState({ drawer: true, anchorEl: event.currentTarget });
+    // anchor element is where the drawer attached to, in this case the menu button
+    this.setState({ drawer: true, anchorEl: event.currentTarget }); 
   }
 
   closeDrawer() {
@@ -58,7 +59,6 @@ class Drawer extends React.Component {
 
   signOut() {
     firebase.auth().signOut();
-  
   }
 
   render() {
@@ -79,10 +79,10 @@ class Drawer extends React.Component {
               <Link to={"/"} style={styles.path}>UDel PAPER</Link> /&nbsp;{this.props.path.map((path, key) => {
                 return(
                     <span key={key}>
-                      <Link to={path.toLowerCase()} style={styles.path}>{path}</Link>
+                      <Link to={path.toLowerCase()} style={styles.path}>{path}</Link> 
                       &nbsp;/&nbsp;
                     </span>
-                );
+                ); // shows the cool pathname navigation at the top 
               })}
             </Typography>
             <Button color="inherit" style={styles.login} onClick={this.signOut} >Logout</Button>

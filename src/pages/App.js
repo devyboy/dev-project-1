@@ -28,6 +28,8 @@ var config = {
   appId: firebaseConfig.appId
 };
 
+// initialize the firebase portion of the app 
+
 firebase.initializeApp(config);
 
 class App extends React.Component {
@@ -46,24 +48,24 @@ class App extends React.Component {
   }
 
   update() {
-    this.forceUpdate();
+    this.forceUpdate(); // called when someone applies settings from the Settings page, updates the entire app
   }
 
   darkMode() {
-    let dark = document.cookie.slice(5, document.cookie.length);
-    if (dark === "true") {
-      if (!document.getElementById("dark")) {
+    let dark = document.cookie.slice(5, document.cookie.length); 
+    if (dark === "true") { // check if the cookie has darkmode set to true
+      if (!document.getElementById("dark")) { // if there isn't a darkmode stylesheet already existing, make it
         let sheet = document.createElement('link');
         sheet.id = "dark";
         sheet.rel = 'stylesheet';
         sheet.href = "css/dark.css";
-        document.head.appendChild(sheet);
+        document.head.appendChild(sheet); // add it to the head of the html file
       }
     }
     else {
-      let sheet = document.getElementById("dark")
+      let sheet = document.getElementById("dark") // if the stylesheet does exist
       if (sheet) {
-        sheet.remove();
+        sheet.remove(); // remove it because that means they're turning it off
       }
     }
   }
@@ -77,8 +79,9 @@ class App extends React.Component {
         <LoginPage user={this.state.userObject} />
         :
         <Router>
+          {/* // runs when lazily loading pages */}
           <Suspense
-            fallback={null}
+            fallback={null} // fallback is an element to show while loading like a spinner or something
           >
             <Switch>
               <Route exact path="/" render={(props) => <CreatePage {...props} user={this.state.userObject} />} />
@@ -87,7 +90,8 @@ class App extends React.Component {
               <Route exact path="/generate" render={(props) => <GeneratePage {...props} user={this.state.userObject} />} />
               <Route exact path="/exam" render={(props) => <ExamPage {...props} user={this.state.userObject} />} />
               <Route exact path="/settings" render={(props) => <SettingsPage {...props} user={this.state.userObject} update={this.update} />} />
-              <Route render={(props) => <FourOhFour {...props} user={this.state.userObject} />} />
+              <Route render={(props) => <FourOhFour {...props} user={this.state.userObject} />} /> 
+              {/* the last route in the switch is the 404 since nothing else matched */}
             </Switch>
           </Suspense>
         </Router >
