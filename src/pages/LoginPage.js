@@ -93,6 +93,7 @@ class LoginPage extends React.Component {
     }
     else {
       return(
+        // if they go to the login page while already logged in, just take them to the home page
         () => window.location.href = "/"
       );
     }

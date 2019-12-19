@@ -20,18 +20,19 @@ class SettingsPage extends React.Component {
   }
 
   componentDidMount() {
-    if (document.getElementById("dark")) {
+    // if the dark stylesheet is already applied, set the switch to active
+    if (document.getElementById("dark")) { 
       this.setState({ dark: true });
     }
   }
 
   darkMode(dark) {
-    document.cookie = `dark=${dark}`;
-    this.props.update();
+    document.cookie = `dark=${dark}`; // add the darkmode key to the browser cookie
   }
 
   applySettings() {
     this.darkMode(this.state.dark);
+    this.props.update(); // call the update function from App.js to update the entire app
   }
 
   render() {

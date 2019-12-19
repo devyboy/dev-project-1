@@ -32,7 +32,7 @@ class ExamPage extends React.Component {
     this.changeFormat = this.changeFormat.bind(this);
     this.downloadFile = this.downloadFile.bind(this);
 
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 0); // scroll from the generate page applies to this page too, so go to top
   }
 
   handleNameChange(event) {
@@ -43,7 +43,7 @@ class ExamPage extends React.Component {
     this.setState({ format: event.target.value });
   }
 
-  convertToText(questions) {
+  convertToText(questions) { // export to .txt file
     let str = ""
     let i = 1;
     questions.forEach((q) => {
@@ -65,7 +65,7 @@ class ExamPage extends React.Component {
 
   changeFormat() {
     this.setState(state => ({
-      answers: !state.answers,
+      answers: !state.answers, // shows the professor copy
       snackOpen: true,
       snackSuccess: true,
       snackMessage: !state.answers ? "Viewing answer key" : "Viewing student copy"
@@ -77,8 +77,9 @@ class ExamPage extends React.Component {
     let fileDownload = require('js-file-download');
     switch (this.state.format) {
       case ".html":
-        let pageHTML = document.getElementById("exam").innerHTML;
+        let pageHTML = document.getElementById("exam").innerHTML; // get the exam HTML as an element
         let template =
+          // put that exam HTML into the body of a complete HTML document
           `<!DOCTYPE html>
                     <html> 
                         <head>
@@ -119,11 +120,12 @@ class ExamPage extends React.Component {
               {this.props.location.state.questions.map((q, key) => {
                 let number = this.props.location.state.questions.indexOf(q) + 1
                 return (
+                  // it says dangerous but I tried to inject HTML and scripts but it didn't work so its fine
                   <div key={key} id={"question"}>
                     <div dangerouslySetInnerHTML={{ __html: md.render(number + ". " + q.question) }}></div>
                     <ul>{q.answer}</ul>
                   </div>
-                );
+                ); // professor copy so just show the question and answer
               })}
             </div>
             :

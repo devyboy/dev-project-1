@@ -106,20 +106,20 @@ class Generate extends React.Component {
     this.setState({ detailsModal: false });
   }
 
-  onSortEndCards = ({ oldIndex, newIndex }) => {
+  onSortEndCards = ({ oldIndex, newIndex }) => { // gets called when you finish dragging a card
     this.setState(({ questions }) => ({
       questions: arrayMove(questions, oldIndex, newIndex),
     }));
   };
 
-  onSortEndChoices = ({ oldIndex, newIndex }) => {
+  onSortEndChoices = ({ oldIndex, newIndex }) => { // gets called when you finish dragging a choice
     let kapp = this.state.detailsQuestion;
     kapp.choices = arrayMove(kapp.choices, oldIndex, newIndex);
-    this.setState({ detailsQuestion: kapp });
   };
 
   componentDidMount() {
-    if (this.props.location.state === undefined) {
+    // can't access the generate page unless you do it by selecting questions from view-edit
+    if (this.props.location.state === undefined) { 
       this.props.history.push("/view-edit");
     }
     else {
@@ -137,7 +137,7 @@ class Generate extends React.Component {
     this.setState({ detailsModal: true, detailsQuestion: this.state.questions[index] });
   }
 
-  closeCard(index) {
+  closeCard(index) { // remove question from generate page
     let temp = this.state.questions;
     temp.splice(index - 1, 1);
 
@@ -150,7 +150,7 @@ class Generate extends React.Component {
     }));
   }
 
-  randomizeQuestions() {
+  randomizeQuestions() { // using Fisher-Yates algorithm to randomize
     let array = this.state.questions
 
     for (let i = array.length - 1; i > 0; i--) {
@@ -195,7 +195,7 @@ class Generate extends React.Component {
 
   render() {
 
-    // Action Components
+    // Drag handle in the top right of the card
 
     const DragHandle = sortableHandle(() => <DragHandleIcon style={styles.dragHandle} />);
 
@@ -232,6 +232,20 @@ class Generate extends React.Component {
       );
     });
 
+     // Entire card list component
+
+     const SortableList = sortableContainer(({ items }) => {
+      return (
+        <ul style={styles.listContainer}>
+          {items.map((value, index) => (
+            <SortableItem key={`item-${value.question + index}`} index={index} value={value} />
+          ))}
+        </ul>
+      );
+    });
+
+    // Multiple choice options
+
     const SortableChoice = sortableElement(({ value }) => {
       return (
         <li style={{ cursor: "move", zIndex: 1301 }}>
@@ -240,6 +254,7 @@ class Generate extends React.Component {
       );
     });
 
+    // entire choice list component 
 
     const SortableChoices = sortableContainer(({ items }) => {
       return (
@@ -249,19 +264,6 @@ class Generate extends React.Component {
           ))}
         </ul>
       )
-    });
-
-
-    // Entire List component
-
-    const SortableList = sortableContainer(({ items }) => {
-      return (
-        <ul style={styles.listContainer}>
-          {items.map((value, index) => (
-            <SortableItem key={`item-${value.question + index}`} index={index} value={value} />
-          ))}
-        </ul>
-      );
     });
 
     return (
@@ -352,6 +354,7 @@ class Generate extends React.Component {
                         }
                       </Typography>
                     </li>
+                    {/* show spacing only if the question isn't multiple choice */}
                     {(this.state.detailsQuestion.type === "Free Response" || this.state.detailsQuestion.type === "Programming")
                       &&
                       <li>
@@ -372,7 +375,7 @@ class Generate extends React.Component {
                       Shuffle Choices
                         </Button>
                   }
-
+                  {/* If you're down to the last question, you can't remove it */}
                   {this.state.questions.length !== 1 &&
                     <Button onClick={() => this.closeCard(this.state.questions.indexOf(this.state.detailsQuestion) + 1)} color="secondary">
                       Remove
@@ -385,7 +388,8 @@ class Generate extends React.Component {
                 </DialogActions>
               </Dialog>
             }
-
+            
+            {/* navigate to exam page and send questions as props */}
             <div style={{ width: "50%", margin: "0 auto" }}>
               <Link to={{ pathname: "/exam", state: { questions: this.state.questions } }}>
                 <Button style={{ margin: '1em' }} color="primary" variant="contained" >

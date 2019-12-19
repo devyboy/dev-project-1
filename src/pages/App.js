@@ -62,10 +62,10 @@ class App extends React.Component {
         document.head.appendChild(sheet); // add it to the head of the html file
       }
     }
-    else {
+    else { // if the darkmode cookie is set to false
       let sheet = document.getElementById("dark") // if the stylesheet does exist
       if (sheet) {
-        sheet.remove(); // remove it because that means they're turning it off
+        sheet.remove(); // remove it because that means they're turning darkmode off
       }
     }
   }

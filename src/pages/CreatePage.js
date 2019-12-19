@@ -32,6 +32,7 @@ class CreatePage extends React.Component {
       <div className="App">
 
         <Menu path={["Create"]} />
+
         <Tabs
           value={this.state.value}
           onChange={this.handleChange}

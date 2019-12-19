@@ -39,21 +39,21 @@ class ViewEdit extends React.Component {
 
   fetchQuestions() {
     let questionArray = [];
-    let questionsRef = firebase.firestore().collection('questions');
+    let questionsRef = firebase.firestore().collection('questions'); // get questions from firebase
     questionsRef.get().then(snapshot => {
       snapshot.forEach(doc => {
         questionArray.push([doc.id, doc.data()]);
       });
-      this.setState({ questions: questionArray });
+      this.setState({ questions: questionArray }); // put them in the state
     })
       .then(() => {
-        this.setState({ isEditing: false });
+        this.setState({ isEditing: false }); // set editing to false in case they were editing, closes the modal
       })
       .catch((err) => this.openSnackbar(false, err.message));
   }
 
   componentDidUpdate() {
-    if (!navigator.onLine && !this.state.notified) {
+    if (!navigator.onLine && !this.state.notified) { // show the offline notification if they go offline
       this.setState({ offlineNotify: true, notified: true });
     }
   }
@@ -72,7 +72,7 @@ class ViewEdit extends React.Component {
 
   openEditForm(selectedQ) {
     let question;
-    this.state.questions.forEach((q) => {
+    this.state.questions.forEach((q) => { // find the question they're editing
       if (q[0] === selectedQ.id) {
         question = q[1];
       }
@@ -82,7 +82,7 @@ class ViewEdit extends React.Component {
   }
 
   updateCallback(success, message) {
-    this.fetchQuestions();
+    this.fetchQuestions(); // called from dataTable.js after an edit
     this.openSnackbar(success, message);
   }
 
@@ -95,7 +95,7 @@ class ViewEdit extends React.Component {
         }
       }));
     });
-    this.props.history.push({
+    this.props.history.push({ // go to generate and take the selected questions
       pathname: "/generate",
       state: { questions: opp }
     });
@@ -105,7 +105,7 @@ class ViewEdit extends React.Component {
     this.setState({ deleteConfirm: true, selectedQuestions: questions });
   }
 
-  deleteQuestions() {
+  deleteQuestions() { // delete the questions by their ID
     this.state.selectedQuestions.forEach((q) => {
       firebase.firestore().collection("questions").doc(q.id).delete().then(() => this.fetchQuestions());
     });
