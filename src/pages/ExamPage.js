@@ -1,10 +1,12 @@
 import React from "react";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@material-ui/lab';
+import Fab from "@material-ui/core/Fab";
+import Tooltip from "@material-ui/core/Tooltip";
 import CustomSnackbar from "../components/customSnackbar";
 import DownloadIcon from "@material-ui/icons/GetApp";
 import PrintIcon from "@material-ui/icons/Print";
 import ProfessorIcon from "@material-ui/icons/AssignmentInd";
-//import BackIcon from "@material-ui/icons/ArrowBack";
+import BackIcon from "@material-ui/icons/ArrowBack";
 import YAML from 'yaml';
 import "../css/exam.css";
 
@@ -183,36 +185,45 @@ class ExamPage extends React.Component {
 
             </DialogContent>
           </Dialog>
-          <SpeedDial
-            ariaLabel="SpeedDial openIcon example"
-            style={{ position: "fixed", bottom: 30, right: 50 }}
-            icon={<SpeedDialIcon />}
-            onClose={() => this.setState({ speedOpen: false })}
-            onOpen={() => this.setState({ speedOpen: true })}
-            open={this.state.speedOpen}
-            direction={"up"}
-          >
-            <SpeedDialAction
-              icon={<PrintIcon />}
-              tooltipTitle="Print Exam"
-              onClick={() => window.print()}
-            />
-            <SpeedDialAction
-              icon={<DownloadIcon />}
-              tooltipTitle="Download Exam"
-              onClick={() => this.setState({ open: true })}
-            />
-            <SpeedDialAction
-              icon={<ProfessorIcon />}
-              tooltipTitle="Change Format"
-              onClick={this.changeFormat}
-            />
-            {/* <SpeedDialAction
-              icon={<BackIcon />}
-              tooltipTitle="Go Back"
+
+          <Tooltip title="More actions">
+            <SpeedDial
+              ariaLabel="SpeedDial openIcon example"
+              style={{ position: "fixed", bottom: 130, right: 70 }}
+              icon={<SpeedDialIcon />}
+              onClose={() => this.setState({ speedOpen: false })}
+              onOpen={() => this.setState({ speedOpen: true })}
+              open={this.state.speedOpen}
+              direction={"up"}
+            >
+              <SpeedDialAction
+                icon={<PrintIcon />}
+                tooltipTitle="Print Exam"
+                onClick={() => window.print()}
+              />
+              <SpeedDialAction
+                icon={<DownloadIcon />}
+                tooltipTitle="Download Exam"
+                onClick={() => this.setState({ open: true })}
+              />
+              <SpeedDialAction
+                icon={<ProfessorIcon />}
+                tooltipTitle="Change Format"
+                onClick={this.changeFormat}
+              />
+            </SpeedDial>
+          </Tooltip>
+
+          <Tooltip title="Go back">
+            <Fab
+              color="secondary"
               onClick={() => window.history.back()}
-            /> */}
-          </SpeedDial>
+              style={{ position: "fixed", bottom: 60, right: 70 }}
+            >
+              <BackIcon />
+            </Fab>
+          </Tooltip>
+
           <CustomSnackbar
             vertical={"top"}
             horizontal={"right"}
