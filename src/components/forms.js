@@ -7,6 +7,10 @@ import {
   Button,
   InputAdornment,
   Chip,
+  FormControl,
+  RadioGroup,
+  FormControlLabel,
+  Radio
 } from '@material-ui/core';
 import Editor from 'for-editor'
 
@@ -61,9 +65,10 @@ class Forms extends React.Component {
     this.deleteSLO = this.deleteSLO.bind(this);
     this.handlePreChange = this.handlePreChange.bind(this);
     this.handleCorrectChange = this.handleCorrectChange.bind(this);
+    this.handleTrueFalseChange = this.handleTrueFalseChange.bind(this);
   }
 
-  componentWillUnmount() { 
+  componentWillUnmount() {
     // once this component mounts, it starts pulling data from firebase, if you render it then
     // derender or navigate away, firebase retains this connection even though it's not being used
     // so this terminates that once the component is not needed anymore
@@ -118,6 +123,10 @@ class Forms extends React.Component {
     this.setState({ answer: this.state.choices[event.target.value], correct: event.target.value });
   }
 
+  handleTrueFalseChange(event) {
+    this.setState({ answer: event.target.value });
+  }
+
   handleChoicesChange(letter, event) {
     // everytime you edit a choice, it sends the letter and the text
     // switch just updates the correct one in the choices array
@@ -143,7 +152,7 @@ class Forms extends React.Component {
 
   addSLO(event) {
     // If they press the Enter key (which is key number 13), or leave the text box, add to SLO list
-    if (event.keyCode === 13 || event.type === "blur") { 
+    if (event.keyCode === 13 || event.type === "blur") {
       // no duplicates or empty strings
       if (!this.state.SLOarray.includes(event.target.value) && event.target.value !== "") {
         event.persist(); // if you don't do this, the event will get free'd and you'll lose it forever
@@ -165,21 +174,6 @@ class Forms extends React.Component {
   }
 
   resetState(success, message) {
-    this.setState({
-      SLOarray: [],
-      choices: [],
-      question: "",
-      unit: "",
-      topic: "",
-      answer: "",
-      cog: undefined,
-      diff: undefined,
-      isMult: false,
-      type: undefined,
-      course: "",
-      pre: undefined,
-      correct: "0"
-    });
 
     this.props.openSnackbar(success, message);
   }
@@ -257,10 +251,32 @@ class Forms extends React.Component {
     else {
       this.setState({ answerErr: false });
     }
+    if (this.state.isMult && (this.state.choices.includes(undefined) || this.state.choices.length === 0)) {
+      this.setState({ multErr: true });
+      flag = false;
+    }
+    else {
+      this.setState({ multErr: false });
+    }
+    if (this.state.isMult && !this.state.correct) {
+      this.setState({ multCorrectErr: true });
+      flag = false;
+    }
+    else {
+      this.setState({ multCorrectErr: false });
+    }
+    if (this.state.type === "True/False" && !this.state.answer) {
+      this.setState({ truefalseErr: true });
+      flag = false;
+    }
+    else {
+      this.setState({ truefalseErr: false });
+    }
     return flag;
   }
 
   submitQuestion() {
+    console.log(this.state.choices[2]);
     // this is the reference to the questions collection in firebase
     let questionsRef = firebase.firestore().collection('questions');
 
@@ -364,6 +380,7 @@ class Forms extends React.Component {
               select
             >
               <MenuItem value="Multiple Choice">Multiple Choice</MenuItem>
+              <MenuItem value="True/False">True/False</MenuItem>
               <MenuItem value="Free Response">Free Response</MenuItem>
               <MenuItem value="Programming">Programming</MenuItem>
             </TextField>
@@ -427,7 +444,7 @@ class Forms extends React.Component {
               label="SLO(s)"
               margin="normal"
               onChange={this.handleSLOChange}
-              onBlur={this.addSLO} 
+              onBlur={this.addSLO}
               onKeyDown={this.addSLO}
               value={this.state.SLO}
               error={this.state.sloErr}
@@ -470,15 +487,16 @@ class Forms extends React.Component {
 
         <br />
 
-        {this.state.isMult ? // if the question is multiple choice, show choices input
+        {this.state.isMult && // if the question is multiple choice, show choices input
           <div style={{ width: "100%" }}>
             <h5 style={{ textAlign: "left", marginTop: "2em" }}>Answer Choices:</h5>
-            <div style={{ display: 'inline-block' }}>
+            <div style={{ display: "inline-block" }}>
               <div>
                 <TextField
                   style={styles.multChoice}
                   onChange={(e) => this.handleChoicesChange("A", e)}
                   value={this.state.choices[0]}
+                  error={this.state.multErr}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">A.</InputAdornment>,
                   }}
@@ -490,6 +508,7 @@ class Forms extends React.Component {
                   style={styles.multChoice}
                   onChange={(e) => this.handleChoicesChange("B", e)}
                   value={this.state.choices[1]}
+                  error={this.state.multErr}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">B.</InputAdornment>,
                   }}
@@ -501,6 +520,7 @@ class Forms extends React.Component {
                   style={styles.multChoice}
                   onChange={(e) => this.handleChoicesChange("C", e)}
                   value={this.state.choices[2]}
+                  error={this.state.multErr}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">C.</InputAdornment>,
                   }}
@@ -512,6 +532,7 @@ class Forms extends React.Component {
                   style={styles.multChoice}
                   onChange={(e) => this.handleChoicesChange("D", e)}
                   value={this.state.choices[3]}
+                  error={this.state.multErr}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">D.</InputAdornment>,
                   }}
@@ -522,12 +543,16 @@ class Forms extends React.Component {
               <TextField
                 // don't show this field until all the answers are filled in, idiot proofing in case they
                 // select an answer that they haven't filled in yet or something
-                style={{ width: 150, marginLeft: "1em", display: this.state.choices.length !== 4 && "none" }}
+                style={{
+                  width: 150,
+                  marginLeft: "1em",
+                  display: (this.state.choices.includes(undefined) || this.state.choices.length !== 4) && "none"
+                }}
                 label="Correct Answer"
                 margin="normal"
                 onChange={this.handleCorrectChange}
                 value={this.state.correct}
-                disabled={this.state.choices.length !== 4}
+                error={this.state.multCorrectErr}
                 select
               >
                 <MenuItem value="0">A</MenuItem>
@@ -537,7 +562,28 @@ class Forms extends React.Component {
               </TextField>
             </div>
           </div>
-          : // if not multiple choice, show textbox for the answer
+        }
+
+        {this.state.type === "True/False" &&
+          <div>
+            <FormControl
+              component="fieldset"
+              style={this.state.truefalseErr ? { border: "1px solid red", borderRadius: "8px", padding: ".5em" } : {}}
+            >
+              <RadioGroup
+                aria-label="truefalse"
+                name="truefalse"
+                value={this.state.answer}
+                onChange={this.handleTrueFalseChange}
+              >
+                <FormControlLabel value="True" control={<Radio />} label="True" />
+                <FormControlLabel value="False" control={<Radio />} label="False" />
+              </RadioGroup>
+            </FormControl>
+          </div>
+        }
+
+        {(this.state.type === "Programming" || this.state.type === "Free Response") &&
           <div style={{ width: '100%' }}>
             <h5 style={{ textAlign: "left", marginTop: "1em" }}>Answer:</h5>
             <Editor

@@ -42,10 +42,10 @@ const DataTable = (props) => {
         {
           title: 'Type', field: 'type',
           lookup: {
-            // lookup is for sorting fields with options are are predefined
             "Multiple Choice": "Multiple Choice",
             "Free Response": "Free Response",
-            "Programming": "Programming"
+            "Programming": "Programming",
+            "True/False": "True/False",
           },
           cellStyle: { width: "170px" }
         },
