@@ -74,8 +74,8 @@ class Import extends React.Component {
       this.showSnackbar(false, e.message);
     }
     for (let i in yaml) {
-      this.setState(state => ({ 
-        questions: state.questions.concat(yaml[i]) 
+      this.setState(state => ({
+        questions: state.questions.concat(yaml[i])
       }));
     }
   }
@@ -134,7 +134,11 @@ class Import extends React.Component {
           :
           <div>
             <div style={{ display: 'inline-block' }}>
-              <p>Supported file types: <strong>.json and .yaml</strong></p>
+              <p>
+                You can import multiple questions at a time by uploading a data file containing the question objects
+                <br />
+                Supported file types: <strong>.json and .yaml</strong>
+              </p>
               <input
                 onChange={(e) => this.handleFileChosen(e.target.files[0])}
                 style={{ display: "none" }}

@@ -17,7 +17,8 @@ import Editor from 'for-editor'
 
 const styles = {
   multChoice: {
-    width: "350px"
+    width: "350px",
+    margin: '.25em',
   },
   container: {
     width: "65%",
@@ -58,14 +59,15 @@ class Forms extends React.Component {
     this.handleDiffChange = this.handleDiffChange.bind(this);
     this.handleTypeChange = this.handleTypeChange.bind(this);
     this.handleChoicesChange = this.handleChoicesChange.bind(this);
-    this.handleSLOChange = this.handleSLOChange.bind(this);
     this.handleCourseChange = this.handleCourseChange.bind(this);
     this.updateQuestion = this.updateQuestion.bind(this);
+    this.handleSLOChange = this.handleSLOChange.bind(this);
     this.addSLO = this.addSLO.bind(this);
     this.deleteSLO = this.deleteSLO.bind(this);
     this.handlePreChange = this.handlePreChange.bind(this);
     this.handleCorrectChange = this.handleCorrectChange.bind(this);
     this.handleTrueFalseChange = this.handleTrueFalseChange.bind(this);
+    this.resetState = this.resetState.bind(this);
   }
 
   componentWillUnmount() {
@@ -91,6 +93,10 @@ class Forms extends React.Component {
     this.setState({ answer: value });
   }
 
+  handleSLOChange(event) {
+    this.setState({ SLO: event.target.value });
+  }
+
   handlePreChange(event) {
     this.setState({ pre: event.target.value })
   }
@@ -106,11 +112,6 @@ class Forms extends React.Component {
   handleTypeChange(event) {
     this.setState({ isMult: event.target.value === "Multiple Choice" });
     this.setState({ type: event.target.value });
-  }
-
-  handleSLOChange(event) {
-    // this just holds and updates the value of the SLO text box
-    this.setState({ SLO: event.target.value });
   }
 
   handleCourseChange(event) {
@@ -155,12 +156,11 @@ class Forms extends React.Component {
     if (event.keyCode === 13 || event.type === "blur") {
       // no duplicates or empty strings
       if (!this.state.SLOarray.includes(event.target.value) && event.target.value !== "") {
-        event.persist(); // if you don't do this, the event will get free'd and you'll lose it forever
         this.setState(state => ({
-          SLOarray: state.SLOarray.concat(event.target.value), // append the new SLO to the SLO array field
-          SLO: "" // and reset the text box
-        }
-        ))
+          SLOarray: state.SLOarray.concat(this.state.SLO), // append the new SLO to the SLO array field
+          SLO: ""
+          })
+        )
       }
     }
   }
@@ -174,8 +174,22 @@ class Forms extends React.Component {
   }
 
   resetState(success, message) {
-
-    this.props.openSnackbar(success, message);
+    this.setState({
+      SLOarray: [],
+      SLO: "",
+      choices: [],
+      question: "",
+      unit: "",
+      topic: "",
+      answer: "",
+      cog: "",
+      diff: "",
+      isMult: null,
+      type: "",
+      course: "",
+      pre: "",
+      correct: ""
+    });
   }
 
   validateInputs() { // There's probably a better way to do this...
@@ -435,7 +449,6 @@ class Forms extends React.Component {
               <MenuItem value="Evaluating">Evaluating</MenuItem>
               <MenuItem value="Creating">Creating</MenuItem>
             </TextField>
-
           </div>
 
           <div>
@@ -443,10 +456,11 @@ class Forms extends React.Component {
               style={{ width: 470 }}
               label="SLO(s)"
               margin="normal"
-              onChange={this.handleSLOChange}
-              onBlur={this.addSLO}
-              onKeyDown={this.addSLO}
+              variant="outlined"
               value={this.state.SLO}
+              onBlur={this.addSLO}
+              onChange={this.handleSLOChange}
+              onKeyDown={this.addSLO}
               error={this.state.sloErr}
             />
           </div>
@@ -456,6 +470,8 @@ class Forms extends React.Component {
           return (
             <Chip
               style={{ margin: '5px' }}
+              variant="outlined"
+              color="primary"
               key={key}
               onDelete={() => this.deleteSLO(slo)}
               label={slo}
@@ -496,6 +512,7 @@ class Forms extends React.Component {
                   style={styles.multChoice}
                   onChange={(e) => this.handleChoicesChange("A", e)}
                   value={this.state.choices[0]}
+                  variant="outlined"
                   error={this.state.multErr}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">A.</InputAdornment>,
@@ -508,6 +525,7 @@ class Forms extends React.Component {
                   style={styles.multChoice}
                   onChange={(e) => this.handleChoicesChange("B", e)}
                   value={this.state.choices[1]}
+                  variant="outlined"
                   error={this.state.multErr}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">B.</InputAdornment>,
@@ -520,6 +538,7 @@ class Forms extends React.Component {
                   style={styles.multChoice}
                   onChange={(e) => this.handleChoicesChange("C", e)}
                   value={this.state.choices[2]}
+                  variant="outlined"
                   error={this.state.multErr}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">C.</InputAdornment>,
@@ -532,6 +551,7 @@ class Forms extends React.Component {
                   style={styles.multChoice}
                   onChange={(e) => this.handleChoicesChange("D", e)}
                   value={this.state.choices[3]}
+                  variant="outlined"
                   error={this.state.multErr}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">D.</InputAdornment>,
@@ -616,7 +636,7 @@ class Forms extends React.Component {
           onClick={this.props.isEditing ? () => this.updateQuestion(this.state) : this.submitQuestion}
           style={{ marginTop: '2em' }}
         >
-          {this.props.isEditing ? 'Update' : 'Submit'}
+          {this.props.isEditing ? 'Update' : 'Submit Question'}
         </Button>
 
       </div >
