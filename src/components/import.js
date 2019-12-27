@@ -201,7 +201,7 @@ class Import extends React.Component {
                   <tr>
                     <td>type</td>
                     <td>String</td>
-                    <td>The type of question: Multiple Choice, Programming, or Free Response</td>
+                    <td>The type of question: Multiple Choice, True/False, Programming, or Free Response</td>
                     <td>"Multiple Choice"</td>
                   </tr>
                   <tr>

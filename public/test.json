@@ -46,8 +46,7 @@
     "pre": "MISY",
     "course": "181",
     "cog": "Understanding",
-    "choices": [
-    ]
+    "choices": []
   },
   {
     "question": "How do you make a new instance of a Cow object in C++?",
@@ -60,7 +59,19 @@
     "pre": "CISC",
     "course": "220",
     "cog": "Applying",
-    "choices": [
-    ]
+    "choices": []
+  },
+  {
+    "question": "True or False: HTML is a programming language",
+    "answer": "False",
+    "topic": "Web Development",
+    "unit": "Chapter 20",
+    "SLO": ["Knows that programming languages are", "Understands markup languages"],
+    "type": "True/False",
+    "diff": "Challenging",
+    "pre": "CISC",
+    "course": "920",
+    "cog": "Demonstrating",
+    "choices": []
   }
 ]
