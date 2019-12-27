@@ -23,7 +23,8 @@ const styles = {
   container: {
     width: "65%",
     margin: '0 auto',
-    marginBottom: "3em"
+    marginBottom: "3em",
+    marginTop: "1.5em"
   }
 }
 
@@ -456,7 +457,6 @@ class Forms extends React.Component {
               style={{ width: 470 }}
               label="SLO(s)"
               margin="normal"
-              variant="outlined"
               value={this.state.SLO}
               onBlur={this.addSLO}
               onChange={this.handleSLOChange}
@@ -512,7 +512,6 @@ class Forms extends React.Component {
                   style={styles.multChoice}
                   onChange={(e) => this.handleChoicesChange("A", e)}
                   value={this.state.choices[0]}
-                  variant="outlined"
                   error={this.state.multErr}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">A.</InputAdornment>,
@@ -525,7 +524,6 @@ class Forms extends React.Component {
                   style={styles.multChoice}
                   onChange={(e) => this.handleChoicesChange("B", e)}
                   value={this.state.choices[1]}
-                  variant="outlined"
                   error={this.state.multErr}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">B.</InputAdornment>,
@@ -538,7 +536,6 @@ class Forms extends React.Component {
                   style={styles.multChoice}
                   onChange={(e) => this.handleChoicesChange("C", e)}
                   value={this.state.choices[2]}
-                  variant="outlined"
                   error={this.state.multErr}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">C.</InputAdornment>,
@@ -551,7 +548,6 @@ class Forms extends React.Component {
                   style={styles.multChoice}
                   onChange={(e) => this.handleChoicesChange("D", e)}
                   value={this.state.choices[3]}
-                  variant="outlined"
                   error={this.state.multErr}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">D.</InputAdornment>,

@@ -81,3 +81,16 @@
 #mtable .MuiTableSortLabel-root.MuiTableSortLabel-active,#mtable .MuiTableSortLabel-root:hover {
   color: #818181
 }
+
+.MuiOutlinedInput-notchedOutline {
+  border-color: #fff!important
+}
+
+.MuiChip-outlinedPrimary {
+  color: #a2b0ff!important;
+  border: 1px solid #a2b0ff!important
+}
+
+.MuiChip-deleteIconOutlinedColorPrimary {
+  color: #a2b0ff!important
+}
