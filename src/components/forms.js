@@ -190,7 +190,7 @@ class Forms extends React.Component {
       course: "",
       pre: "",
       correct: ""
-    });
+    }, () => this.props.openSnackbar(success, message));
   }
 
   validateInputs() { // There's probably a better way to do this...
@@ -291,7 +291,6 @@ class Forms extends React.Component {
   }
 
   submitQuestion() {
-    console.log(this.state.choices[2]);
     // this is the reference to the questions collection in firebase
     let questionsRef = firebase.firestore().collection('questions');
 

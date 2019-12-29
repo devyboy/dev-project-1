@@ -115,6 +115,7 @@ class Generate extends React.Component {
   onSortEndChoices = ({ oldIndex, newIndex }) => { // gets called when you finish dragging a choice
     let kapp = this.state.detailsQuestion;
     kapp.choices = arrayMove(kapp.choices, oldIndex, newIndex);
+    this.setState({ detailsQuestion: kapp });
   };
 
   componentDidMount() {

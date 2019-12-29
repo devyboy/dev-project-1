@@ -94,3 +94,7 @@
 .MuiChip-deleteIconOutlinedColorPrimary {
   color: #a2b0ff!important
 }
+
+.MuiIconButton-label .MuiSvgIcon-root {
+  color: #fff
+}
