@@ -84,6 +84,7 @@ class Import extends React.Component {
     this.state.questions.forEach((q) => {
       this.submitQuestion(q); // loop through the questions and submit each one to firebase
     });
+    this.setState({ questions: [] });
   }
 
   submitQuestion(q) {
