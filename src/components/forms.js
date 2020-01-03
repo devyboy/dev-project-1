@@ -160,7 +160,7 @@ class Forms extends React.Component {
         this.setState(state => ({
           SLOarray: state.SLOarray.concat(this.state.SLO), // append the new SLO to the SLO array field
           SLO: ""
-          })
+        })
         )
       }
     }
@@ -623,17 +623,16 @@ class Forms extends React.Component {
             />
           </div>
         }
-
-        <Button
-          variant="contained"
-          color="primary"
-          // change the button's function depending if they're editing or creating
-          onClick={this.props.isEditing ? () => this.updateQuestion(this.state) : this.submitQuestion}
-          style={{ marginTop: '2em' }}
-        >
-          {this.props.isEditing ? 'Update' : 'Submit Question'}
-        </Button>
-
+        <div style={{marginTop: '3em'}}>
+          <Button
+            variant="contained"
+            color="primary"
+            // change the button's function depending if they're editing or creating
+            onClick={this.props.isEditing ? () => this.updateQuestion(this.state) : this.submitQuestion}
+          >
+            {this.props.isEditing ? 'Update' : 'Submit Question'}
+          </Button>
+        </div>
       </div >
     )
   }

@@ -47,20 +47,28 @@ class SettingsPage extends React.Component {
     return (
       <div className="App">
         <Menu path={["Settings"]} />
-
-        <FormControl component="fieldset">
-          <FormGroup>
-            <FormControlLabel
-              control={<Switch
-                checked={this.state.dark}
-                onChange={() => this.setState({ dark: !this.state.dark })}
-                color="primary"
-              />}
-              label="Dark Mode"
-            />
-          </FormGroup>
-        </FormControl>
-        <br />
+        <div style={{ marginBottom: '2em' }}>
+          <FormControl component="fieldset">
+            <FormGroup>
+              <FormControlLabel
+                control={<Switch
+                  checked={this.state.dark}
+                  onChange={() => this.setState({ dark: !this.state.dark })}
+                  color="primary"
+                />}
+                label="Dark Mode"
+              />
+              {/* <FormControlLabel
+                control={<Switch
+                  checked={this.state.dark}
+                  onChange={() => this.setState({ dark: !this.state.dark })}
+                  color="primary"
+                />}
+                label=""
+              /> */}
+            </FormGroup>
+          </FormControl>
+        </div>
         <Button
           variant="contained"
           color="primary"
