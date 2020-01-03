@@ -2,12 +2,12 @@
 Codenamed *dev-project-1* is a web application for professors and TA's at the University of Delaware's CS department to create exams in a more efficient and programmatic way. This project is currently still in the alpha phase of development so many features are still in the works. The final version will only be in use by the university but the plan is to release the platform itself as open source in the future.
 
 # Gallery
-![](screens/create.png)
-![](screens/import.png)
-![](screens/view.png)
-![](screens/edit.png)
-![](screens/generate.png)
-![](screens/exam.png)
+![](https://raw.githubusercontent.com/devyboy/dev-project-1/master/screens/create.png)
+![](https://raw.githubusercontent.com/devyboy/dev-project-1/master/screens/import.png)
+![](https://raw.githubusercontent.com/devyboy/dev-project-1/master/screens/view.png)
+![](https://raw.githubusercontent.com/devyboy/dev-project-1/master/screens/edit.png)
+![](https://raw.githubusercontent.com/devyboy/dev-project-1/master/screens/generate.png)
+![](https://raw.githubusercontent.com/devyboy/dev-project-1/master/screens/exam.png)
 
 # Installation
 To install just: `git clone https://github.com/devyboy/dev-project-1 && npm install`
