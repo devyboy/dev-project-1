@@ -8,6 +8,7 @@ Codenamed *dev-project-1* is a web application for professors and TA's at the Un
 ![](https://raw.githubusercontent.com/devyboy/dev-project-1/master/screens/generate.png)
 ![](https://raw.githubusercontent.com/devyboy/dev-project-1/master/screens/edit.png)
 ![](https://raw.githubusercontent.com/devyboy/dev-project-1/master/screens/exam.png)
+![](https://raw.githubusercontent.com/devyboy/dev-project-1/master/screens/print.png)
 
 # Installation
 To install just: `git clone https://github.com/devyboy/dev-project-1 && npm install`
