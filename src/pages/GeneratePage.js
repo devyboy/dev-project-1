@@ -96,6 +96,7 @@ class Generate extends React.Component {
 
     this.randomizeQuestions = this.randomizeQuestions.bind(this);
     this.randomizeChoices = this.randomizeChoices.bind(this);
+    this.randomizeAllChoices = this.randomizeAllChoices.bind(this);
     this.randomizeAll = this.randomizeAll.bind(this);
     this.handleSpacingChange = this.handleSpacingChange.bind(this);
     this.closeCard = this.closeCard.bind(this);
@@ -164,8 +165,8 @@ class Generate extends React.Component {
   }
 
   randomizeChoices() {
-    let dab = this.state.detailsQuestion;
-    let array = dab.choices;
+    let crs = this.state.detailsQuestion;
+    let array = crs.choices;
 
     for (let i = array.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));
@@ -173,17 +174,13 @@ class Generate extends React.Component {
       array[i] = array[j];
       array[j] = temp;
     }
-    dab.choices = array;
-
-    this.setState({ detailsQuestion: dab });
+    crs.choices = array;
+    this.setState({ detailsQuestion: crs });
   }
 
-  randomizeAll() {
-    this.randomizeQuestions();
-
+  randomizeAllChoices() {
     this.state.questions.forEach((q) => {
       let array = q.choices;
-
       for (let i = array.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
         let temp = array[i];
@@ -191,7 +188,22 @@ class Generate extends React.Component {
         array[j] = temp;
       }
       q.choices = array;
-    })
+    });
+  }
+
+  randomizeAll() {
+    this.randomizeQuestions();
+
+    this.state.questions.forEach((q) => {
+      let array = q.choices;
+      for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+      }
+      q.choices = array;
+    });
   }
 
   render() {
@@ -279,6 +291,10 @@ class Generate extends React.Component {
             </Button>
             <Button variant="contained" color="primary" onClick={this.randomizeAll} style={styles.button}>
               Randomize Questions + Choices
+                  <ShuffleIcon />
+            </Button>
+            <Button variant="contained" color="primary" onClick={this.randomizeAllChoices} style={styles.button}>
+              Randomize Choices
                   <ShuffleIcon />
             </Button>
 
