@@ -287,15 +287,12 @@ class Generate extends React.Component {
           <div style={styles.container}>
             <Button variant="contained" color="primary" onClick={this.randomizeQuestions} style={styles.button}>
               Randomize Questions
-                  <ShuffleIcon />
             </Button>
             <Button variant="contained" color="primary" onClick={this.randomizeAll} style={styles.button}>
               Randomize Questions + Choices
-                  <ShuffleIcon />
             </Button>
             <Button variant="contained" color="primary" onClick={this.randomizeAllChoices} style={styles.button}>
               Randomize Choices
-                  <ShuffleIcon />
             </Button>
 
             <SortableList items={this.state.questions} onSortEnd={this.onSortEndCards} axis="xy" useDragHandle />
