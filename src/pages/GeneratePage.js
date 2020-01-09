@@ -8,7 +8,6 @@ import {
   sortableElement,
   sortableHandle
 } from 'react-sortable-hoc';
-import ShuffleIcon from "@material-ui/icons/Shuffle";
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import {
   Button,
@@ -161,7 +160,13 @@ class Generate extends React.Component {
       array[i] = array[j];
       array[j] = temp;
     }
-    this.setState({ questions: array });
+
+    this.setState({ 
+      questions: array,
+      snackOpen: true,
+      snackSuccess: true,
+      snackMessage: "Questions randomized"
+    });
   }
 
   randomizeChoices() {
@@ -175,7 +180,13 @@ class Generate extends React.Component {
       array[j] = temp;
     }
     crs.choices = array;
-    this.setState({ detailsQuestion: crs });
+
+    this.setState({ 
+      detailsQuestion: crs,
+      snackOpen: true,
+      snackSuccess: true,
+      snackMessage: "Choices randomized"
+    });
   }
 
   randomizeAllChoices() {
@@ -189,6 +200,12 @@ class Generate extends React.Component {
       }
       q.choices = array;
     });
+
+    this.setState({ 
+      snackOpen: true,
+      snackSuccess: true,
+      snackMessage: "All choices randomized"
+    })
   }
 
   randomizeAll() {
@@ -203,6 +220,12 @@ class Generate extends React.Component {
         array[j] = temp;
       }
       q.choices = array;
+    });
+
+    this.setState({ 
+      snackOpen: true,
+      snackSuccess: true,
+      snackMessage: "All questions and choices randomized"
     });
   }
 
