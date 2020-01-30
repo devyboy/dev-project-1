@@ -20,7 +20,7 @@ class SettingsPage extends React.Component {
   }
 
   componentDidMount() {
-    let cookie = document.cookie
+    let cookie = document.cookie // parse the browser cookie
       .split(';')
       .reduce((res, c) => {
         const [key, val] = c.trim().split('=').map(decodeURIComponent)
@@ -48,6 +48,8 @@ class SettingsPage extends React.Component {
       <div className="App">
         <Menu path={["Settings"]} />
         <div style={{ marginBottom: '2em' }}>
+          <h2>Appearance</h2>
+          <hr style={{width: "30%"}}/>
           <FormControl component="fieldset">
             <FormGroup>
               <FormControlLabel
@@ -56,6 +58,7 @@ class SettingsPage extends React.Component {
                   onChange={() => this.setState({ dark: !this.state.dark })}
                   color="primary"
                 />}
+                labelPlacement="start"
                 label="Dark Mode"
               />
               {/* <FormControlLabel
@@ -64,7 +67,8 @@ class SettingsPage extends React.Component {
                   onChange={() => this.setState({ dark: !this.state.dark })}
                   color="primary"
                 />}
-                label=""
+                labelPlacement="start"  
+                label="Compact View"
               /> */}
             </FormGroup>
           </FormControl>

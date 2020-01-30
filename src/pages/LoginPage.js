@@ -52,7 +52,7 @@ class LoginPage extends React.Component {
   }
 
   componentWillUnmount() {
-    firebase.firestore().terminate();
+    firebase.firestore().terminate(); // terminate the firebase connection when the component derenders
   }
 
   login() {
