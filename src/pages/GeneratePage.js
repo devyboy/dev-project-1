@@ -9,6 +9,7 @@ import {
   sortableHandle
 } from 'react-sortable-hoc';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import {
   Button,
   Dialog,
@@ -19,7 +20,9 @@ import {
   TextField,
   DialogContent,
   DialogActions,
-  Card
+  Card,
+  Tooltip,
+  Fab,
 } from '@material-ui/core';
 
 const styles = {
@@ -120,7 +123,7 @@ class Generate extends React.Component {
 
   componentDidMount() {
     // can't access the generate page unless you do it by selecting questions from view-edit
-    if (this.props.location.state === undefined) { 
+    if (this.props.location.state === undefined) {
       this.props.history.push("/view-edit");
     }
     else {
@@ -161,7 +164,7 @@ class Generate extends React.Component {
       array[j] = temp;
     }
 
-    this.setState({ 
+    this.setState({
       questions: array,
       snackOpen: true,
       snackSuccess: true,
@@ -181,7 +184,7 @@ class Generate extends React.Component {
     }
     crs.choices = array;
 
-    this.setState({ 
+    this.setState({
       detailsQuestion: crs,
       snackOpen: true,
       snackSuccess: true,
@@ -201,7 +204,7 @@ class Generate extends React.Component {
       q.choices = array;
     });
 
-    this.setState({ 
+    this.setState({
       snackOpen: true,
       snackSuccess: true,
       snackMessage: "All choices randomized"
@@ -222,7 +225,7 @@ class Generate extends React.Component {
       q.choices = array;
     });
 
-    this.setState({ 
+    this.setState({
       snackOpen: true,
       snackSuccess: true,
       snackMessage: "All questions and choices randomized"
@@ -268,9 +271,9 @@ class Generate extends React.Component {
       );
     });
 
-     // Entire card list component
+    // Entire card list component
 
-     const SortableList = sortableContainer(({ items }) => {
+    const SortableList = sortableContainer(({ items }) => {
       return (
         <ul style={styles.listContainer}>
           {items.map((value, index) => (
@@ -304,7 +307,7 @@ class Generate extends React.Component {
 
     return (
       <div className="App">
-        <Menu path={["View-Edit", "Generate"]} />
+        <Menu path={["View", "Generate"]} />
 
         {this.state.questions &&
           <div style={styles.container}>
@@ -425,15 +428,17 @@ class Generate extends React.Component {
                 </DialogActions>
               </Dialog>
             }
-            
-            {/* navigate to exam page and send questions as props */}
-            <div style={{ width: "50%", margin: "0 auto" }}>
-              <Link to={{ pathname: "/exam", state: { questions: this.state.questions } }}>
-                <Button style={{ margin: '1em' }} color="primary" variant="contained" >
-                  Generate Exam
-                    </Button>
-              </Link>
-            </div>
+
+            <Link to={{ pathname: "/exam", state: { questions: this.state.questions } }}>
+              <Tooltip title="Generate">
+                <Fab
+                  color="primary"
+                  style={{ position: "fixed", bottom: 60, right: 70 }}
+                >
+                  <AssignmentTurnedInIcon />
+                </Fab>
+              </Tooltip>
+            </Link>
 
             <CustomSnackbar
               open={this.state.snackOpen}

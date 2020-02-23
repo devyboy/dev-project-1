@@ -1,12 +1,12 @@
 import React from "react";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@material-ui/lab';
-import Fab from "@material-ui/core/Fab";
-import Tooltip from "@material-ui/core/Tooltip";
+// import Fab from "@material-ui/core/Fab";
+// import Tooltip from "@material-ui/core/Tooltip";
 import CustomSnackbar from "../components/customSnackbar";
 import DownloadIcon from "@material-ui/icons/GetApp";
 import PrintIcon from "@material-ui/icons/Print";
 import ProfessorIcon from "@material-ui/icons/AssignmentInd";
-import BackIcon from "@material-ui/icons/ArrowBack";
+// import BackIcon from "@material-ui/icons/ArrowBack";
 import YAML from 'yaml';
 import "../css/exam.css";
 
@@ -188,7 +188,7 @@ class ExamPage extends React.Component {
 
           <SpeedDial
             ariaLabel="SpeedDial openIcon example"
-            style={{ position: "fixed", bottom: 130, right: 70 }}
+            style={{ position: "fixed", bottom: 60, right: 70 }}
             icon={<SpeedDialIcon />}
             onClose={() => this.setState({ speedOpen: false })}
             onOpen={() => this.setState({ speedOpen: true })}
@@ -211,7 +211,7 @@ class ExamPage extends React.Component {
               onClick={this.changeFormat}
             />
           </SpeedDial>
-
+{/* 
           <Tooltip title="Go back">
             <Fab
               color="secondary"
@@ -220,7 +220,7 @@ class ExamPage extends React.Component {
             >
               <BackIcon />
             </Fab>
-          </Tooltip>
+          </Tooltip> */}
 
           <CustomSnackbar
             vertical={"top"}

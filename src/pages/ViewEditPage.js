@@ -10,10 +10,12 @@ import {
   Dialog,
   DialogTitle,
   DialogActions,
-  DialogContent
+  DialogContent,
+  Fab
 } from '@material-ui/core';
 import DataTable from '../components/dataTable';
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from "@material-ui/icons/Close";
+import ContinueIcon from '@material-ui/icons/Check';
 import OfflineNotify from "../components/offlineNotify";
 
 
@@ -34,8 +36,8 @@ class ViewEdit extends React.Component {
     this.closeOfflineNotify = this.closeOfflineNotify.bind(this);
     this.deleteConfirm = this.deleteConfirm.bind(this);
     this.deleteQuestions = this.deleteQuestions.bind(this);
+    this.setSelected = this.setSelected.bind(this);
   }
-
 
   fetchQuestions() {
     let questionArray = [];
@@ -117,10 +119,14 @@ class ViewEdit extends React.Component {
     this.setState({ snackOpen: true, snackSuccess: success, snackMessage: message });
   }
 
+  setSelected(rows) {
+    this.setState({ selectedQuestions: rows });
+  }
+
   render() {
     return (
       <div className="App">
-        <Menu path={["View-Edit"]} />
+        <Menu path={["View"]} />
         <div>
           {this.state.questions ?
             <div id="mtable">
@@ -129,6 +135,7 @@ class ViewEdit extends React.Component {
                 handleEditQuestions={this.openEditForm}
                 handleGenerateExam={this.openExamForm}
                 handleDeleteQuestions={this.deleteConfirm}
+                handleSelect={this.setSelected}
               />
             </div>
             :
@@ -179,6 +186,16 @@ class ViewEdit extends React.Component {
             </DialogActions>
           </Dialog>
         </div>
+
+        {this.state.selectedQuestions.length !== 0 &&
+          <Fab
+            color="primary"
+            onClick={() => this.openExamForm(this.state.selectedQuestions)}
+            style={{ position: "fixed", bottom: 60, right: 70 }}
+          >
+            <ContinueIcon />
+          </Fab>
+        }
 
         <CustomSnackbar
           message={this.state.snackMessage}
