@@ -2,7 +2,7 @@ import React from 'react';
 import firebase from "firebase/app";
 import "firebase/auth";
 import { Link } from 'react-router-dom';
-import { 
+import {
   Menu,
   MenuItem,
   AppBar,
@@ -50,7 +50,7 @@ class Drawer extends React.Component {
 
   handleOpen(event) {
     // anchor element is where the drawer attached to, in this case the menu button
-    this.setState({ drawer: true, anchorEl: event.currentTarget }); 
+    this.setState({ drawer: true, anchorEl: event.currentTarget });
   }
 
   closeDrawer() {
@@ -77,10 +77,10 @@ class Drawer extends React.Component {
             </IconButton>
             <Typography variant="h6" >
               <Link to={"/"} style={styles.path}>UDel PAPER</Link> /&nbsp;{this.props.path.map((path, key) => {
-                return(
-                    <span key={key}>
-                      <Link to={path.toLowerCase()} style={styles.path}>{path}</Link> 
-                      &nbsp;/&nbsp;
+                return (
+                  <span key={key}>
+                    <Link to={path.toLowerCase()} style={styles.path}>{path}</Link>
+                    &nbsp;/&nbsp;
                     </span>
                 ); // shows the cool pathname navigation at the top 
               })}
@@ -94,16 +94,16 @@ class Drawer extends React.Component {
           open={this.state.drawer}
           onClose={this.closeDrawer}
         >
+          <Link to={"/view"} onClick={this.closeDrawer} style={styles.link}>
+            <MenuItem>
+              <PencilIcon style={styles.icon} />
+              View Questions
+            </MenuItem>
+          </Link>
           <Link to={"/create"} onClick={this.closeDrawer} style={styles.link}>
             <MenuItem>
               <PlusIcon style={styles.icon} />
               Create Questions
-            </MenuItem>
-          </Link>
-          <Link to={"/view-edit"} onClick={this.closeDrawer} style={styles.link}>
-            <MenuItem>
-              <PencilIcon style={styles.icon} />
-              View Questions
             </MenuItem>
           </Link>
           <Link to={"/settings"} onClick={this.closeDrawer} style={styles.link}>

@@ -97,9 +97,9 @@ class App extends React.Component {
             fallback={null} // fallback is an element to show while loading like a spinner or something
           >
             <Switch>
-              <Route exact path="/" render={(props) => <CreatePage {...props} user={this.state.userObject} />} />
+              <Route exact path="/" render={(props) => <ViewEditPage {...props} user={this.state.userObject} />} />
+              <Route exact path="/view" render={(props) => <ViewEditPage {...props} user={this.state.userObject} />} />
               <Route exact path="/create" render={(props) => <CreatePage {...props} user={this.state.userObject} />} />
-              <Route exact path="/view-edit" render={(props) => <ViewEditPage {...props} user={this.state.userObject} />} />
               <Route exact path="/generate" render={(props) => <GeneratePage {...props} user={this.state.userObject} />} />
               <Route exact path="/exam" render={(props) => <ExamPage {...props} user={this.state.userObject} />} />
               <Route exact path="/settings" render={(props) => <SettingsPage {...props} user={this.state.userObject} update={this.update} />} />
