@@ -31,7 +31,7 @@ var firebaseConfig = {
 4. Copy that config snippet with all your API keys, then go to the `/src` folder of the project and paste it into a file called `config.js`.
 5. Type `export { firebaseConfig };` at the bottom of the file and boom you're done.
 
-To be able to login to the application, you need to add your email as a verified user in the Firestore database. In the root level of the database, create a collection called 'users' and add a new document with the ID being your email. You can leave the document fields empty since just the ID is read. If you try to login without being authorized, your account will be disabled by a Firebase function as an added layer of security. To undo this, just go to the Authorization tab in Firebase and find your email and there will be an option to enable it.
+To be able to login to the application, you need to add your email as a verified user in the Firestore database. In the root level of the database, create a collection called 'users' and add a new document with the ID being your email. You can leave the document fields empty since just the ID is read.
 # Name ideas
 
 ```
